@@ -1,0 +1,115 @@
+@import './base/vars';
+
+$section-color-odd: $primary;
+$section-color-even: $white;
+
+.content-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+/* large screen */
+
+// container
+.fullpage {
+    overflow: hidden;
+    height: 100vh;
+    
+    section.section {
+        > .container {
+            @media (min-width: $breakpoint-layout-switch) {
+                transform: translateY(-15vh);
+            }
+            transition: transform $section-before-transition ease $section-content-transition-delay;
+        }
+        &.active {
+            > .container {
+                transform: translateY(0);
+            }
+        }
+        &.active ~ section.section {
+            > .container {
+                @media (max-width: $breakpoint-layout-switch-max) {
+                    transform: translateY(0) !important;
+                }
+                transform: translateY(15vh);
+            }
+        }
+    }
+}
+
+// content scrolling
+.fullpage {
+    .js-scrollcontent {
+        position: relative;
+    }
+    .scrollbar {
+        position: absolute;
+        top: 0;
+        right: -1.5em;
+        width: 5px;
+        height: 100%;
+        border-left: 1px solid $primary;
+        
+        .scrollbar-handle {
+            width: 100%;
+            margin-left: -50%;
+            background-color: $primary;
+            height: 40px;
+            cursor: pointer;
+            position: relative;
+            border-radius: 3px;
+            transition: width 0.15s ease, margin-left 0.15s ease;
+            &.dragging,
+            &:hover {
+                width: 9px;
+                margin-left: calc(-50% - 2px);
+                border-radius: 4px;
+                transition: width 0.15s ease, margin-left 0.15s ease;
+            }
+        }
+    }
+    section:nth-child(2n) {
+        .scrollbar {
+            border-left-color: $white;
+            .scrollbar-handle {
+                background-color: $white;
+            }
+        }
+    }
+}
+
+// section
+section.section {
+    position: relative;
+    transition: transform $section-transition ease, 
+        background-color $section-color-transition ease $section-color-transition-delay, 
+        border-bottom-color $section-color-transition ease $section-color-transition-delay;
+        
+    @media (max-width: $breakpoint-layout-switch-max) {
+        height: auto !important;
+        transform: translateY(0) !important;
+    }
+}
+
+// active section
+section.section.active {
+    @media (max-width: $breakpoint-layout-switch-max) {
+        transform: translateY(0) !important;
+    }
+}
+
+// container
+section.section {
+    > .container {
+        z-index: 3;
+        height: 100%;
+        padding: calc( 3em + 1vw );
+        overflow: hidden;
+    }
+}
+
+// small screen
+#fullpagewrapper:not(.fullpage) section.section {
+    min-height: 101vh;
+}

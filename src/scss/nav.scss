@@ -1,0 +1,106 @@
+@import './base/vars';
+
+$nav-primary: $black;
+$nav-secondary: $white;
+$nav-height: 1.5rem;
+
+nav {
+    ul {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        li {
+            cursor: pointer;
+            list-style-type: none;
+            a {
+                @extend %font-sans;
+            }
+        }
+    }
+}
+
+nav#nav {
+    line-height: 1.2;
+    margin-left: auto;
+    max-width: calc(100% - 4vw - 3em);
+    @media screen and (min-width: $breakpoint-small) {
+        max-width: calc(100% - 5vw - 6em);
+    }
+    ul {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        li {
+            overflow: hidden;
+            cursor: pointer;
+            list-style-type: none;
+            font-weight: 700;
+            margin: 0 0.15rem;
+            @media screen and (min-width: $breakpoint-small) {
+                margin: 0 0.5rem;
+            }
+            a {
+                position: relative;
+                display: block;
+                height: 100%;
+                text-decoration: none;
+                @extend %font-sans-bold;
+                text-transform: uppercase;
+                span {
+                    font-size: .8rem;
+                    width: 100%;
+                    height: auto;
+                    color: $nav-primary;
+                    text-decoration: none;
+                    text-shadow: 0 $nav-height $nav-secondary;
+                    transition: transform .35s ease;
+                    display: block;
+                    position: relative;
+                    z-index: 2;
+                    padding: 0.25rem 0.5rem;
+                }
+                &:after{
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 100%;
+                    right: 0;
+                    background-color: $nav-primary;
+                    transition: transform .35s ease;
+                    height: 100%;
+                }
+            }
+        }
+    }
+    
+    ul li a:hover:after,
+    ul li.active a:after {
+        transform: translateY(-100%);
+        transition: transform .25s ease;
+    }
+    ul li a:hover span,
+    ul li a:focus span,
+    ul li a:active span,
+    ul li.active a span {
+        transform: translateY(-100%);
+        transition: transform .35s ease;
+    }
+}
+
+
+nav#bottom-nav {
+    ul {
+        justify-content: flex-end;
+        font-size: 0.95em;  
+        li {
+            margin-left: $mainpadding;
+            a {
+                text-decoration: none;
+                transition: color .5s ease 0.35s;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}

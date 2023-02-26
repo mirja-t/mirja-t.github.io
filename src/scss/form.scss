@@ -1,0 +1,70 @@
+form {
+    display: flex;
+    column-gap: 1em;
+    width: 90%;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    label,
+    input {
+        display: block;
+    }
+    label {
+        @extend %font-base;
+        margin-bottom: 0.5em;
+        color: $section-color-even;
+    }
+    input,
+    textarea {
+        @extend %font-sans;
+        color: $section-color-even;
+        border: 1px solid $section-color-even;
+        background-color: $section-color-odd;
+        padding: 0.5em 1em;
+        font-size: 1.2em;
+        width: 100%;
+    }
+    > div {
+        margin-top: 1em;
+        width: calc( 50% - 0.5em );
+    }
+}
+section.section:nth-child(2n) {
+    form {
+        label {
+            color: $section-color-odd;
+        }
+        input,
+        textarea {
+            color: $section-color-odd;
+            border: 1px solid $section-color-odd;
+            background-color: $section-color-even;
+        }
+    }
+}
+
+.invers {
+    form {
+        label {
+            color: $section-color-odd;
+        }
+        input,
+        textarea {
+            color: $section-color-odd;
+            border-color: $section-color-odd;
+            background-color: $section-color-even;
+        }
+    }
+    section.section:nth-child(2n) {
+        form {
+            label {
+                color: $section-color-even;
+            }
+            input,
+            textarea {
+                color: $section-color-even;
+                border-color: $section-color-even;
+                background-color: $section-color-odd;
+            }
+        }
+    }
+}

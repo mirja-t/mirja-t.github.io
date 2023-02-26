@@ -1,0 +1,76 @@
+.container {
+    aside {
+        max-width: 30em;
+        min-width: 10em;
+        flex-basis: 30%;
+        flex-shrink: 0;
+
+        .logo {
+            width: 50%;
+            max-width: 250px;
+            margin-bottom: 3em;
+        }
+    }
+    .content {
+        padding-bottom: $padding-xl;
+    }
+    &:last-child > .content {
+        padding-bottom: $padding-xl;
+        @media screen and (min-width: $breakpoint-layout-switch) {
+            padding-bottom: 10vw;
+        }
+
+    }
+    h3 {
+        margin-bottom: $mainpadding;
+    }
+}
+
+.techniques {
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 2em;
+
+    ul.list {
+        flex-basis: 12em;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5em;
+        margin-top: $padding-xs;
+        margin-bottom: $mainpadding;
+        li {
+            list-style-type: none;
+            margin-left: 0;
+            position: relative;
+            text-align: center;
+            min-width: 4em;
+            min-height: 4em;
+            &:before {
+                content: '';
+                display: block;
+                position: relative;
+                width: 4em;
+                height: 5em;
+                padding: 0.5em 0;
+                margin: auto;
+            }
+        }
+    }
+
+    h2, h3, h4, h5, h6 {
+        margin-top: 0;
+    }
+    > div {
+        margin-bottom: $mainpadding;
+        break-inside: avoid-column;
+    }
+}
+
+.content {
+    margin-top: 2em;
+    justify-content: center;
+    //align-items: center;
+}

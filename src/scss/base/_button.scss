@@ -1,0 +1,51 @@
+button,
+.btn,
+input[type="submit"] {
+    border: 1px solid $primary;
+    @extend %font-headings;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+input[type="submit"] {
+    border-color: transparent;
+    background-color: transparent;
+}
+
+svg.button-border {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    touch-action: none;
+    pointer-events: none;
+    rect.init {
+        stroke: $primary;
+    }
+    rect.active {
+        stroke: $secondary;
+    }
+}
+
+.button-wrapper {
+    position: relative;
+    &:not(.hover) {
+        svg rect#innerrect {
+            transition: all 500ms ease;
+            transition-delay: 500ms;
+        }
+        svg rect#outerrect {
+            stroke-dashoffset: 0;
+            transition: all 1000ms ease;
+        }
+    }
+    &.hover {
+        svg rect#outerrect {
+            transition: all 1000ms ease;
+        }
+        svg rect#innerrect {
+            stroke-dashoffset: 0;
+            transition: all 500ms ease;
+        }
+    }
+}

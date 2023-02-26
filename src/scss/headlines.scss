@@ -1,0 +1,61 @@
+// headlines
+section.section {
+    @include headline-colors($section-color-even, $section-color-odd);
+    h1, h2 {
+        color: $secondary;
+    }
+}
+
+.fullpage {
+    section.section:not(.active) .header-text {
+        p {
+            clip-path: inset(100% 0 0% 0);
+        }
+    }
+    &.down {
+        section.section {
+            .header-text {
+                h1, h2 {
+                    clip-path: inset(0% 0 0% 0);
+                    animation: mask-up-in $section-before-transition ease forwards $headline-transition-delay-up;
+                }
+                p {
+                    clip-path: inset(100% 0 0% 0);
+                    animation: mask-up-out $section-before-transition ease forwards $paragraph-transition-delay-out;
+                }
+            }
+            &:not(.active) .header-text {
+                h1, h2 {
+                    clip-path: inset(100% 0 0% 0);
+                    animation: mask-up-out $section-before-transition ease forwards $headline-transition-delay-up;
+                }
+                p {
+                    animation: mask-down-in $section-before-transition ease forwards $paragraph-transition-delay-out;
+                }
+            }
+        }
+    }
+    &.up {
+        section.section {
+            .header-text {
+                h1, h2 {
+                    clip-path: inset(0% 0 0% 0);
+                    animation: mask-down-in $section-before-transition ease forwards $headline-transition-delay-down;
+                }
+                p {
+                    clip-path: inset(100% 0 0% 0);
+                    animation: mask-down-out $section-before-transition ease forwards $paragraph-transition-delay-in;
+                }
+            }
+            &:not(.active) .header-text {
+                h1, h2 {
+                    clip-path: inset(100% 0 0% 0);
+                    animation: mask-up-out $section-before-transition ease forwards $headline-transition-delay-up;
+                }
+                p {
+                    animation: mask-up-in $section-before-transition ease forwards $paragraph-transition-delay-out;
+                }
+            }
+        }
+    }
+}

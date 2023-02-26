@@ -1,0 +1,8 @@
+$asset-basepath: '../assets';
+
+@function image($path, $asset) {
+    @return url($asset-basepath + '/images' + $path + '/' + $asset);
+}
+@function font($path, $asset) {
+    @return url($asset-basepath + '/fonts' + $path + '/' + $asset);
+}

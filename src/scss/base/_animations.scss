@@ -1,0 +1,44 @@
+@keyframes mask-up-in { 
+    0% {
+        clip-path: polygon(0% -10%, 100% -10%, 100% 100%, 0% 110%); // not masked
+    }
+    100% {
+        clip-path: polygon(0% -10%, 100% -10%, 100% -10%, 0% 0%); // masked
+    }
+}
+
+@keyframes mask-up-out {
+    0% {
+        clip-path: polygon(0% 110%, 100% 100%, 100% 100%, 0% 100%); // masked
+    }
+    100% {
+        clip-path: polygon(0% 0%, 100% -10%, 100% 100%, 0% 100%); // not masked
+    }
+}
+
+@keyframes mask-down-in {
+    0% {
+        clip-path: polygon(0% 0%, 100% -10%, 100% 110%, 0% 110%); // not masked
+    }
+    100% {
+        clip-path: polygon(0% 110%, 100% 100%, 100% 110%, 0% 110%); // masked
+    }
+}
+
+@keyframes mask-down-out {
+    0% {
+        clip-path: polygon(0% 0%, 100% -10%, 100% -10%, 0% 0%); // masked
+    }
+    100% {
+        clip-path: polygon(0% 0%, 100% -10%, 100% 100%, 0% 110%); // not masked
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

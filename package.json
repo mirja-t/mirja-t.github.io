@@ -1,0 +1,16 @@
+{
+  "name": "simplebundler",
+  "main": "index.js",
+  "scripts": {
+    "sass-dev": "sass --watch --update --style=expanded src/scss/app:dist/css",
+    "sass-prod": "sass --no-source-map --style=compressed src/scss/app:dist/css",
+    "build": "webpack"
+  },
+  "dependencies": {
+    "webpack": "^5.75.0"
+  },
+  "devDependencies": {
+    "sass": "^1.58.0",
+    "webpack-cli": "^5.0.1"
+  }
+}

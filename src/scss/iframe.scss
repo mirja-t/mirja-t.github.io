@@ -1,0 +1,107 @@
+@keyframes line {
+    from {
+        clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
+    }
+    to {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    }
+}
+@keyframes line-out {
+    from {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    }
+    to {
+        clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
+    }
+}
+@keyframes iframe {
+    from {
+        clip-path: polygon(0% 55%, 100% 45%, 100% 45%, 0% 55%);
+    }
+    to {
+        clip-path: polygon(0% 0%, 100% -10%, 100% 100%, 0% 100%);
+    }
+}
+@keyframes iframe-out {
+    from {
+        clip-path: polygon(0% 0%, 100% -10%, 100% 100%, 0% 100%);
+    }
+    to {
+        clip-path: polygon(0% 55%, 100% 45%, 100% 45%, 0% 55%);
+    }
+}
+
+
+
+#project {
+    height: 0%;
+    width: 0%;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 9;
+    transform: translate(-50%,-50%);
+    display: none;
+
+    .close {
+        opacity: 0;
+    }
+
+    .line-wrapper {
+        position: absolute;
+        pointer-events: none;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        width: 100%;
+        height: 10%;
+        clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
+
+        svg {
+            height: 100%;
+            width: 100%;
+        }
+    }
+    &.active {
+        display: block;
+        height: 100%;
+        width: 100%;
+        .close {
+            animation: fade-in 0.5s ease forwards 1s;
+        }
+        .line-wrapper {
+            animation: line 0.5s ease-out forwards;
+        }
+        iframe {
+            clip-path: polygon(0% 55%, 100% 45%, 100% 45%, 0% 55%);
+            animation: iframe 0.5s ease-in-out forwards 0.5s;
+            background-color: $primary;
+            height: 100%;
+            width: 100%;
+        }
+    }
+    &.out {
+        height: 100%;
+        width: 100%;
+        .close {
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+        .line-wrapper {
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+            animation: line-out 0.25s ease-out forwards 0.25s;
+        }
+        iframe {
+            clip-path: polygon(0% 0%, 100% -10%, 100% 100%, 0% 100%);
+            animation: iframe-out 0.25s ease-in-out forwards;
+            background-color: $primary;
+        }
+    }
+}
+
+main.plain {
+    &:before,
+    &:after {
+        display: none;
+    }
+}

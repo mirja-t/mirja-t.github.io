@@ -1,0 +1,84 @@
+// include in top level
+@mixin nav-mask($section-color-even, $section-color-odd, $dir: 'out', $selector: 'footer') {
+
+    $dir-1: 'out';
+    $dir-2: 'in';
+
+    // init-1 polygon(0% 0%, 100% -10%, 100% 100%, 0% 110%)
+    $init-1: polygon(0% 0%, 100% -10%, 100% 100%, 0% 110%); // not masked
+    $init-2: polygon(0% 0%, 100% -10%, 100% 100%, 0% 110%); // not masked
+    $init-3: polygon(0% 0%, 100% -10%, 100% -10%, 0% 0%); // masked top --> bottom
+    $init-4: polygon(0% 110%, 100% 100%, 100% 100%, 0% 100%); // masked bottom --> top
+
+    @if $dir == 'in' {
+
+        $dir-1: 'in';
+        $dir-2: 'out';
+
+        $init-1: polygon(0% 0%, 100% -10%, 100% -10%, 0% 0%); // masked top --> bottom
+        $init-2: polygon(0% 110%, 100% 100%, 100% 100%, 0% 100%); // masked bottom --> top
+        $init-3: polygon(0% 0%, 100% -10%, 100% 100%, 0% 110%); // not masked
+        $init-4: polygon(0% 0%, 100% -10%, 100% 100%, 0% 110%); // not masked
+    }
+
+    @if $section-color-odd == white {
+
+        $dir-1: 'in';
+        $dir-2: 'out';
+        
+        @if $dir == 'in' {
+            $dir-1: 'out';
+            $dir-2: 'in';
+        }
+        @else {
+            $init-1: polygon(0% 0%, 100% -10%, 100% -10%, 0% 0%); // masked top --> bottom
+            $init-2: polygon(0% 110%, 100% 100%, 100% 100%, 0% 100%); // masked bottom --> top
+            $init-3: polygon(0% 0%, 100% -10%, 100% 100%, 0% 110%); // not masked
+            $init-4: polygon(0% 0%, 100% -10%, 100% 100%, 0% 110%); // not masked
+        }
+    }
+
+
+    @for $i from 0 through $sections {  
+        .section-#{$i} {
+            &.down {
+                #{$selector} {
+                    svg {
+                        clip-path: $init-4;
+                        animation: mask-up- + $dir-1 $logo-transition ease forwards $section-logo-transition-delay-in;
+                    }
+                }
+            }
+            
+            &.up {
+                #{$selector} {
+                    svg {
+                        clip-path: $init-3;
+                        animation: mask-down- + $dir-1 $logo-transition ease forwards $section-logo-transition-delay-out-down;
+                    }
+                }
+            }
+        }
+        @if $i % 2 == 1 {  
+            .section-#{$i} {
+                &.down {
+                    #{$selector} {
+                        svg {
+                            clip-path: $init-2;
+                            animation: mask-up- + $dir-2 $logo-transition ease forwards $section-logo-transition-delay-in;
+                        }
+                    }
+                }
+                &.up {
+                    #{$selector} {
+                        svg {
+                            clip-path: $init-1;
+                            animation: mask-down- + $dir-2 $logo-transition ease forwards $section-logo-transition-delay-out-down;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

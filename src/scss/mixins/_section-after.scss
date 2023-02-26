@@ -1,0 +1,11 @@
+// insert in section
+@mixin section-after($top-before: -9.9vw, $borderwidth-before: 8vw, $top-after: -2vw, $borderwidth-after: 2.1vw) {
+    &:before {
+        top: $top-before;
+        border-bottom-width: $borderwidth-before;
+    }
+    &:after {
+        top: $top-after;
+        border-bottom-width: $borderwidth-after;
+    }
+}

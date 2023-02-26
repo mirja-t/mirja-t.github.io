@@ -1,0 +1,260 @@
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes grow {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes drawline {
+    from {
+        stroke-dashoffset: 100px;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    10% {
+        transform: scale(1.35);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1.35);
+        opacity: 0;
+    }
+}
+
+@keyframes blow-up {
+    0% {
+        transform: translate(-50%,-50%) scale(0);
+        opacity: 0;
+    }
+    20% {
+        transform: translate(-50%,-50%) scale(1.35);
+        opacity: 0.5;
+    }
+    100% {
+        transform: translate(-50%,-50%) scale(1.35);
+        opacity: 0;
+    }
+}
+
+$animation-speed: 0.5s;
+$animation-delay: 0.1s;
+$drawline-speed: 0.5s;
+$initial-drawline-delay: 0.25s;
+
+@for $i from 1 through 13 {
+    .inview #initial g:nth-child(#{$i}) {
+        circle {
+            animation-delay: calc( #{$i} * #{$animation-delay} ); 
+        }
+        g {
+            animation-delay: calc( #{$i} * #{$animation-delay} + .35s ); 
+        }
+        circle:nth-child(2) {
+            animation-delay: calc( #{$i} * #{$animation-delay} + 2s ); 
+        }
+    } 
+}
+
+#svgchart {
+    width: 100%;
+    height: auto;
+}
+
+#initial > g circle,
+#initial > g g {
+    transform: scale(0);
+}
+.inview #initial > g circle,
+.inview #initial > g g {
+    animation: grow $animation-speed ease normal 0.5s;
+    animation-fill-mode: forwards;
+}
+
+.inview #initial g {
+    circle:nth-child(2) {
+        animation: pulse 10s ease-out infinite 2s;
+    }
+} 
+
+.mouseover:not(.init) {
+    #initial > g {
+        circle:nth-child(2) {
+            animation: none;
+        }
+        circle {
+            stroke: white;
+            transform: scale(1);
+        }
+    }
+}
+
+.inview line {
+    stroke: $white;
+    animation: drawline $drawline-speed ease forwards; 
+    stroke-dashoffset: 100px;
+    stroke-dasharray: 100px;
+}
+
+
+#xd-ai,
+#xd-ps,
+#xd-ae {
+    animation-delay: $initial-drawline-delay;
+}
+#xd-html {
+    animation-delay: calc( #{$animation-delay} + #{$initial-drawline-delay} );
+}
+#html-css,
+#html-js {
+    animation-delay: calc( #{$animation-delay} + #{$drawline-speed} + #{$initial-drawline-delay} );
+}
+#css-sass,
+#js-react,
+#html-php {
+    animation-delay: calc( #{$animation-delay * 2} + #{$drawline-speed} + #{$initial-drawline-delay} );
+}
+#php-mysql {
+    animation-delay: calc( #{$animation-delay * 3} + #{$drawline-speed} + #{$initial-drawline-delay} );
+}
+
+#initial {
+    > g > g {
+        path,
+        polygon,
+        polyline,
+        rect,
+        circle {
+            fill: $white;
+        }
+    }
+    
+    circle {
+        fill: $primary;
+        stroke: $white;
+    }
+    line {
+        fill: none;
+        stroke: $white;
+        stroke-miterlimit: 10;
+    }
+}
+
+#css,
+#html {
+    .st1 {
+        fill: $primary-light;
+    }
+    .st2 {
+        fill: $primary-dark;
+    }
+}
+
+#bereiche {
+    fill: $white;
+    font-size: 16px;
+    font-family: $font-serif;
+    #trennlinie {
+        stroke: $white;
+        stroke-dashoffset: 4px;
+        stroke-dasharray: 4px;
+    }
+}
+
+.chart-details {
+    position: absolute;   
+    width: calc(150px + 5vw);
+    height: calc(150px + 5vw);
+    border-radius: 50%;
+    background-color: $white;
+    opacity: 0;
+    transform: translate(-50%,-50%) scale(0);
+    transition: all .5s ease;
+
+    > * {
+        padding: $padding-xs;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: $white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        * {
+            color: $primary !important;
+            text-align: center;
+        }
+        h6 {
+            font-size: calc(9px + 0.5vw);
+        }
+        p {
+            font-size: calc(6px + 0.5vw);
+        }
+    }
+    &::after {
+        content: '';
+        display: block;
+        left: 50%;
+        top: 50%;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        position: absolute;
+        transform: translate(-50%,-50%) scale(1);
+        background-color: $white;
+        opacity: 0;
+        z-index: -1;
+        transition: all .5s ease;
+    }
+}
+
+.chart-details.active {
+    opacity: 1;
+    transform: translate(-50%,-50%) scale(1);
+    transition: all .5s ease;
+    z-index: 1;
+    &::after {
+        transform: translate(-55%,-48%) scale(1.05);
+        opacity: 1;
+        background-color: $secondary;
+        transition: all .5s ease 0.35s;
+    }
+}
+
+#svgchart:not(.init) {
+    #initial {
+        > g {
+            transition: all .5s ease;
+            &:hover {
+                transform: scale(1.1);
+                > circle:first-child {
+                    fill: $white;
+                    stroke-width: 25px;
+                    transition: all 2s ease;
+                    stroke: transparent;
+                }
+            }
+            > g {
+                pointer-events: none;
+            }
+        }
+    } 
+}

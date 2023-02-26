@@ -1,0 +1,11 @@
+// insert in main
+@mixin main-after($before: 1.9em, $before-border: 8vw, $after-border: 2em) {
+    &:before {
+        bottom: $before;
+        border-bottom-width: $before-border;
+    }
+    &:after {
+        bottom: 0;
+        border-bottom-width: $after-border;
+    }
+}

@@ -1,0 +1,97 @@
+footer {
+    position: relative;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 5;
+    padding: $padding-xs 0.75em 0.75em;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: min(-2em, -3vw);
+
+    nav {
+        display: flex;
+        li:not(.icon) {
+            a:hover {
+                text-decoration: underline;
+            }
+        }
+        li.icon {
+            @include hover-ani;
+            margin-top: -1.5em;
+            width: 2.5em;
+            height: 2.5em;
+            position: relative;
+            a {
+                position: relative;
+                display: block;
+                width: 100%;
+                height: 100%;
+
+                &:after {
+                    @include after;
+                    pointer-events: none;
+                    border-radius: 50%;
+                    background: $secondary;
+                    opacity: 0;
+                }
+                &:hover {
+                    &:after {
+                        opacity: 1;
+                    }
+                }
+            }
+            &:after {
+                @include after;
+                pointer-events: none;
+            }
+            &.github {
+                &:after {
+                    content: image('/design', 'icon-github.svg') !important;
+                }
+            }
+            &.codepen {
+                &:after {
+                    content: image('/design', 'icon-codepen.svg') !important;
+                }
+            }
+        }
+    }
+    svg {
+        z-index: 2;
+        position: relative;
+        transition: clip-path $section-before-transition ease $section-logo-transition-delay-in;
+        path,
+        polygon {
+            fill: $white;
+        }
+    }
+}
+@include nav-mask($section-color-odd, $section-color-even);
+
+.odd footer {
+    svg {
+        * {
+            fill: $section-color-even;
+        }
+    }
+}
+
+#project {
+    &.active {
+        ~ footer {
+            z-index: 100;
+            a {
+                color: $primary;
+            }
+            svg {
+                clip-path: polygon(0% 0%, 100% -10%, 100% 100%, 0% 110%); // not masked
+                animation: mask-up-in $logo-transition ease forwards $section-logo-transition-delay-in;
+            }
+        }
+    }
+}
+
+#fullpagewrapper footer {
+    position: fixed;
+}

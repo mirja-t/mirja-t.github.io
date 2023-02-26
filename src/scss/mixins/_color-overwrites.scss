@@ -1,0 +1,88 @@
+/**
+ * COLOR OVERWRITES
+ *
+ */
+ // include in section
+@mixin section-colors($section-color-even, $section-color-odd, $after: false) {
+    background-color: $section-color-even;
+    &:before,
+    &:after {
+        border-bottom-color: $section-color-even;
+    }
+    &:nth-child(2n) {
+        background-color: $section-color-odd;
+        &:before,
+        &:after {
+            border-bottom-color: $section-color-odd;
+        }
+    }
+    @if $after {
+        &:nth-child(2n) {
+            > .container {
+                &:before {
+                    background: linear-gradient(0deg, rgba($section-color-odd, 0) 0%, $section-color-odd 70%);
+                }
+            }
+        }
+        > .container {
+            &:before {
+                background: linear-gradient(0deg, rgba($section-color-even, 0) 0%, $section-color-even 70%);
+            }
+        }
+    }
+}
+
+// include in section
+@mixin headline-colors($section-color-even, $section-color-odd) {
+    // headlines
+    h1, h2 {
+        text-shadow: 0px 0px 4px $section-color-even;
+    }
+    h3, h4, h5, h6, li, p, a, label {
+        color: $section-color-odd;
+    }
+    
+    // headlines every other section
+    &:nth-child(2n) {
+        h1, h2 {
+            text-shadow: 0px 0px 4px $section-color-odd;
+        }
+        h3, h4, h5, h6, li, p, a, label {
+            color: $section-color-even;
+        }
+    }
+}
+
+// include globally
+@mixin nav-colors($section-color-even, $section-color-odd) {
+    // nav
+    #fullpagewrapper {
+        footer {
+            nav#bottom-nav ul li,
+            nav#bottom-nav ul li a {
+                color: $section-color-even;
+            }
+        }
+        &.odd {
+            footer {
+                nav#bottom-nav ul li,
+                nav#bottom-nav ul li a {
+                    color: $section-color-odd;
+                }
+            }
+        }
+    }
+
+    @for $i from 0 through $sections {  
+        @if $i % 2 == 1 {  
+            #fullpagewrapper.section-#{$i} {
+                footer {
+                    nav#bottom-nav ul li,
+                    nav#bottom-nav ul li a {
+                        color: $section-color-odd !important;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+// hover animation
+
+@mixin hover-ani($x: 2%, $y: 2%, $scale: 1) {
+    --bg-translation: translate(2%, 2%);
+    position: relative;
+    > * {
+      position: relative;
+      a {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+      &:after {
+        @include after;
+        transform: scale(1) translate($x, $y); // initial offset
+        transition: all .5s ease;
+      }
+      &:hover {
+        &:after { 
+            transform: scale($scale) var(--bg-translation);
+            transition: all .05s ease;
+        }
+      }
+    }
+  }

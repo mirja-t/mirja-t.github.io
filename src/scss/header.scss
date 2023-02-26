@@ -1,0 +1,106 @@
+@import './base/vars';
+
+header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 4;
+    padding: 0.75em;
+}
+
+#logowrapper {
+    @include hover-ani(-5%, 1%);
+    width: calc(4em + 5vw);
+    height: calc(4em + 5vw);
+    max-height: 13em;
+    max-width: 13em;
+    position: absolute;
+    border-radius: 50%;
+    left: 5vw;
+    top: -1.25em;
+    transform: translate(0,0) scale(1);
+    transition: transform 0.5s ease;
+    z-index: 2;
+    &.small {
+        transform: translate(-5vw, -10%) scale(0.7);
+        transition: transform 0.5s ease;
+    }
+    @media screen and (min-width: $breakpoint-small) {
+        top: -2.25em;
+        width: calc(6em + 5vw);
+        height: calc(6em + 5vw);
+    }
+    @media screen and (min-width: $breakpoint-layout-switch) {
+        left: 33vw;
+    }
+   
+    &:after {
+        @include after;
+        pointer-events: none;
+        content: image('/design', 'mt-logo.svg') !important;
+    }
+
+    svg {
+        position: relative;
+        z-index: 1;
+        clip-path: inset(0% 0 0% 0);
+        will-change: clip-path;
+        transition: clip-path $section-before-transition ease $section-logo-transition-delay-in;
+        path {
+            fill: $white;
+        }
+    }
+    > * {
+        display: inline-block;
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+        &:after {
+            border-radius: 50%;
+            background: $secondary;
+        }
+    }
+}
+
+#logowrapper {
+    svg {
+        clip-path: polygon(0% 120%, 100% 100%, 100% 100%, 0% 100%);
+    }
+    > * {
+        &:after {
+            background-position: 0% 0%;
+        }
+    }
+}
+
+[class*='section'] {
+    header {
+        background: $white;
+    }
+    &.fullpage {
+        header {
+            background: transparent;
+        }
+    }
+}
+
+.subpage {
+    header {
+        &:before {
+            content: "";
+            position: absolute;
+            border-left: 1500px solid transparent;
+            border-top: 60px solid $white;
+            @media (min-width: $breakpoint-xxxlarge) {
+                border-left: 1800px solid transparent;
+                border-top: 90px solid $white;
+            }
+            width: 0;
+            height: 0;
+            top: 0;
+            right: 0;
+        }
+    }
+}
+@include nav-mask($section-color-odd, $section-color-even, 'in', '#logowrapper');

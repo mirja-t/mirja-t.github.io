@@ -1,0 +1,85 @@
+$pagetransition-in: 350ms;
+$pagetransition-out: 500ms;
+
+.page-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 100;
+    pointer-events: none;
+    &:before,
+    &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        transition: $pagetransition-out;
+    }
+    &:before {
+        clip-path: polygon(0% 0%, 100% -10%, 100% -10%, 0% 0%);
+        background-color: $white;
+    }
+    &:after {
+        clip-path: polygon(0% 110%, 100% 100%, 100% 100%, 0% 110%);
+        background-color: $white;
+    }
+}
+.main-container {
+    transform: scale(1);
+    transition: all $pagetransition-out * 0.75 ease;
+}
+
+.transition-mask {
+    transition: $pagetransition-in;
+    clip-path: polygon(0% 0%, 100% -10%, 100% 100%, 0% 100%);
+}
+
+html.is-animating .transition-mask {
+    clip-path: polygon(0% 55%, 100% 45%, 100% 45%, 0% 55%);
+}
+
+.transition-fade {
+    transition: $pagetransition-out;
+    opacity: 1;
+}
+
+.transition-scale {
+    transition: $pagetransition-out;
+    opacity: 1;
+}
+
+html.is-animating .transition-fade {
+    opacity: 0;
+}
+
+html.is-animating .transition-scale {
+    opacity: 0;
+}
+
+html.is-changing .transition-scale {
+    .page-mask {
+        &:before {
+            clip-path: polygon(0% 0%, 100% -10%, 110% 45%, 0% 55%);
+            transition: $pagetransition-out;
+        }
+        &:after {
+            clip-path: polygon(0% 55%, 100% 45%, 100% 100%, 0% 100%);
+            background-color: $white;
+        }
+    }
+    .main-container {
+        transform: translateX(0) scale(1.5);
+        transition: $pagetransition-out;
+    }
+}
+
+html.is-leaving .transition-scale {
+    .main-container {
+        transform: scale(1);
+        transition: $pagetransition-out;
+    }
+}
