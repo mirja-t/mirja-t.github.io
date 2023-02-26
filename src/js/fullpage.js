@@ -114,6 +114,11 @@ export class Fullpage {
             if(leaving) {
                 let nextSectionNumber = this._scrollDirection==='down' ? Math.min(this._sections.length-1, this._currentSectionNumber+1) : Math.max(0, this._currentSectionNumber-1);
                 this._setSectionActive(nextSectionNumber);
+                
+                // add inview class to content
+                this._sections.forEach((_, idx) => {
+                    this._setInviewClass(idx, nextSectionNumber !== idx);
+                });
             }
 
             // add last-section class to main el if last section is active
