@@ -8,7 +8,13 @@ For this project I created an application that displays each section of a onepag
 
 ## Features
 
-+ JS App Fullscreen Onepager with custom scrollbar
++ JS App Fullscreen Onepager 
++ Custom scrollbar
 + Hover animation with mouse follow
 + Interactive svg chart
 + clip-path transitions on section transition and card hover
+
+## Live site
+
+[Homepage](https://mirja-t.github.io/)
+
