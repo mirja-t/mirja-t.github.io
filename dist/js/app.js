@@ -156,7 +156,7 @@ const interactiveChart = function(svgChart) {
 
     const details = detailsEn;
 
-    const svgScale = svgChart.getBoundingClientRect().width / svgChart.width.animVal.value;
+    let svgScale = svgChart.getBoundingClientRect().width / svgChart.width.animVal.value;
     const svgElements = Array.from(svgChart.querySelectorAll('g#initial > g'));
     const initElements = Array.from(svgChart.getElementById('initial').children);
     let prevContainer = [];
@@ -202,6 +202,10 @@ const interactiveChart = function(svgChart) {
     svgChart.addEventListener('mouseleave', () => {
         svgChart.classList.remove('mouseover');
     });
+    window.addEventListener('resize', () => {
+        svgScale = svgChart.getBoundingClientRect().width / svgChart.width.animVal.value;
+    });
+
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
             if(entry.isIntersecting) {
@@ -455,6 +459,10 @@ class Fullpage {
         window.addEventListener('resize', this._debounce(() => {
             this._resize();
         }, 30));
+        window.addEventListener('load', () => {
+            window.location.href = '#section-0';
+            this.navigate(0);
+        })
     }
 
     navigate(nextSectionNumber) {
@@ -829,9 +837,8 @@ document.addEventListener('swup:contentReplaced', (event) => {
     const fpwrapper = document.getElementById('fullpagewrapper');
     if(fpwrapper) {
         const targetSection = location.href.match(/#section-[0-9]+/g);
-        console.log(fpwrapper, targetSection)
         let sectionNumber = targetSection[0] && targetSection[0].match(/[0-9]+/)[0];
-        const fullpage = initFullpage(fpwrapper);
+        const fullpage = initFullpage();
         if(sectionNumber) fullpage.navigate(sectionNumber);
     }
 });

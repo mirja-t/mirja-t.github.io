@@ -4,7 +4,7 @@ export const interactiveChart = function(svgChart) {
 
     const details = detailsEn;
 
-    const svgScale = svgChart.getBoundingClientRect().width / svgChart.width.animVal.value;
+    let svgScale = svgChart.getBoundingClientRect().width / svgChart.width.animVal.value;
     const svgElements = Array.from(svgChart.querySelectorAll('g#initial > g'));
     const initElements = Array.from(svgChart.getElementById('initial').children);
     let prevContainer = [];
@@ -50,6 +50,10 @@ export const interactiveChart = function(svgChart) {
     svgChart.addEventListener('mouseleave', () => {
         svgChart.classList.remove('mouseover');
     });
+    window.addEventListener('resize', () => {
+        svgScale = svgChart.getBoundingClientRect().width / svgChart.width.animVal.value;
+    });
+
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
             if(entry.isIntersecting) {

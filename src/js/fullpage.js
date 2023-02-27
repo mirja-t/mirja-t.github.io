@@ -238,6 +238,10 @@ export class Fullpage {
         window.addEventListener('resize', this._debounce(() => {
             this._resize();
         }, 30));
+        window.addEventListener('load', () => {
+            window.location.href = '#section-0';
+            this.navigate(0);
+        })
     }
 
     navigate(nextSectionNumber) {
