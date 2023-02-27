@@ -49,8 +49,9 @@ function init() {
 }
 init();
 
-function initFullpage(fpwrapper) {
+function initFullpage() {
     const logo = document.getElementById('logowrapper');
+    const fpwrapper = document.getElementById('fullpagewrapper');
     const fp = document.getElementById('fullpage');
     const nav = document.querySelector('nav#nav ul');
 
@@ -66,8 +67,8 @@ function initFullpage(fpwrapper) {
     
     return fullpage;
 }
-const fpwrapper = document.getElementById('fullpagewrapper');
-if(fpwrapper) initFullpage(fpwrapper);
+
+if(document.getElementById('fullpagewrapper')) initFullpage();
 
 function resetChart(sectionNumber) {
     if(sectionNumber === 1) {
@@ -80,14 +81,12 @@ const swup = swupContainer ? new Swup() : null;
 
 document.addEventListener('swup:contentReplaced', (event) => {
     init();
-    const subpageWrapper = document.querySelector('.subpage');
-    if(subpageWrapper) {
-        window.scrollTo(0,0);
-    }
-    else if(fpwrapper) {
+    window.scrollTo(0,0);
+    const fpwrapper = document.getElementById('fullpagewrapper');
+    if(fpwrapper) {
         const targetSection = location.href.match(/#section-[0-9]+/g);
         let sectionNumber = targetSection[0] && targetSection[0].match(/[0-9]+/)[0];
-        const fullpage = initFullpage(fpwrapper);
+        const fullpage = initFullpage();
         if(sectionNumber) fullpage.navigate(sectionNumber);
     }
 });
