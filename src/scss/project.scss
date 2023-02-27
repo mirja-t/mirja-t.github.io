@@ -1,7 +1,8 @@
 @use 'sass:math';
 
 @include nav-colors($section-color-even, $section-color-odd, '.content-wrapper');
-.project-details.subpage {
+.project-details.subpage,
+.subpage {
 
     @include main-after;
 

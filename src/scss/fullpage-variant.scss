@@ -42,12 +42,7 @@
         &:before {
             border-left: 100vw solid transparent;
         }
-        // // sections large screens
-        // &.fullpage {
-        //     section.section {
-        //         @include section-after(-19.9vw, 18vw, -2vw, 2vw);
-        //     }
-        // }
+        
         @include section-after;
     }
     // container
@@ -117,14 +112,16 @@
 
 // small screen
 #fullpagewrapper:not(.fullpage) {
-    &:before {
-        bottom: max(1.9vw, 1.9em);
-        border-bottom-width: max(8vw, 3em);
-    }
-    &:after {
-        bottom: 0;
-        border-bottom-width: max(2vw, 2em);
-    }
+    // &:before {
+    //     bottom: max(1.9vw, 1.9em);
+    //     border-bottom-width: max(8vw, 3em);
+    // }
+    // &:after {
+    //     bottom: 0;
+    //     border-bottom-width: max(2vw, 2em);
+    // }
+    @include main-after(max(1.9vw, 1.9em), max(8vw, 3em), max(2vw, 2em));
+
     @for $i from 0 through $sections {
         &.section-#{$i} {
             header {
@@ -134,6 +131,11 @@
         }
     }
 }
+// large screen
+#fullpagewrapper.fullpage {
+    @include main-after(0, 0, 0);
+}
+
 .content-wrapper {
     position: relative;
     &:before,
@@ -156,7 +158,6 @@
     &:after {
         width: 100%; 
     }
-    @include main-after(0, 0, 0);
     overflow: hidden;
 }
 

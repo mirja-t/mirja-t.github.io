@@ -75,17 +75,19 @@ function resetChart(sectionNumber) {
     }
 }
 
-const swup = new Swup();
+const swupContainer = document.getElementById('swup');
+const swup = swupContainer ? new Swup() : null;
+
 document.addEventListener('swup:contentReplaced', (event) => {
     init();
     const subpageWrapper = document.querySelector('.subpage');
     if(subpageWrapper) {
         window.scrollTo(0,0);
     }
-    else {
+    else if(fpwrapper) {
         const targetSection = location.href.match(/#section-[0-9]+/g);
         let sectionNumber = targetSection[0] && targetSection[0].match(/[0-9]+/)[0];
-        const fullpage = initFullpage();
+        const fullpage = initFullpage(fpwrapper);
         if(sectionNumber) fullpage.navigate(sectionNumber);
     }
 });
