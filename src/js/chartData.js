@@ -51,7 +51,7 @@ export const detailsEn = {
     },
     css: {
         headline: 'CSS3',
-        text: 'creative Implementation of complex designs, responsive design, CSS-animations'
+        text: 'creative implementation of complex designs, responsive design, CSS animations'
     },
     js: {
         headline: 'JavaScript',
@@ -59,7 +59,7 @@ export const detailsEn = {
     },
     react: {
         headline: 'React',
-        text: 'webapllications, Single Page Applications, react-spring, Framer Motion'
+        text: 'webapplications, single page applications, react-spring, Framer Motion'
     },
     sass: {
         headline: 'Sass',
