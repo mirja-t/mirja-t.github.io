@@ -245,13 +245,12 @@ class Fullpage {
         this._windowWidth = window.innerWidth;
     }
 
-    _resize() {
-        if(window.innerWidth === this._windowWidth) return;
-        
+    _reset() {
+        window.scroll(0,0);
         this._sectionScrolling('', 'reset');
         this._sections.forEach((section, idx) => {
             this._contentScrolling(section, 'reset');
-            this._setInviewClass(idx, 'reset')
+            this._setInviewClass(idx, 'reset');
         });
         this._init();
     }
@@ -299,6 +298,7 @@ class Fullpage {
     }
 
     _setSectionActive(nextSectionNumber) {
+        window.location.href = '#section-' + nextSectionNumber;
         this._sections.forEach((section, idx) => {
             nextSectionNumber === idx ? section.classList.add('active') : section.classList.remove('active');
         });
@@ -424,14 +424,13 @@ class Fullpage {
     }
 
     _scrollToSection(sectionnumber, behavior='smooth') {
-
         location.href = "#section-" + sectionnumber;
         const getHeight = arr => arr.reduce((acc, el) => acc + el.offsetHeight, 0);
         const min = Math.min(this._currentSectionNumber, sectionnumber);
         const max = Math.max(this._currentSectionNumber, sectionnumber);
         const scrollHeight = getHeight(this._sections.slice(min, max));
         const startPos = window.scrollY + (getHeight(this._sections.slice(0, this._currentSectionNumber)) - window.scrollY);
-
+        console.log((sectionnumber - this._currentSectionNumber ) * scrollHeight + startPos + 1)
         window.scrollTo({
             top: Math.sign( sectionnumber - this._currentSectionNumber ) * scrollHeight + startPos + 1,
             behavior: behavior
@@ -457,12 +456,11 @@ class Fullpage {
         this._navElements.forEach(el => el.addEventListener('click', this._handleNavigation.bind(this)));
         window.addEventListener('scroll', this._sectionScrolling.bind(this));
         window.addEventListener('resize', this._debounce(() => {
-            this._resize();
+            if(window.innerWidth !== this._windowWidth) this._reset();
         }, 30));
         window.addEventListener('load', () => {
-            window.location.href = '#section-0';
             this.navigate(0);
-        })
+        });
     }
 
     navigate(nextSectionNumber) {
@@ -479,6 +477,7 @@ class Fullpage {
             });
         }
         else{
+            console.log('this._scrollToSection(',nextSectionNumber + ')')
             this._scrollToSection(nextSectionNumber);
         }
         this._setDirectionClass(prevsectionumber, nextSectionNumber);
