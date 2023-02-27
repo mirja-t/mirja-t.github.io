@@ -8,10 +8,12 @@ import { shrinkLogoOnScroll } from './shrinkLogoOnScroll';
 import { generateButton } from './generateButton';
 import { stickyElement } from './stickyElement';
 
+import { parallax } from './parallax';
+import Swup from 'swup';
+
 function init() {
     const svgChart = document.getElementById('svgchart');
     const cardlinksWrapper = document.querySelectorAll('.card-links');
-    const logo = document.getElementById('logowrapper');
     const footerlinks = document.querySelectorAll('footer li.icon');
     const scrollElements = document.querySelectorAll('.project-details .content');
     const contactbuttonwrapper = document.getElementById('contactbutton');
@@ -36,9 +38,15 @@ function init() {
 
     const contentwrapper = document.querySelector('.content-wrapper:not(#fullpagewrapper)');
     if(contentwrapper) addSectionCountClass(contentwrapper);
-    
-    
-    const fpwrapper = document.getElementById('fullpagewrapper');
+
+    if(stickyContainer) {
+        stickyContainer.forEach(elmnt => stickyElement(elmnt));
+    }
+}
+init();
+
+function initFullpage(fpwrapper) {
+    const logo = document.getElementById('logowrapper');
     const fp = document.getElementById('fullpage');
     const nav = document.querySelector('nav#nav ul');
 
@@ -47,27 +55,41 @@ function init() {
         onSectionChange: [resetChart]
     }
     const fullpage = new Fullpage(fpwrapper, fp, nav, config);
-
+    
     if(logo) {
         hoverAnimation(logo, 10);
         document.getElementById('logowrapper').addEventListener('click', () => fullpage.navigate(0));
     }
-
-    if(fpwrapper) {
-        const targetSection = location.href.match(/#section-[0-9]+/g);
-        let sectionNumber = targetSection[0] && targetSection[0].match(/[0-9]+/)[0];
-        if(sectionNumber) fullpage.navigate(sectionNumber);
-    }
-
-    if(stickyContainer) {
-        stickyContainer.forEach(elmnt => stickyElement(elmnt));
-    }
+    
+    return fullpage;
 }
-
-init();
+const fpwrapper = document.getElementById('fullpagewrapper');
+if(fpwrapper) initFullpage(fpwrapper);
 
 function resetChart(sectionNumber) {
     if(sectionNumber === 1) {
         document.querySelectorAll('.chart-details').forEach(el => el.remove());
     }
 }
+
+const swup = new Swup();
+document.addEventListener('swup:contentReplaced', (event) => {
+    init();
+    const subpageWrapper = document.querySelector('.subpage');
+    if(subpageWrapper) {
+        window.scrollTo(0,0);
+    }
+    else {
+        const targetSection = location.href.match(/#section-[0-9]+/g);
+        let sectionNumber = targetSection[0] && targetSection[0].match(/[0-9]+/)[0];
+        const fullpage = initFullpage();
+        if(sectionNumber) fullpage.navigate(sectionNumber);
+    }
+});
+
+document.addEventListener('swup:transitionEnd', (event) => {
+    const parallaxImages = document.querySelectorAll('.js-parallax');
+    if(parallaxImages.length) {
+        parallaxImages.forEach((img, idx) => parallax(img, idx));
+    }
+});

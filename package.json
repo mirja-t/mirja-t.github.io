@@ -7,6 +7,7 @@
     "build": "webpack"
   },
   "dependencies": {
+    "swup": "^3.0.4",
     "webpack": "^5.75.0"
   },
   "devDependencies": {
