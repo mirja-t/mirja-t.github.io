@@ -69,14 +69,6 @@ footer {
 }
 @include nav-mask($section-color-odd, $section-color-even);
 
-.odd footer {
-    svg {
-        * {
-            fill: $section-color-even;
-        }
-    }
-}
-
 #project {
     &.active {
         ~ footer {

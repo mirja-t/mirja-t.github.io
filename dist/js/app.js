@@ -763,6 +763,7 @@ function init() {
     const contactbuttonwrapper = document.getElementById('contactbutton');
     const sections = document.querySelectorAll('#fullpage .section');
     const stickyContainer = document.querySelectorAll('.sticky-container');
+    const logo = document.getElementById('logowrapper');
 
     if(svgChart) interactiveChart(svgChart);
     if(sections.length) copyHeadlines(sections);
@@ -786,6 +787,9 @@ function init() {
     if(stickyContainer) {
         stickyContainer.forEach(elmnt => stickyElement(elmnt));
     }
+    if(logo) {
+        hoverAnimation(logo, 10);
+    }
 }
 init();
 
@@ -801,8 +805,7 @@ function initFullpage(fpwrapper) {
     const fullpage = new Fullpage(fpwrapper, fp, nav, config);
     
     if(logo) {
-        hoverAnimation(logo, 10);
-        document.getElementById('logowrapper').addEventListener('click', () => fullpage.navigate(0));
+        logo.addEventListener('click', () => fullpage.navigate(0));
     }
     
     return fullpage;

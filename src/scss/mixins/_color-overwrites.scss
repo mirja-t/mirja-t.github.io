@@ -54,9 +54,10 @@
 }
 
 // include globally
-@mixin nav-colors($section-color-even, $section-color-odd) {
+@mixin nav-colors($section-color-even, $section-color-odd, $container: '#fullpagewrapper') {
     // nav
-    #fullpagewrapper {
+    //#fullpagewrapper {
+    #{$container} {
         footer {
             nav#bottom-nav ul li,
             nav#bottom-nav ul li a {
@@ -75,7 +76,8 @@
 
     @for $i from 0 through $sections {  
         @if $i % 2 == 1 {  
-            #fullpagewrapper.section-#{$i} {
+            //#fullpagewrapper.section-#{$i} {
+            #{$container}.section-#{$i} {
                 footer {
                     nav#bottom-nav ul li,
                     nav#bottom-nav ul li a {

@@ -1,6 +1,43 @@
 @use 'sass:math';
+
+@include nav-colors($section-color-even, $section-color-odd, '.content-wrapper');
+.project-details.subpage {
+
+    @include main-after;
+
+    &:before,
+    &:after {
+        border-bottom-color: $section-color-even;
+    }
+
+    // section
+    section.section {
+        @include section-colors($section-color-even, $section-color-odd, true);
+        &:before,
+        &:after {
+            content: '';
+            position: absolute;
+            display: table;
+            left: 0;
+            transition: all $section-before-transition ease $section-transition-delay, 
+                background-color $section-color-transition ease $section-color-transition-delay, 
+                border-bottom-color $section-color-transition ease $section-color-transition-delay;
+        }
+        &:before,
+        &:after {
+            height: 0; 
+            border-bottom-style: solid;
+            width: 100%; 
+        }
+        &:before {
+            border-left: 100vw solid transparent;
+        }
+        @include section-after;
+        .container::before {
+            content: none;
+        }
+    }
     
-.project-details {
 
     section.section {
         &.project-screens > .container {

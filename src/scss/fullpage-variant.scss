@@ -42,12 +42,12 @@
         &:before {
             border-left: 100vw solid transparent;
         }
-        // sections large screens
-        &.fullpage {
-            section.section {
-                @include section-after(-19.9vw, 18vw, -2vw, 2vw);
-            }
-        }
+        // // sections large screens
+        // &.fullpage {
+        //     section.section {
+        //         @include section-after(-19.9vw, 18vw, -2vw, 2vw);
+        //     }
+        // }
         @include section-after;
     }
     // container
