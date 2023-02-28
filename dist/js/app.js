@@ -388,7 +388,6 @@ class Fullpage {
 
                 if(e.type === 'touchmove') {
                     if(!initTouchY) {
-                        console.log('set initTouchY')
                         initTouchY = e.touches[0].pageY * 0.001 + initScrollPos + translateY;
                     }
                     delta = (e.touches[0].pageY * 0.001 - initTouchY) * -1;
@@ -398,11 +397,9 @@ class Fullpage {
                 }
                 translateY = Math.min(1, Math.max(0, delta));
                 document.ontouchend = () => {
-                    console.log('touchend')
                     initTouchY = null;
                 }
 
-                console.log('translateY', delta, translateY, initScrollPos)
                 scrollSectionContent(content, translateY);
                 moveScrollbar(scrollHandle, translateY);
             }  
@@ -417,7 +414,6 @@ class Fullpage {
                 };
                 document.onmouseup = function(event) {
                     // stop moving when mouse button is released:
-                    console.log('mouseUp')
                     scrollHandle.classList.remove('dragging');
                     translateY = scrollbarPos;
                     document.onmouseup = null;
