@@ -474,9 +474,7 @@ class Fullpage {
 
     _addEventListener() {
         this._navElements.forEach(el => el.addEventListener('click', this._handleNavigation.bind(this)));
-        window.addEventListener('scroll', () => {
-            this._sectionScrolling.bind(this);
-        });
+        window.addEventListener('scroll', this._sectionScrolling.bind(this));
         window.addEventListener('resize', this._debounce(() => {
             if(window.innerWidth !== this._windowWidth) this._reset();
         }, 30));
