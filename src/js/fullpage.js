@@ -179,7 +179,6 @@ export class Fullpage {
                     initTouchY = null;
                 }
 
-                console.log('translateY', delta, translateY, initScrollPos)
                 scrollSectionContent(content, translateY);
                 moveScrollbar(scrollHandle, translateY);
             }  
@@ -194,7 +193,6 @@ export class Fullpage {
                 };
                 document.onmouseup = function(event) {
                     // stop moving when mouse button is released:
-                    console.log('mouseUp')
                     scrollHandle.classList.remove('dragging');
                     translateY = scrollbarPos;
                     document.onmouseup = null;
