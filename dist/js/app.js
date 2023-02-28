@@ -348,6 +348,7 @@ class Fullpage {
     }
 
     _contentScrolling(section, reset=false) {
+
         const container = section.querySelector('.js-scrollcontainer');
         if(container) {
             const content = container.querySelector('.content');
@@ -358,11 +359,14 @@ class Fullpage {
             let translateY = 0;
             let initScrollPos = 0;
             let scrollbarPos = 0;
+            let delta;
+            let initTouchY = null;
 
             if(reset) {
                 container.style.height = null;
                 content.style.transform = null;
                 content.onwheel = null;
+                content.ontouchmove = null; // ipad
                 document.removeEventListener('mousedown', handleScrollbar);
                 const scrollbar = section.querySelector('.scrollbar');
                 if(scrollbar) scrollbar.remove();
@@ -372,13 +376,33 @@ class Fullpage {
                     container.style.height = container.offsetHeight + 'px';
                     createScrollbar();
                     content.onwheel = handleScroll;
+                    content.ontouchmove = handleScroll; // ipad
                     document.addEventListener('mousedown', handleScrollbar);
                 }  
             }
             
+            
+
             function handleScroll(e) {
                 e.preventDefault();
-                translateY = Math.min(1, Math.max(0, translateY - e.wheelDeltaY * 0.1 / 100));
+
+                if(e.type === 'touchmove') {
+                    if(!initTouchY) {
+                        console.log('set initTouchY')
+                        initTouchY = e.touches[0].pageY * 0.001 + initScrollPos + translateY;
+                    }
+                    delta = (e.touches[0].pageY * 0.001 - initTouchY) * -1;
+                }
+                else {
+                    delta =  translateY - e.wheelDeltaY * 0.001;
+                }
+                translateY = Math.min(1, Math.max(0, delta));
+                document.ontouchend = () => {
+                    console.log('touchend')
+                    initTouchY = null;
+                }
+
+                console.log('translateY', delta, translateY, initScrollPos)
                 scrollSectionContent(content, translateY);
                 moveScrollbar(scrollHandle, translateY);
             }  
@@ -393,6 +417,7 @@ class Fullpage {
                 };
                 document.onmouseup = function(event) {
                     // stop moving when mouse button is released:
+                    console.log('mouseUp')
                     scrollHandle.classList.remove('dragging');
                     translateY = scrollbarPos;
                     document.onmouseup = null;
@@ -417,7 +442,7 @@ class Fullpage {
             }
 
             // inner section scrolling
-            function scrollSectionContent(el, progress) {            
+            function scrollSectionContent(el, progress) {    
                 el.style.transform = `translateY(${-progress * overflow}px)`;
             }  
         }     
@@ -430,7 +455,6 @@ class Fullpage {
         const max = Math.max(this._currentSectionNumber, sectionnumber);
         const scrollHeight = getHeight(this._sections.slice(min, max));
         const startPos = window.scrollY + (getHeight(this._sections.slice(0, this._currentSectionNumber)) - window.scrollY);
-        console.log((sectionnumber - this._currentSectionNumber ) * scrollHeight + startPos + 1)
         window.scrollTo({
             top: Math.sign( sectionnumber - this._currentSectionNumber ) * scrollHeight + startPos + 1,
             behavior: behavior
@@ -454,7 +478,9 @@ class Fullpage {
 
     _addEventListener() {
         this._navElements.forEach(el => el.addEventListener('click', this._handleNavigation.bind(this)));
-        window.addEventListener('scroll', this._sectionScrolling.bind(this));
+        window.addEventListener('scroll', () => {
+            this._sectionScrolling.bind(this);
+        });
         window.addEventListener('resize', this._debounce(() => {
             if(window.innerWidth !== this._windowWidth) this._reset();
         }, 30));
@@ -477,7 +503,6 @@ class Fullpage {
             });
         }
         else{
-            console.log('this._scrollToSection(',nextSectionNumber + ')')
             this._scrollToSection(nextSectionNumber);
         }
         this._setDirectionClass(prevsectionumber, nextSectionNumber);

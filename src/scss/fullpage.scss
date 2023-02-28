@@ -9,6 +9,14 @@ $section-color-even: $white;
 }
 
 /* large screen */
+// iPad fix
+@media (min-width: $breakpoint-layout-switch) {
+    html,
+    body {
+        overflow: hidden;
+        height: 100%;
+    }
+}
 
 // container
 .fullpage {
