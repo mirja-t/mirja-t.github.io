@@ -8,8 +8,8 @@ import { shrinkLogoOnScroll } from './shrinkLogoOnScroll';
 import { generateButton } from './generateButton';
 import { stickyElement } from './stickyElement';
 
-import { parallax } from './parallax';
-import Swup from 'swup';
+// import { parallax } from './parallax';
+// import Swup from 'swup';
 
 function init() {
     const svgChart = document.getElementById('svgchart');
@@ -75,7 +75,7 @@ function resetChart(sectionNumber) {
         document.querySelectorAll('.chart-details').forEach(el => el.remove());
     }
 }
-
+/*
 const swupContainer = document.getElementById('swup');
 const swup = swupContainer ? new Swup() : null;
 
@@ -97,3 +97,4 @@ document.addEventListener('swup:transitionEnd', (event) => {
         parallaxImages.forEach((img, idx) => parallax(img, idx));
     }
 });
+*/

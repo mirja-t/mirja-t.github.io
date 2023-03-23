@@ -8,6 +8,6 @@ module.exports = {
     filename: "app.js"
   },
   optimization: {
-    minimize: false
+    minimize: true
   }
 }
