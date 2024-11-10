@@ -1,8 +1,8 @@
-import { detailsEn } from './chartData';
+import { detailsDe } from './chartData';
 
 export const interactiveChart = function(svgChart) {
 
-    const details = detailsEn;
+    const details = detailsDe;
 
     let svgScale = svgChart.getBoundingClientRect().width / svgChart.width.animVal.value;
     const svgElements = Array.from(svgChart.querySelectorAll('g#initial > g'));

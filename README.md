@@ -18,3 +18,13 @@ For this project I created an application that displays each section of a onepag
 
 [Homepage](https://mirja-t.github.io/)
 
+## Compiling
+
+### Homepage
+
+npm sass-prod: 
+
+### github.io
+
+npm sass-prod: uncomment base --> @import 'fonts';
+
