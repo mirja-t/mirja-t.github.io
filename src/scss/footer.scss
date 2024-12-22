@@ -1,3 +1,9 @@
+@use "sass:string";
+@use 'sass:math';
+
+$icon-size: calc(2.5em + 0.5vw);
+$gradient: generate-gradient($primary, $white, $sections);
+
 footer {
     position: relative;
     right: 0;
@@ -11,60 +17,21 @@ footer {
 
     nav {
         display: flex;
+        ul {
+            align-items: center;
+        }
         li:not(.icon) {
             a:hover {
                 text-decoration: underline;
             }
         }
-        li.icon {
-            @include hover-ani;
-            margin-top: -1.5em;
-            width: 2.5em;
-            height: 2.5em;
-            position: relative;
-            a {
-                position: relative;
-                display: block;
-                width: 100%;
-                height: 100%;
-
-                &:after {
-                    @include after;
-                    pointer-events: none;
-                    border-radius: 50%;
-                    background: $secondary;
-                    opacity: 0;
-                }
-                &:hover {
-                    &:after {
-                        opacity: 1;
-                    }
-                }
-            }
-            &:after {
-                @include after;
-                pointer-events: none;
-            }
-            &.github {
-                &:after {
-                    content: image('/design', 'icon-github.svg') !important;
-                }
-            }
-            &.codepen {
-                &:after {
-                    content: image('/design', 'icon-codepen.svg') !important;
-                }
-            }
-        }
+        
     }
-    svg {
-        z-index: 2;
+    [class|="iconmask"] {
+        @include iconmask($icon-size, $gradient, $sections*100% $sections*100%);
         position: relative;
-        transition: clip-path $section-before-transition ease $section-logo-transition-delay-in;
-        path,
-        polygon {
-            fill: $white;
-        }
+        transition: all $section-transition ease;
+        display: block;
     }
 }
 @include nav-mask($section-color-odd, $section-color-even);
@@ -86,4 +53,14 @@ footer {
 
 #fullpagewrapper footer {
     position: fixed;
+}
+
+@for $i from 0 through $sections {
+    .section-#{$i} {
+        footer {
+            [class|="iconmask"] {
+                background-position: 0% math.div(100%, ($sections - 1))*$i;
+            }
+        }
+    }
 }

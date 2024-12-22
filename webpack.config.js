@@ -9,5 +9,10 @@ module.exports = {
   },
   optimization: {
     minimize: true
-  }
+  },
+  devServer: {
+    static: {
+      directory: path.join(__dirname, ''),
+    },
+  },
 }

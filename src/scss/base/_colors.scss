@@ -4,6 +4,11 @@
         background-color: $color !important;
     }
 }
+body {
+    @each $name, $color in $colors {
+        --color-#{$name}: #{$color};
+    }
+}
 .bg-light {
     h1, h2, h3, h4, h5, h6, li, p, a, small, * {
         color: $primary;

@@ -7,6 +7,7 @@ import { scrollSpy } from './scrollSpy';
 import { shrinkLogoOnScroll } from './shrinkLogoOnScroll';
 import { generateButton } from './generateButton';
 import { stickyElement } from './stickyElement';
+import LinkMousefollow from './webcomponents/LinkMousefollow';
 
 import { parallax } from './parallax';
 import Swup from 'swup';
@@ -79,7 +80,7 @@ function resetChart(sectionNumber) {
 const swupContainer = document.getElementById('swup');
 const swup = swupContainer ? new Swup() : null;
 
-document.addEventListener('swup:contentReplaced', (event) => {
+document.addEventListener('swup:contentReplaced', () => {
     init();
     window.scrollTo(0,0);
     const fpwrapper = document.getElementById('fullpagewrapper');
@@ -91,9 +92,11 @@ document.addEventListener('swup:contentReplaced', (event) => {
     }
 });
 
-document.addEventListener('swup:transitionEnd', (event) => {
+document.addEventListener('swup:transitionEnd', () => {
     const parallaxImages = document.querySelectorAll('.js-parallax');
     if(parallaxImages.length) {
         parallaxImages.forEach((img, idx) => parallax(img, idx));
     }
 });
+
+customElements.define('link-mousefollow', LinkMousefollow);

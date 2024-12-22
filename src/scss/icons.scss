@@ -4,4 +4,8 @@
         content: image('/design', 'icon-#{$icon}.svg')!important;
       }
     }
+    .iconmask-#{$icon} {
+      -webkit-mask: image('/design', 'icon-#{$icon}.svg') no-repeat center / contain;
+      mask: image('/design', 'icon-#{$icon}.svg') no-repeat center / contain;
+    }
 }

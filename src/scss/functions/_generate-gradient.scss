@@ -1,0 +1,14 @@
+@use 'sass:math';
+@function generate-gradient($color-even, $color-odd, $sections, $deg: 180deg) {
+    $gradient: ();
+    $step: math.div(100%, $sections);
+    @for $i from 1 through $sections {
+        $color: $color-odd;
+        @if $i % 2 == 1 { $color: $color-odd } @else { $color: $color-even };
+        $start: ($i - 1) * $step;
+        $end: $i * $step;
+        $gradient: append($gradient, $color $start, comma);
+        $gradient: append($gradient, $color $end, comma);
+    }
+    @return linear-gradient($deg, $gradient...);
+}

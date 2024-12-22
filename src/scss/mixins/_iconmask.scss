@@ -1,0 +1,8 @@
+// insert in section
+@mixin iconmask($size: calc(2.5em + 0.5vw), $color: white, $background-size: 100%) {
+    width: $size;
+    height: $size;
+    background: $color;
+    background-size: $background-size;
+    border-radius: 50%;
+}
