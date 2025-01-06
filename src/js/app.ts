@@ -8,6 +8,7 @@ import { shrinkLogoOnScroll } from './shrinkLogoOnScroll';
 import { generateButton } from './generateButton';
 import { stickyElement } from './stickyElement';
 import LinkMousefollow from './webcomponents/LinkMousefollow';
+import { DrawCanvas } from './drawCanvas';
 
 import { parallax } from './parallax';
 import Swup from 'swup';
@@ -21,11 +22,27 @@ function init() {
     const sections = document.querySelectorAll('#fullpage .section');
     const stickyContainer = document.querySelectorAll('.sticky-container');
     const logo = document.getElementById('logowrapper');
+    const canvas = document.querySelector('canvas');
 
     if(svgChart) interactiveChart(svgChart);
     if(sections.length) copyHeadlines(sections);
     if(cardlinksWrapper.length) cardlinksWrapper.forEach(cardlinks => hoverAnimation(cardlinks, 20));
     if(footerlinks.length) footerlinks.forEach(footerlink => hoverAnimation(footerlink, 20));
+    if(canvas && canvas.parentElement) {
+        const items: {name: string, r: number, color?: string}[] = [
+            {name: 'js', r: 300, color: 'red'},
+            {name: 'css', r: 320, color: 'Turquoise'},
+            {name: 'html', r: 180, color: 'Teal'},
+            {name: 'react', r: 180},
+            {name: 'sass', r: 150, color: 'hotpink'},
+            {name: 'xd', r: 150, color: 'purple'},
+            // {name: 'Webcomponents', r: 230, color: 'CadetBlue'},
+            {name: 'php', r: 60, color: 'IndianRed'},
+            {name: 'wp', r: 80, color: 'DarkSeaGreen'},
+            {name: 'sql', r: 80, color: 'orange'},
+        ]
+        new DrawCanvas(1600, 900, canvas, items, items.length, 1.5);
+    }
 
     shrinkLogoOnScroll();
     if(scrollElements.length) {
@@ -71,7 +88,7 @@ function initFullpage() {
 
 if(document.getElementById('fullpagewrapper')) initFullpage();
 
-function resetChart(sectionNumber) {
+function resetChart(sectionNumber: number) {
     if(sectionNumber === 1) {
         document.querySelectorAll('.chart-details').forEach(el => el.remove());
     }
@@ -86,7 +103,7 @@ document.addEventListener('swup:contentReplaced', () => {
     const fpwrapper = document.getElementById('fullpagewrapper');
     if(fpwrapper) {
         const targetSection = location.href.match(/#section-[0-9]+/g);
-        let sectionNumber = targetSection[0] && targetSection[0].match(/[0-9]+/)[0];
+        let sectionNumber = targetSection?.length && targetSection[0] && targetSection[0].match(/[0-9]+/)?[0]:null;
         const fullpage = initFullpage();
         if(sectionNumber) fullpage.navigate(sectionNumber);
     }
