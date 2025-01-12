@@ -5557,7 +5557,6 @@ section.section:first-child > .container {
 }
 
 canvas {
-  border: 1px solid black;
   width: 100%;
 }
 

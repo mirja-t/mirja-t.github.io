@@ -29,11 +29,6 @@ export class DrawCanvas {
         this.setCanvasSize();
         this.drawCircles();
 
-        images.keys().forEach(imagePath => {
-            const image = images(imagePath); // This will be a Base64 encoded string or data URL
-            console.log(image); // Logs the Base64-encoded image URL (no need for a file path)
-          });
-
         window.addEventListener('click', this.handleClickedCircle);
     }
 
@@ -43,7 +38,6 @@ export class DrawCanvas {
         const x = offsetX / scale;
         const y = offsetY / scale;
         const clickedCircle = this.circles.find(c => Math.abs(x - c.x)**2 + Math.abs(y - c.y)**2 <= c.r**2);
-        console.log(x,y, this.canvas.offsetWidth, this.width, clickedCircle?.name);
         this.clearRect();
         if(clickedCircle)
             this.drawCircle(clickedCircle.x, clickedCircle.y, clickedCircle.r, 'orange');
@@ -68,7 +62,10 @@ export class DrawCanvas {
             const nextTurningPoint = turningPoints.reduce((tp1, tp2) => tp1.y < tp2.y ? tp1 : tp2,{x: this.width, y: this.height});
             const currentCircle = {x: nextTurningPoint.x, y: nextTurningPoint.y, r: radius, name: currentItem.name, color: currentItem.color};
             if(currentItem?.color) currentCircle.color = currentItem.color;
+
+            
             this.lastCircle = currentCircle;
+            this.drawImage(currentCircle);
             
             initCircles(idx+1);
         }
@@ -76,17 +73,55 @@ export class DrawCanvas {
         const firstItem = this.items.shift();
         if(!firstItem) return;
         const firstCircle = {x: firstItem.r, y: firstItem.r, name: firstItem.name, color: firstItem.color, r: firstItem.r};
+        this.circles.forEach(circle => this.drawCircle(circle.x, circle.y, circle.r, circle.color, true));
         this.lastCircle = firstCircle;
+        this.drawImage(firstCircle);
         
         initCircles(0);
-        this.clearRect();
-        this.circles.forEach((circle, idx) => {
-            // this.drawCircle(circle.x, circle.y, circle.r, circle.color, true);
-            this.drawImage(circle);
-            // if(!this.ctx) return;
-            // this.ctx.font = "30px serif";
-            // this.ctx.fillText(`${idx}: ${this.circles[idx].name}`, circle.x-circle.r/2, circle.y);
-        });
+    }
+
+    growCircle(circle: Circle) {
+        const offscreenCanvas = document.createElement('canvas');
+        offscreenCanvas.width = this.canvas.width;
+        offscreenCanvas.height = this.canvas.height;
+        const offscreenCtx = offscreenCanvas.getContext('2d');
+    
+        let animationId: number;
+        let scale = 0;
+    
+        const animate = () => {
+            scale += 0.01;
+    
+            if (scale <= 1) {
+
+                const { x, y, r } = circle;
+
+                // Clear the offscreen canvas
+                offscreenCtx?.clearRect(x-r, y-r, r*2*scale, r*2*scale);
+                
+                const img = new Image;
+                img.onload = () => {
+                    if(!this.ctx) return;
+                    this.ctx.drawImage(img, x-r, y-r, r*2*scale, r*2*scale);
+                }
+                img.src = images(`./icon-${circle.name}.svg`);
+    
+                offscreenCtx?.drawImage(img, x-r, y-r, r*2*scale, r*2*scale);
+    
+                // Copy the offscreen canvas to the visible canvas
+                this.ctx?.clearRect(x-r, y-r, r*2*scale, r*2*scale);
+                this.ctx?.drawImage(offscreenCanvas, 0, 0);
+    
+                // Request the next animation frame
+                animationId = requestAnimationFrame(animate);
+            } else {
+                // Stop the animation
+                cancelAnimationFrame(animationId);
+            }
+        };
+    
+        // Start the animation
+        animationId = requestAnimationFrame(animate);
     }
 
     getCoord(circle1: Circle, circle2: Circle, r3: number) {
@@ -272,14 +307,16 @@ export class DrawCanvas {
         outline ? this.ctx.stroke() : this.ctx.fill();
         this.ctx.closePath();
     }
-    drawImage(circle: Circle) {
+
+    drawImage(circle: Circle, scale: number = 1) {
         const img = new Image;
         img.onload = () => {
             if(!this.ctx) return;
-            this.ctx.drawImage(img, circle.x-circle.r, circle.y-circle.r, circle.r*2, circle.r*2);
+            this.ctx.drawImage(img, circle.x-circle.r, circle.y-circle.r, circle.r*2*scale, circle.r*2*scale);
         }
         img.src = images(`./icon-${circle.name}.svg`);
     }
+
     drawArc(x: number, y: number, r: number, start: number, end: number, color="blue") {
         if(!this.ctx) return;
         this.ctx.beginPath();

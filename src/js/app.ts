@@ -30,16 +30,16 @@ function init() {
     if(footerlinks.length) footerlinks.forEach(footerlink => hoverAnimation(footerlink, 20));
     if(canvas && canvas.parentElement) {
         const items: {name: string, r: number, color?: string}[] = [
-            {name: 'js', r: 300, color: 'red'},
-            {name: 'css', r: 320, color: 'Turquoise'},
-            {name: 'html', r: 180, color: 'Teal'},
-            {name: 'react', r: 180},
+            {name: 'js', r: 250, color: 'red'},
+            {name: 'css', r: 270, color: 'Turquoise'},
+            {name: 'html', r: 200, color: 'Teal'},
+            {name: 'react', r: 240},
             {name: 'sass', r: 150, color: 'hotpink'},
             {name: 'xd', r: 150, color: 'purple'},
             // {name: 'Webcomponents', r: 230, color: 'CadetBlue'},
             {name: 'php', r: 60, color: 'IndianRed'},
-            {name: 'wp', r: 80, color: 'DarkSeaGreen'},
-            {name: 'sql', r: 80, color: 'orange'},
+            {name: 'wp', r: 120, color: 'DarkSeaGreen'},
+            {name: 'sql', r: 40, color: 'orange'},
         ]
         new DrawCanvas(1600, 900, canvas, items, items.length, 1.5);
     }
