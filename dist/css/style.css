@@ -2651,7 +2651,7 @@ video {
   flex-basis: 30%;
   flex-shrink: 0;
 }
-.container aside .logo {
+.container aside .client-logo {
   width: 50%;
   max-width: 250px;
   margin-bottom: 3em;
@@ -2700,7 +2700,7 @@ video {
   display: block;
   position: relative;
   width: 4em;
-  height: 5em;
+  height: 4em;
   padding: 0.5em 0;
   margin: auto;
 }
@@ -3523,7 +3523,7 @@ video {
   max-width: 50em;
 }
 @media (max-width: 991px) {
-  .project-details section.section aside .logo {
+  .project-details section.section aside .client-logo {
     width: 170px;
     margin-bottom: 3em;
     flex-shrink: 0;
@@ -4755,7 +4755,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-html::before {
-  content: url("../assets/images/design/icon-html.svg") !important;
+  content: ""; /*image('/design', 'icon-html.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-html.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-html.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-html {
@@ -4764,7 +4769,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-css::before {
-  content: url("../assets/images/design/icon-css.svg") !important;
+  content: ""; /*image('/design', 'icon-css.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-css.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-css.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-css {
@@ -4773,7 +4783,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-js::before {
-  content: url("../assets/images/design/icon-js.svg") !important;
+  content: ""; /*image('/design', 'icon-js.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-js.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-js.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-js {
@@ -4782,7 +4797,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-sass::before {
-  content: url("../assets/images/design/icon-sass.svg") !important;
+  content: ""; /*image('/design', 'icon-sass.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-sass.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-sass.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-sass {
@@ -4791,7 +4811,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-js::before {
-  content: url("../assets/images/design/icon-js.svg") !important;
+  content: ""; /*image('/design', 'icon-js.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-js.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-js.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-js {
@@ -4800,7 +4825,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-php::before {
-  content: url("../assets/images/design/icon-php.svg") !important;
+  content: ""; /*image('/design', 'icon-php.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-php.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-php.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-php {
@@ -4809,7 +4839,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-sql::before {
-  content: url("../assets/images/design/icon-sql.svg") !important;
+  content: ""; /*image('/design', 'icon-sql.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-sql.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-sql.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-sql {
@@ -4818,7 +4853,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-react::before {
-  content: url("../assets/images/design/icon-react.svg") !important;
+  content: ""; /*image('/design', 'icon-react.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-react.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-react.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-react {
@@ -4827,7 +4867,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-xd::before {
-  content: url("../assets/images/design/icon-xd.svg") !important;
+  content: ""; /*image('/design', 'icon-xd.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-xd.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-xd.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-xd {
@@ -4836,7 +4881,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-ps::before {
-  content: url("../assets/images/design/icon-ps.svg") !important;
+  content: ""; /*image('/design', 'icon-ps.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-ps.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-ps.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-ps {
@@ -4845,7 +4895,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-ai::before {
-  content: url("../assets/images/design/icon-ai.svg") !important;
+  content: ""; /*image('/design', 'icon-ai.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-ai.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-ai.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-ai {
@@ -4854,7 +4909,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-ae::before {
-  content: url("../assets/images/design/icon-ae.svg") !important;
+  content: ""; /*image('/design', 'icon-ae.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-ae.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-ae.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-ae {
@@ -4863,7 +4923,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-vscode::before {
-  content: url("../assets/images/design/icon-vscode.svg") !important;
+  content: ""; /*image('/design', 'icon-vscode.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-vscode.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-vscode.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-vscode {
@@ -4872,7 +4937,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-codepen::before {
-  content: url("../assets/images/design/icon-codepen.svg") !important;
+  content: ""; /*image('/design', 'icon-codepen.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-codepen.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-codepen.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-codepen {
@@ -4881,7 +4951,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-github::before {
-  content: url("../assets/images/design/icon-github.svg") !important;
+  content: ""; /*image('/design', 'icon-github.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-github.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-github.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-github {
@@ -4890,7 +4965,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-lottie::before {
-  content: url("../assets/images/design/icon-lottie.svg") !important;
+  content: ""; /*image('/design', 'icon-lottie.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-lottie.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-lottie.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-lottie {
@@ -4899,7 +4979,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-spring::before {
-  content: url("../assets/images/design/icon-spring.svg") !important;
+  content: ""; /*image('/design', 'icon-spring.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-spring.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-spring.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-spring {
@@ -4908,7 +4993,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-slim::before {
-  content: url("../assets/images/design/icon-slim.svg") !important;
+  content: ""; /*image('/design', 'icon-slim.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-slim.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-slim.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-slim {
@@ -4917,7 +5007,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-git::before {
-  content: url("../assets/images/design/icon-git.svg") !important;
+  content: ""; /*image('/design', 'icon-git.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-git.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-git.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-git {
@@ -4926,7 +5021,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-framermotion::before {
-  content: url("../assets/images/design/icon-framermotion.svg") !important;
+  content: ""; /*image('/design', 'icon-framermotion.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-framermotion.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-framermotion.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-framermotion {
@@ -4935,7 +5035,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-reactrouter::before {
-  content: url("../assets/images/design/icon-reactrouter.svg") !important;
+  content: ""; /*image('/design', 'icon-reactrouter.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-reactrouter.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-reactrouter.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-reactrouter {
@@ -4944,7 +5049,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-bts::before {
-  content: url("../assets/images/design/icon-bts.svg") !important;
+  content: ""; /*image('/design', 'icon-bts.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-bts.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-bts.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-bts {
@@ -4953,7 +5063,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-uikit::before {
-  content: url("../assets/images/design/icon-uikit.svg") !important;
+  content: ""; /*image('/design', 'icon-uikit.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-uikit.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-uikit.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-uikit {
@@ -4962,7 +5077,12 @@ section.section h1, section.section h2 {
 }
 
 .icon-wp::before {
-  content: url("../assets/images/design/icon-wp.svg") !important;
+  content: ""; /*image('/design', 'icon-wp.svg')!important;*/
+  -webkit-mask: url("../assets/images/design/icon-wp.svg") no-repeat center;
+  mask: url("../assets/images/design/icon-wp.svg") no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: #E6007E;
 }
 
 .iconmask-wp {

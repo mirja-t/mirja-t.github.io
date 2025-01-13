@@ -1,7 +1,12 @@
 @each $icon in $icons {
     .icon-#{$icon} {
       &::before {
-        content: image('/design', 'icon-#{$icon}.svg')!important;
+        content: "";/*image('/design', 'icon-#{$icon}.svg')!important;*/
+          -webkit-mask: image('/design', 'icon-#{$icon}.svg') no-repeat center;
+          mask: image('/design', 'icon-#{$icon}.svg') no-repeat center;
+          -webkit-mask-size: cover;
+          mask-size: cover;
+          background-color: $primary; 
       }
     }
     .iconmask-#{$icon} {

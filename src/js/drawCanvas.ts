@@ -1,4 +1,7 @@
+import { modifySvg } from "./modifySvg";
 const images = require.context('../../dist/assets/images/design', false, /\.(png|jpe?g|svg)$/);
+
+// const images = require.context('../../dist/assets/images/design', false, /\.(png|jpe?g|svg)$/);
 
 type Circle = {x: number, y: number, r: number, name?: string, color?: string};
 type Coordinate = {x: number, y: number};
@@ -26,6 +29,7 @@ export class DrawCanvas {
     }
 
     init () {
+        
         this.setCanvasSize();
         this.drawCircles();
 
@@ -80,49 +84,49 @@ export class DrawCanvas {
         initCircles(0);
     }
 
-    growCircle(circle: Circle) {
-        const offscreenCanvas = document.createElement('canvas');
-        offscreenCanvas.width = this.canvas.width;
-        offscreenCanvas.height = this.canvas.height;
-        const offscreenCtx = offscreenCanvas.getContext('2d');
+    // growCircle(circle: Circle) {
+    //     const offscreenCanvas = document.createElement('canvas');
+    //     offscreenCanvas.width = this.canvas.width;
+    //     offscreenCanvas.height = this.canvas.height;
+    //     const offscreenCtx = offscreenCanvas.getContext('2d');
     
-        let animationId: number;
-        let scale = 0;
+    //     let animationId: number;
+    //     let scale = 0;
     
-        const animate = () => {
-            scale += 0.01;
+    //     const animate = () => {
+    //         scale += 0.01;
     
-            if (scale <= 1) {
+    //         if (scale <= 1) {
 
-                const { x, y, r } = circle;
+    //             const { x, y, r } = circle;
 
-                // Clear the offscreen canvas
-                offscreenCtx?.clearRect(x-r, y-r, r*2*scale, r*2*scale);
+    //             // Clear the offscreen canvas
+    //             offscreenCtx?.clearRect(x-r, y-r, r*2*scale, r*2*scale);
                 
-                const img = new Image;
-                img.onload = () => {
-                    if(!this.ctx) return;
-                    this.ctx.drawImage(img, x-r, y-r, r*2*scale, r*2*scale);
-                }
-                img.src = images(`./icon-${circle.name}.svg`);
+    //             const img = new Image;
+    //             img.onload = () => {
+    //                 if(!this.ctx) return;
+    //                 this.ctx.drawImage(img, x-r, y-r, r*2*scale, r*2*scale);
+    //             }
+    //             img.src = images(`./icon-${circle.name}.svg`);
     
-                offscreenCtx?.drawImage(img, x-r, y-r, r*2*scale, r*2*scale);
+    //             offscreenCtx?.drawImage(img, x-r, y-r, r*2*scale, r*2*scale);
     
-                // Copy the offscreen canvas to the visible canvas
-                this.ctx?.clearRect(x-r, y-r, r*2*scale, r*2*scale);
-                this.ctx?.drawImage(offscreenCanvas, 0, 0);
+    //             // Copy the offscreen canvas to the visible canvas
+    //             this.ctx?.clearRect(x-r, y-r, r*2*scale, r*2*scale);
+    //             this.ctx?.drawImage(offscreenCanvas, 0, 0);
     
-                // Request the next animation frame
-                animationId = requestAnimationFrame(animate);
-            } else {
-                // Stop the animation
-                cancelAnimationFrame(animationId);
-            }
-        };
+    //             // Request the next animation frame
+    //             animationId = requestAnimationFrame(animate);
+    //         } else {
+    //             // Stop the animation
+    //             cancelAnimationFrame(animationId);
+    //         }
+    //     };
     
-        // Start the animation
-        animationId = requestAnimationFrame(animate);
-    }
+    //     // Start the animation
+    //     animationId = requestAnimationFrame(animate);
+    // }
 
     getCoord(circle1: Circle, circle2: Circle, r3: number) {
         // Extract coordinates and radii
@@ -308,13 +312,17 @@ export class DrawCanvas {
         this.ctx.closePath();
     }
 
-    drawImage(circle: Circle, scale: number = 1) {
+    drawImage (circle: Circle, scale: number = 1) {
         const img = new Image;
         img.onload = () => {
             if(!this.ctx) return;
             this.ctx.drawImage(img, circle.x-circle.r, circle.y-circle.r, circle.r*2*scale, circle.r*2*scale);
         }
-        img.src = images(`./icon-${circle.name}.svg`);
+        const getModifiedSvg = async(name: string, color: string) => {
+            const modifiedSvg = await modifySvg(images, name, 'white');
+            img.src = modifiedSvg //images(`./icon-${circle.name}.svg`);
+        }
+        if(circle.name) getModifiedSvg(circle.name, 'white')
     }
 
     drawArc(x: number, y: number, r: number, start: number, end: number, color="blue") {
