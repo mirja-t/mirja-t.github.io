@@ -29,19 +29,20 @@ function init() {
     if(cardlinksWrapper.length) cardlinksWrapper.forEach(cardlinks => hoverAnimation(cardlinks, 20));
     if(footerlinks.length) footerlinks.forEach(footerlink => hoverAnimation(footerlink, 20));
     if(canvas && canvas.parentElement) {
-        const items: {name: string, r: number, color?: string}[] = [
-            {name: 'js', r: 250, color: 'red'},
-            {name: 'css', r: 270, color: 'Turquoise'},
-            {name: 'html', r: 200, color: 'Teal'},
-            {name: 'react', r: 240},
-            {name: 'sass', r: 150, color: 'hotpink'},
-            {name: 'xd', r: 150, color: 'purple'},
+        const items: {name: string, r: number}[] = [
+            {name: 'js', r: 250},
+            {name: 'css', r: 250},
+            {name: 'html', r: 230},
+            {name: 'react', r: 230},
+            {name: 'sass', r: 200},
+            {name: 'xd', r: 120},
+            {name: 'ai', r: 110},
             // {name: 'Webcomponents', r: 230, color: 'CadetBlue'},
-            {name: 'php', r: 60, color: 'IndianRed'},
-            {name: 'wp', r: 120, color: 'DarkSeaGreen'},
-            {name: 'sql', r: 40, color: 'orange'},
+            {name: 'php', r: 60},
+            {name: 'wp', r: 120},
+            // {name: 'sql', r: 40, color: 'orange'},
         ]
-        new DrawCanvas(1600, 900, canvas, items, items.length, 1.5);
+        new DrawCanvas(1600, 1200, canvas, items, items.length, 1.1);
     }
 
     shrinkLogoOnScroll();
@@ -95,7 +96,7 @@ function resetChart(sectionNumber: number) {
 }
 
 const swupContainer = document.getElementById('swup');
-const swup = swupContainer ? new Swup() : null;
+swupContainer ? new Swup() : null;
 
 document.addEventListener('swup:contentReplaced', () => {
     init();

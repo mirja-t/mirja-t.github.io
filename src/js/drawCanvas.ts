@@ -2,8 +2,8 @@ import { modifySvg } from "./modifySvg";
 const images = require.context('../../dist/assets/images/design', false, /\.(png|jpe?g|svg)$/);
 
 // const images = require.context('../../dist/assets/images/design', false, /\.(png|jpe?g|svg)$/);
-
-type Circle = {x: number, y: number, r: number, name?: string, color?: string};
+type Item = {name: string, r: number};
+type Circle = {x: number, y: number, r: number, name: string};
 type Coordinate = {x: number, y: number};
 
 export class DrawCanvas {   
@@ -12,11 +12,12 @@ export class DrawCanvas {
     height: number;
     scale: number;
     ctx: CanvasRenderingContext2D | null;
-    items: {name: string, r: number, color?: string}[];
+    items: {name: string, r: number}[];
     count: number;
+    lastClickedCircleName: string | undefined;
     circles: Circle[];
 
-    constructor(width: number, height: number, canvas: HTMLCanvasElement, items: {name: string, r: number, color?: string}[], count: number, scale: number = 1.5) {
+    constructor(width: number, height: number, canvas: HTMLCanvasElement, items: Item[], count: number, scale: number) {
         this.canvas = canvas;
         this.width = width;
         this.height = height;
@@ -25,108 +26,68 @@ export class DrawCanvas {
         this.ctx = this.canvas.getContext('2d');
         this.items = items.sort((a, b) => b.r - a.r);
         this.circles = [];
+        this.lastClickedCircleName;
         this.init();
     }
 
     init () {
         
         this.setCanvasSize();
-        this.drawCircles();
-
-        window.addEventListener('click', this.handleClickedCircle);
+        this.createCircles();
+        this.circles.forEach(circle => this.drawImage(circle));
+        this.canvas.addEventListener('click', this.handleClickedCircle);
     }
 
     handleClickedCircle = (e: MouseEvent) => {
         const {offsetX, offsetY} = e;
-        const scale = this.canvas.offsetWidth / this.width;
-        const x = offsetX / scale;
-        const y = offsetY / scale;
+        const factor = this.canvas.offsetWidth / this.width;
+        const x = offsetX / factor;
+        const y = offsetY / factor;
         const clickedCircle = this.circles.find(c => Math.abs(x - c.x)**2 + Math.abs(y - c.y)**2 <= c.r**2);
+        if(!clickedCircle) return;
+        const indexOfClickedCircle = this.circles.indexOf(clickedCircle);
+        const indexOfLastClickedCircle = this.circles.findIndex(c => c.name === this.lastClickedCircleName);
+        const redrawIdx = Math.max(0, Math.min(indexOfClickedCircle, indexOfLastClickedCircle));
+        this.items = this.circles.slice(redrawIdx).map((c, i) => ({
+            name: c.name, 
+            r: (c.name===clickedCircle.name && clickedCircle.name !== this.lastClickedCircleName) ? c.r*this.scale : 
+                (c.name===this.lastClickedCircleName && clickedCircle.name !== this.lastClickedCircleName) || (c.name===this.lastClickedCircleName && clickedCircle.name === this.lastClickedCircleName) ? c.r/this.scale : 
+                c.r
+        }));
+        this.circles = this.circles.slice(0, redrawIdx);
+
         this.clearRect();
-        if(clickedCircle)
-            this.drawCircle(clickedCircle.x, clickedCircle.y, clickedCircle.r, 'orange');
-        this.circles.forEach((circle, idx) => {
-            // this.drawCircle(circle.x, circle.y, circle.r, circle.color, true);
-            this.drawImage(circle);
-            // if(!this.ctx) return;
-            // this.ctx.font = "30px serif";
-            // this.ctx.fillText(`${idx}: ${this.circles[idx].name}`, circle.x-circle.r/2, circle.y);
-        });
+        this.createCircles(clickedCircle.name !== this.lastClickedCircleName ? clickedCircle : undefined);
+        this.circles.forEach(circle => this.drawImage(circle));
+
+        this.lastClickedCircleName = clickedCircle.name !== this.lastClickedCircleName ? clickedCircle.name : undefined;
     }
 
-    drawCircles() {
+    getCirclePosition(currentItem: Item): Circle {
+        const radius = currentItem.r;
+        const turningPoints = this.getTurningPoints(radius);
+        const nextTurningPoint = turningPoints.reduce((tp1, tp2) => tp1.y < tp2.y ? tp1 : tp2,{x: this.width, y: this.height});
+        const currentCircle = {x: nextTurningPoint.x, y: nextTurningPoint.y, r: radius, name: currentItem.name};
+
+        return currentCircle;
+    }
+
+    createCircles(clickedCircle?: Circle) {
         const initCircles = (idx: number) => {
-            
             if(idx > this.count-1) return;
             const currentItem = this.items.shift();
             if(!currentItem) return;
-            
-            const radius = currentItem.r;
-            const turningPoints = this.getTurningPoints(radius);
-            const nextTurningPoint = turningPoints.reduce((tp1, tp2) => tp1.y < tp2.y ? tp1 : tp2,{x: this.width, y: this.height});
-            const currentCircle = {x: nextTurningPoint.x, y: nextTurningPoint.y, r: radius, name: currentItem.name, color: currentItem.color};
-            if(currentItem?.color) currentCircle.color = currentItem.color;
-
-            
+            const currentCircle = this.getCirclePosition(currentItem);
             this.lastCircle = currentCircle;
-            this.drawImage(currentCircle);
+            if(clickedCircle?.name===currentCircle.name) {
+                this.drawCircle(currentCircle.x, currentCircle.y, currentCircle.r, false, 'orange');
+            }
             
             initCircles(idx+1);
         }
         
-        const firstItem = this.items.shift();
-        if(!firstItem) return;
-        const firstCircle = {x: firstItem.r, y: firstItem.r, name: firstItem.name, color: firstItem.color, r: firstItem.r};
-        this.circles.forEach(circle => this.drawCircle(circle.x, circle.y, circle.r, circle.color, true));
-        this.lastCircle = firstCircle;
-        this.drawImage(firstCircle);
-        
         initCircles(0);
     }
-
-    // growCircle(circle: Circle) {
-    //     const offscreenCanvas = document.createElement('canvas');
-    //     offscreenCanvas.width = this.canvas.width;
-    //     offscreenCanvas.height = this.canvas.height;
-    //     const offscreenCtx = offscreenCanvas.getContext('2d');
-    
-    //     let animationId: number;
-    //     let scale = 0;
-    
-    //     const animate = () => {
-    //         scale += 0.01;
-    
-    //         if (scale <= 1) {
-
-    //             const { x, y, r } = circle;
-
-    //             // Clear the offscreen canvas
-    //             offscreenCtx?.clearRect(x-r, y-r, r*2*scale, r*2*scale);
-                
-    //             const img = new Image;
-    //             img.onload = () => {
-    //                 if(!this.ctx) return;
-    //                 this.ctx.drawImage(img, x-r, y-r, r*2*scale, r*2*scale);
-    //             }
-    //             img.src = images(`./icon-${circle.name}.svg`);
-    
-    //             offscreenCtx?.drawImage(img, x-r, y-r, r*2*scale, r*2*scale);
-    
-    //             // Copy the offscreen canvas to the visible canvas
-    //             this.ctx?.clearRect(x-r, y-r, r*2*scale, r*2*scale);
-    //             this.ctx?.drawImage(offscreenCanvas, 0, 0);
-    
-    //             // Request the next animation frame
-    //             animationId = requestAnimationFrame(animate);
-    //         } else {
-    //             // Stop the animation
-    //             cancelAnimationFrame(animationId);
-    //         }
-    //     };
-    
-    //     // Start the animation
-    //     animationId = requestAnimationFrame(animate);
-    // }
 
     getCoord(circle1: Circle, circle2: Circle, r3: number) {
         // Extract coordinates and radii
@@ -192,9 +153,10 @@ export class DrawCanvas {
     }
 
     getTurningPoints(r: number) {
+        if(this.circles.length === 0) return [{x: r, y: r}];
         const turningPoints: Coordinate[] = [];
-        let currentCircle: Circle | undefined = this.getLeftBottomMostCircle(r);
-        let startingPoint: Coordinate | undefined = this.getStartingPoint(r);
+        let currentCircle: Circle = this.getLeftBottomMostCircle(r);
+        let startingPoint: Coordinate = this.getStartingPoint(r, currentCircle);
         let {touchingCircle, turningPoint} = this.getNextTurningPoint(currentCircle, startingPoint, r);
         turningPoints.push(startingPoint);
         turningPoints.push(turningPoint);
@@ -254,8 +216,7 @@ export class DrawCanvas {
         }
     }
 
-    getStartingPoint(r: number): Coordinate {
-        const mostBottomLeftCircle = this.getLeftBottomMostCircle(r);
+    getStartingPoint(r: number, mostBottomLeftCircle: Circle): Coordinate {
         const y = Math.sqrt((mostBottomLeftCircle.r+r)**2 - (mostBottomLeftCircle.x-r)**2) + mostBottomLeftCircle.y;
         return {x: r, y};
     }
@@ -302,7 +263,7 @@ export class DrawCanvas {
         this.canvas.height = this.height;
     }
 
-    drawCircle(x: number, y: number, r: number, color="blue", outline = false) {
+    drawCircle(x: number, y: number, r: number, outline = false, color: string = 'black') {
         if(!this.ctx) return;
         this.ctx.beginPath();
         this.ctx.arc(x, y, r, 0, Math.PI * 2);
@@ -318,18 +279,17 @@ export class DrawCanvas {
             if(!this.ctx) return;
             this.ctx.drawImage(img, circle.x-circle.r, circle.y-circle.r, circle.r*2*scale, circle.r*2*scale);
         }
-        const getModifiedSvg = async(name: string, color: string) => {
+        const getModifiedSvg = async(name: string) => {
             const modifiedSvg = await modifySvg(images, name, 'white');
-            img.src = modifiedSvg //images(`./icon-${circle.name}.svg`);
+            img.src = modifiedSvg 
         }
-        if(circle.name) getModifiedSvg(circle.name, 'white')
+        if(circle.name) getModifiedSvg(circle.name)
     }
 
-    drawArc(x: number, y: number, r: number, start: number, end: number, color="blue") {
+    drawArc(x: number, y: number, r: number, start: number, end: number) {
         if(!this.ctx) return;
         this.ctx.beginPath();
         this.ctx.arc(x, y, r, start, end, true);
-        this.ctx.strokeStyle = color;
         this.ctx.stroke();
         this.ctx.closePath();
     }
