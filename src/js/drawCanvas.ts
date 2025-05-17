@@ -1,7 +1,7 @@
 import { modifySvg } from "./modifySvg";
-const images = require.context('../../dist/assets/images/design', false, /\.(png|jpe?g|svg)$/);
-
 // const images = require.context('../../dist/assets/images/design', false, /\.(png|jpe?g|svg)$/);
+import bundleLoader from '../../bundle-loader'
+
 type Item = {name: string, r: number};
 type Circle = {x: number, y: number, r: number, name: string};
 type Coordinate = {x: number, y: number};
@@ -16,6 +16,7 @@ export class DrawCanvas {
     count: number;
     lastClickedCircleName: string | undefined;
     circles: Circle[];
+    prevCircles: Circle[];
 
     constructor(width: number, height: number, canvas: HTMLCanvasElement, items: Item[], count: number, scale: number) {
         this.canvas = canvas;
@@ -26,12 +27,13 @@ export class DrawCanvas {
         this.ctx = this.canvas.getContext('2d');
         this.items = items.sort((a, b) => b.r - a.r);
         this.circles = [];
+        this.prevCircles = [];
         this.lastClickedCircleName;
         this.init();
     }
 
     init () {
-        
+
         this.setCanvasSize();
         this.createCircles();
         this.circles.forEach(circle => this.drawImage(circle));
@@ -45,22 +47,34 @@ export class DrawCanvas {
         const y = offsetY / factor;
         const clickedCircle = this.circles.find(c => Math.abs(x - c.x)**2 + Math.abs(y - c.y)**2 <= c.r**2);
         if(!clickedCircle) return;
+        this.recalculateCircle(clickedCircle);
+
         const indexOfClickedCircle = this.circles.indexOf(clickedCircle);
         const indexOfLastClickedCircle = this.circles.findIndex(c => c.name === this.lastClickedCircleName);
-        const redrawIdx = Math.max(0, Math.min(indexOfClickedCircle, indexOfLastClickedCircle));
-        this.items = this.circles.slice(redrawIdx).map((c, i) => ({
+        const redrawIdx = indexOfClickedCircle//Math.max(0, Math.min(indexOfClickedCircle, indexOfLastClickedCircle));
+        this.prevCircles = this.circles.splice(redrawIdx, this.circles.length);
+
+        // console.log('redrawIdx', redrawIdx);
+        // console.log('to be rerendered', this.prevCircles, this.prevCircles.map(c => c.name));
+        this.items = this.prevCircles.map((c, i) => ({
             name: c.name, 
             r: (c.name===clickedCircle.name && clickedCircle.name !== this.lastClickedCircleName) ? c.r*this.scale : 
                 (c.name===this.lastClickedCircleName && clickedCircle.name !== this.lastClickedCircleName) || (c.name===this.lastClickedCircleName && clickedCircle.name === this.lastClickedCircleName) ? c.r/this.scale : 
                 c.r
         }));
-        this.circles = this.circles.slice(0, redrawIdx);
-
+        
+        // this.circles = this.circles.slice(0, redrawIdx);
         this.clearRect();
         this.createCircles(clickedCircle.name !== this.lastClickedCircleName ? clickedCircle : undefined);
         this.circles.forEach(circle => this.drawImage(circle));
 
         this.lastClickedCircleName = clickedCircle.name !== this.lastClickedCircleName ? clickedCircle.name : undefined;
+    }
+
+    recalculateCircle(clickedCircle: Circle) {
+        // console.log('clicked', clickedCircle.name);
+        // const circlesWithHigherCenter = this.circles.filter(c => c.y > clickedCircle.y);
+        // console.log('higher center', circlesWithHigherCenter.map(c => c.name));
     }
 
     getCirclePosition(currentItem: Item): Circle {
@@ -274,6 +288,7 @@ export class DrawCanvas {
     }
 
     drawImage (circle: Circle, scale: number = 1) {
+        const images = bundleLoader.importFiles()
         const img = new Image;
         img.onload = () => {
             if(!this.ctx) return;

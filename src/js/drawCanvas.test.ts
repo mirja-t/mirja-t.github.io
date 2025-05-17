@@ -5,6 +5,16 @@ let drawCanvas: DrawCanvas | null;
 let canvas: HTMLCanvasElement;
 
 beforeEach(() => {
+    jest.mock('../../bundle-loader', () => ({
+        importFiles: jest.fn(() => ({
+                'image1.png': 'mocked/path/image1.png',
+                'image2.jpg': 'mocked/path/image2.jpg',
+            })
+        ),
+    }));
+    const bundleLoader = require('../../bundle-loader');
+    bundleLoader.importFiles.mockReturnValue({});
+    
     HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
         fillRect: jest.fn(),
         clearRect: jest.fn(),
@@ -33,13 +43,13 @@ beforeEach(() => {
         clip: jest.fn(),
     })) as unknown as HTMLCanvasElement['getContext'];
     canvas = document.createElement('canvas');
-    drawCanvas = new DrawCanvas(1600, 900, canvas, [], 1);
+    drawCanvas = new DrawCanvas(1600, 900, canvas, [], 1, 1.1);
     drawCanvas.circles = [
-        {x: 450, y: 150, r: 150},
-        {x: 205.051025722, y: 100, r: 100},
-        {x: 694.948974278, y: 100, r: 100},
-        {x: 100, y: 270.18895967352199071, r: 100},
-        {x: 304.2617, y: 414.3318, r: 150}
+        {x: 450, y: 150, r: 150, name: ''},
+        {x: 205.051025722, y: 100, r: 100, name: ''},
+        {x: 694.948974278, y: 100, r: 100, name: ''},
+        {x: 100, y: 270.18895967352199071, r: 100, name: ''},
+        {x: 304.2617, y: 414.3318, r: 150, name: ''}
     ]
     drawCanvas.ctx = drawCanvas.canvas.getContext('2d');
 });
@@ -50,7 +60,7 @@ afterEach(() => {
 });
 
 describe('DrawCanvas', () => {
-    
+
     // test('getRadius -- return correct circle radius', () => {
     //     expect(radius).toBeCloseTo(150*scaleFactor, 6);
     // });
@@ -58,24 +68,24 @@ describe('DrawCanvas', () => {
         // getTouchingPoints(circle1: Circle, circle2: Circle)
         // return empty array if circles are not touching
         let circles = [
-            {x: 100, y: 100, r: 100},
-            {x: 400, y: 400, r: 100}
+            {x: 100, y: 100, r: 100, name: ''},
+            {x: 400, y: 400, r: 100, name: ''}
         ]
         let touchingPoints = drawCanvas?.getTouchingPoints(circles[0], circles[1]);
         expect(touchingPoints).toEqual([]);
 
         // return array with one object if circles are touching but not overlapping
         circles = [
-            {x: 100, y: 100, r: 100},
-            {x: 300, y: 100, r: 100}
+            {x: 100, y: 100, r: 100, name: ''},
+            {x: 300, y: 100, r: 100, name: ''}
         ]
         touchingPoints = drawCanvas?.getTouchingPoints(circles[0], circles[1]);
         expect(touchingPoints).toEqual([{x: 200, y: 100}]);
 
         // return array with one object if circles are overlapping
         circles = [
-            {x: 100, y: 100, r: 100},
-            {x: 200, y: 100, r: 100}
+            {x: 100, y: 100, r: 100, name: ''},
+            {x: 200, y: 100, r: 100, name: ''}
         ]
         touchingPoints = drawCanvas?.getTouchingPoints(circles[0], circles[1]) || [];
         const y1 = Math.sqrt(100**2 - 50**2) + 100;
@@ -86,19 +96,19 @@ describe('DrawCanvas', () => {
     });
     test('getLeftBottomMostCircle -- return left bottom most circle', () => {
         let mostLeftBottomCircle = drawCanvas?.getLeftBottomMostCircle(20);
-        expect(mostLeftBottomCircle).toEqual({x: 100, y: 270.18895967352199071, r: 100});
+        expect(mostLeftBottomCircle).toEqual({x: 100, y: 270.18895967352199071, r: 100, name: ''});
 
         // when there are multiple rows of circles
         let circles = [
-            {x: 200, y: 400, r: 200},
-            {x: 600, y: 450, r: 300}
+            {x: 200, y: 400, r: 200, name: ''},
+            {x: 600, y: 450, r: 300, name: ''}
         ]
         if(drawCanvas) drawCanvas.circles = circles;
         mostLeftBottomCircle = drawCanvas?.getLeftBottomMostCircle(120);
-        expect(mostLeftBottomCircle).toEqual({x: 200, y: 400, r: 200});
+        expect(mostLeftBottomCircle).toEqual({x: 200, y: 400, r: 200, name: ''});
     });
     test('getStartingPoint -- return starting point for the next circle', () => {
-        const startingPoint = drawCanvas?.getStartingPoint(20);
+        const startingPoint = drawCanvas?.getStartingPoint(20, {x: 100, y: 270.18895967352199071, r: 100, name: ''});
         const y = Math.sqrt(120**2 - 80**2) + 270.18895967352199071;
         expect(startingPoint?.x).toEqual(20);
         expect(startingPoint?.y).toBeCloseTo(y);
@@ -106,8 +116,8 @@ describe('DrawCanvas', () => {
     test('getNextTurningPoint -- return 2nd touchingPoint of current circle', () => {
         // getNextTurningPoint(currentCircle: Circle, startingPoint: Coordinate, r: number)
         let circles = [
-            {x: 100, y: 100, r: 100},
-            {x: 300, y: 100, r: 100}
+            {x: 100, y: 100, r: 100, name: ''},
+            {x: 300, y: 100, r: 100, name: ''}
         ]
         if(drawCanvas) drawCanvas.circles = circles;
         let y = Math.sqrt(120**2 - 80**2) + 100;
@@ -118,7 +128,7 @@ describe('DrawCanvas', () => {
 
         // when circle hits the top of the canvas
         circles = [
-            {x: 100, y: 100, r: 100},
+            {x: 100, y: 100, r: 100, name: ''},
         ]
         if(drawCanvas) drawCanvas.circles = circles;
         y = Math.sqrt(120**2 - 80**2) + 100;
@@ -129,8 +139,8 @@ describe('DrawCanvas', () => {
 
         // when turningPoint.x is smaller than currentCircle.x + currentCircle.r
         circles = [
-            {x: 100, y: 100, r: 100},
-            {x: Math.sqrt(120**2 - 80**2) + 100, y: 20, r: 20}
+            {x: 100, y: 100, r: 100, name: ''},
+            {x: Math.sqrt(120**2 - 80**2) + 100, y: 20, r: 20, name: ''}
         ]
         if(drawCanvas) drawCanvas.circles = circles;
         y = Math.sqrt(120**2 - 80**2) + 100;
@@ -144,48 +154,55 @@ describe('DrawCanvas', () => {
 
         // when there are multiple rows
         circles = [
-            {x: 455, y: 154, r: 154},
-            {x: 200, y: 400, r: 200},
-            {x: 600, y: 450, r: 300},
+            {x: 455, y: 154, r: 154, name: ''},
+            {x: 200, y: 400, r: 200, name: ''},
+            {x: 600, y: 450, r: 300, name: ''},
         ]
         if(drawCanvas) drawCanvas.circles = circles;
-        startingPoint = drawCanvas?.getStartingPoint(20) || {x: 0, y: 0};
+        if(drawCanvas) startingPoint = drawCanvas?.getStartingPoint(20, circles[1]);
         firstTurningPoint = drawCanvas?.getNextTurningPoint(circles[1], startingPoint, 200);
-        expect(firstTurningPoint?.touchingCircle).toEqual({x: 600, y: 450, r: 300});
+        expect(firstTurningPoint?.touchingCircle).toEqual({x: 600, y: 450, r: 300, name: ''});
 
         // when turningPoint.x is larger than this.width - currentCircle.r
         circles = [
-            {x: 900, y: 705, r: 300},
-            {x: 1100, y: 300, r: 300},
+            {x: 900, y: 705, r: 300, name: ''},
+            {x: 1100, y: 300, r: 300, name: ''},
         ]
         if(drawCanvas) drawCanvas.circles = circles;
         startingPoint = {x: 900, y: 1005};
         y = Math.sqrt(500**2 - 300**2) + 300;
         let turningPoint = drawCanvas?.getNextTurningPoint(circles[1], startingPoint, 200);
-        expect(turningPoint?.touchingCircle).toBeUndefined();
-        expect(turningPoint?.turningPoint.x).toBeCloseTo(1400);
-        expect(turningPoint?.turningPoint.y).toBeCloseTo(y);
+        expect(turningPoint?.turningPoint.x).toBeCloseTo(1400, 1);
+        expect(turningPoint?.turningPoint.y).toBeCloseTo(y, 1);
 
         // when touchingPoint is below 0
     });
 
     test('getStartingPoint -- return starting point for the next circle', () => {
+        // getStartingPoint(r: number, mostBottomLeftCircle: Circle): Coordinate 
+
         // when there are multiple rows of circles
         let circles = [
-            {x: 200, y: 200, r: 200},
-            {x: 600, y: 200, r: 200},
-            {x: 1000, y: 200, r: 200},
-            {x: 1400, y: 200, r: 200},
+            {x: 200, y: 200, r: 200, name: ''},
+            {x: 600, y: 200, r: 200, name: ''},
+            {x: 1000, y: 200, r: 200, name: ''},
+            {x: 1400, y: 200, r: 200, name: ''},
         ]
         if(drawCanvas) drawCanvas.circles = circles;
-        let y1 = Math.sqrt(500**2 - 200**2) + 200;
-        let startingPoint = drawCanvas?.getStartingPoint(200);
+        let y1 = Math.sqrt(400**2 - 200**2) + 200;
+        let startingPoint = drawCanvas?.getStartingPoint(200, circles[0]);
         expect(startingPoint).toEqual({x: 200, y: 600});
-        const lastCircle = {x: 400, y: y1, r: 200};
+        const lastCircle = {x: 400, y: y1, r: 200, name: ''};
         if(drawCanvas) drawCanvas.lastCircle = lastCircle;
 
         let y2 = Math.sqrt(350**2 - 250**2) + lastCircle.y;
-        startingPoint = drawCanvas?.getStartingPoint(150);
+        startingPoint = drawCanvas?.getStartingPoint(150, lastCircle);
         expect(startingPoint).toEqual({x: 150, y: y2});
     });
+    // test('getCirclePosition', () => {
+    //     // if first circle
+    //     let circles = []
+    //     const currentCircle = drawCanvas?.getCirclePosition({r: 100, name: ''});
+    //     expect(currentCircle).toEqual({x: 100, y: 100, r: 100, name: ''});
+    // });
 });

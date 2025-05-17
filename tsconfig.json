@@ -6,7 +6,8 @@
     "target": "es5",
     "allowJs": true,
     "moduleResolution": "node",
-    "strict": true
+    "strict": true,
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["src/**/*", "webpack.d.ts"]
+  "include": ["src/**/*", "webpack.d.ts"],
 }

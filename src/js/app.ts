@@ -31,14 +31,14 @@ function init() {
     if(canvas && canvas.parentElement) {
         const items: {name: string, r: number}[] = [
             {name: 'js', r: 250},
-            {name: 'css', r: 250},
-            {name: 'html', r: 230},
-            {name: 'react', r: 230},
+            {name: 'css', r: 350},
+            {name: 'html', r: 200},
+            {name: 'react', r: 100},
             {name: 'sass', r: 200},
-            {name: 'xd', r: 120},
+            {name: 'xd', r: 130},
             {name: 'ai', r: 110},
             // {name: 'Webcomponents', r: 230, color: 'CadetBlue'},
-            {name: 'php', r: 60},
+            {name: 'php', r: 85},
             {name: 'wp', r: 120},
             // {name: 'sql', r: 40, color: 'orange'},
         ]
