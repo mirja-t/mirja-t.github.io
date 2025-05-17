@@ -35,7 +35,7 @@ export class DrawCanvas {
         
         this.setCanvasSize();
         this.createCircles();
-        this.circles.forEach(circle => this.drawImage(circle));
+        this.circles.forEach(async(circle) => await this.drawImage(circle));
         this.canvas.addEventListener('click', this.handleClickedCircle);
     }
 
