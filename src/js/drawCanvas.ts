@@ -1,5 +1,6 @@
-import { modifySvg } from "./modifySvg";
-const images = require.context('../../dist/assets/images/design', false, /\.(png|jpe?g|svg)$/);
+// @ts-ignore
+import ICONS from '../../dist/assets/images/design/icons.js';
+import { getFilledSvgUrl } from './modifySvg';
 
 // const images = require.context('../../dist/assets/images/design', false, /\.(png|jpe?g|svg)$/);
 type Item = {name: string, r: number};
@@ -34,7 +35,7 @@ export class DrawCanvas {
         
         this.setCanvasSize();
         this.createCircles();
-        this.circles.forEach(circle => this.drawImage(circle));
+        this.circles.forEach(async(circle) => await this.drawImage(circle));
         this.canvas.addEventListener('click', this.handleClickedCircle);
     }
 
@@ -273,17 +274,16 @@ export class DrawCanvas {
         this.ctx.closePath();
     }
 
-    drawImage (circle: Circle, scale: number = 1) {
-        const img = new Image;
+    async drawImage(circle: Circle, scale: number = 1) {
+        const img = new Image();
         img.onload = () => {
-            if(!this.ctx) return;
-            this.ctx.drawImage(img, circle.x-circle.r, circle.y-circle.r, circle.r*2*scale, circle.r*2*scale);
-        }
-        const getModifiedSvg = async(name: string) => {
-            const modifiedSvg = await modifySvg(images, name, 'white');
-            img.src = modifiedSvg 
-        }
-        if(circle.name) getModifiedSvg(circle.name)
+            if(this.ctx) this.ctx.drawImage(img, circle.x-circle.r, circle.y-circle.r, circle.r*2*scale, circle.r*2*scale);
+            URL.revokeObjectURL(img.src);
+        };
+        img.onerror = (e) => {
+            console.error("Image failed to load", e);
+        };
+        img.src = await getFilledSvgUrl(ICONS, circle.name, 'white');
     }
 
     drawArc(x: number, y: number, r: number, start: number, end: number) {
