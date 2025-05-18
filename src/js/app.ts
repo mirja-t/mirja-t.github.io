@@ -30,19 +30,24 @@ function init() {
     if(footerlinks.length) footerlinks.forEach(footerlink => hoverAnimation(footerlink, 20));
     if(canvas && canvas.parentElement) {
         const items: {name: string, r: number}[] = [
-            {name: 'js', r: 250},
-            {name: 'css', r: 350},
+            {name: 'js', r: 150},
+            {name: 'css', r: 250},
             {name: 'html', r: 200},
             {name: 'react', r: 100},
-            {name: 'sass', r: 200},
+            {name: 'sass', r: 150},
             {name: 'xd', r: 130},
-            {name: 'ai', r: 110},
-            // {name: 'Webcomponents', r: 230, color: 'CadetBlue'},
+            {name: 'git', r: 130},
+            {name: 'lottie', r: 100},
+            {name: 'github', r: 180},
             {name: 'php', r: 85},
             {name: 'wp', r: 120},
+            {name: 'ai', r: 160},
+            {name: 'spring', r: 160},
+            {name: 'reactrouter', r: 160},
+            {name: 'ae', r: 160},
             // {name: 'sql', r: 40, color: 'orange'},
         ]
-        new DrawCanvas(1600, 1200, canvas, items, items.length, 1.1);
+        new DrawCanvas(1600, 1200, canvas, items, items.length, 1.2);
     }
 
     shrinkLogoOnScroll();

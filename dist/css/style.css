@@ -5678,6 +5678,8 @@ section.section:first-child > .container {
 
 canvas {
   width: 100%;
+  border: 1px dashed black;
+  background-color: hotpink;
 }
 
 /*# sourceMappingURL=style.css.map */
