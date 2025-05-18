@@ -49,7 +49,7 @@ export class DrawCanvas {
         const indexOfClickedCircle = this.circles.indexOf(clickedCircle);
         const indexOfLastClickedCircle = this.circles.findIndex(c => c.name === this.lastClickedCircleName);
         const redrawIdx = Math.max(0, Math.min(indexOfClickedCircle, indexOfLastClickedCircle));
-        this.items = this.circles.slice(redrawIdx).map((c, i) => ({
+        this.items = this.circles.slice(redrawIdx).map((c) => ({
             name: c.name, 
             r: (c.name===clickedCircle.name && clickedCircle.name !== this.lastClickedCircleName) ? c.r*this.scale : 
                 (c.name===this.lastClickedCircleName && clickedCircle.name !== this.lastClickedCircleName) || (c.name===this.lastClickedCircleName && clickedCircle.name === this.lastClickedCircleName) ? c.r/this.scale : 
