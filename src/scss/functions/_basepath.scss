@@ -1,4 +1,4 @@
-$asset-basepath: '../assets';
+$asset-basepath: '/public' !default;
 
 @function image($path, $asset) {
     @return url($asset-basepath + '/images' + $path + '/' + $asset);

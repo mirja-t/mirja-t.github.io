@@ -1,5 +1,5 @@
 // @ts-ignore
-import ICONS from '../../dist/assets/images/design/icons.js';
+import ICONS from './icons.js';
 import { getFilledSvgUrl } from './modifySvg';
 
 // const images = require.context('../../dist/assets/images/design', false, /\.(png|jpe?g|svg)$/);
