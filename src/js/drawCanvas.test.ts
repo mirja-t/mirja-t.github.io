@@ -1,46 +1,36 @@
-import {afterEach, beforeEach, describe, expect, test} from '@jest/globals';
+import {vi, afterEach, beforeEach, describe, expect, test} from 'vitest';
 import {DrawCanvas} from './drawCanvas';
 
 let drawCanvas: DrawCanvas | null;
 let canvas: HTMLCanvasElement;
 
 beforeEach(() => {
-    jest.mock('../../bundle-loader', () => ({
-        importFiles: jest.fn(() => ({
-                'image1.png': 'mocked/path/image1.png',
-                'image2.jpg': 'mocked/path/image2.jpg',
-            })
-        ),
-    }));
-    const bundleLoader = require('../../bundle-loader');
-    bundleLoader.importFiles.mockReturnValue({});
-    
-    HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
-        fillRect: jest.fn(),
-        clearRect: jest.fn(),
-        getImageData: jest.fn(),
-        putImageData: jest.fn(),
-        createImageData: jest.fn(),
-        setTransform: jest.fn(),
-        drawImage: jest.fn(),
-        save: jest.fn(),
-        restore: jest.fn(),
-        beginPath: jest.fn(),
-        moveTo: jest.fn(),
-        lineTo: jest.fn(),
-        closePath: jest.fn(),
-        stroke: jest.fn(),
-        fill: jest.fn(),
-        arc: jest.fn(),
-        fillText: jest.fn(),
-        measureText: jest.fn(() => ({ width: 0 })),
-        scale: jest.fn(),
-        rotate: jest.fn(),
-        translate: jest.fn(),
-        transform: jest.fn(),
-        setLineDash: jest.fn(),
-        strokeRect: jest.fn(),
-        clip: jest.fn(),
+    HTMLCanvasElement.prototype.getContext = vi.fn(() => ({
+        fillRect: vi.fn(),
+        clearRect: vi.fn(),
+        getImageData: vi.fn(),
+        putImageData: vi.fn(),
+        createImageData: vi.fn(),
+        setTransform: vi.fn(),
+        drawImage: vi.fn(),
+        save: vi.fn(),
+        restore: vi.fn(),
+        beginPath: vi.fn(),
+        moveTo: vi.fn(),
+        lineTo: vi.fn(),
+        closePath: vi.fn(),
+        stroke: vi.fn(),
+        fill: vi.fn(),
+        arc: vi.fn(),
+        fillText: vi.fn(),
+        measureText: vi.fn(() => ({ width: 0 })),
+        scale: vi.fn(),
+        rotate: vi.fn(),
+        translate: vi.fn(),
+        transform: vi.fn(),
+        setLineDash: vi.fn(),
+        strokeRect: vi.fn(),
+        clip: vi.fn(),
     })) as unknown as HTMLCanvasElement['getContext'];
     canvas = document.createElement('canvas');
     drawCanvas = new DrawCanvas(1600, 900, canvas, [], 1, 1.1);
