@@ -1,124 +1,391 @@
 // @ts-ignore
-import ICONS from './icons.js';
-import { getFilledSvgUrl } from './modifySvg';
+import ICONS from "./icons.js";
+import { getFilledSvgUrl } from "./modifySvg";
 
-// const images = require.context('../../dist/assets/images/design', false, /\.(png|jpe?g|svg)$/);
-type Item = {name: string, r: number};
-type Circle = {x: number, y: number, r: number, name: string};
-type Coordinate = {x: number, y: number};
+type Item = { name: string; r: number };
+type Circle = { x: number; y: number; r: number; name: string };
+type Coordinate = { x: number; y: number };
+type TurningPoint = {
+    x: number;
+    y: number;
+    leftbound: Circle;
+    rightbound: Circle;
+    r: number;
+};
 
-export class DrawCanvas {   
+export class DrawCanvas {
     canvas: HTMLCanvasElement;
     width: number;
     height: number;
     scale: number;
     ctx: CanvasRenderingContext2D | null;
-    items: {name: string, r: number}[];
+    items: { name: string; r: number }[];
     count: number;
-    lastClickedCircleName: string | undefined;
     circles: Circle[];
+    circlesMap: Record<string, TurningPoint> = {};
 
-    constructor(width: number, height: number, canvas: HTMLCanvasElement, items: Item[], count: number, scale: number) {
+    constructor(
+        width: number,
+        height: number,
+        canvas: HTMLCanvasElement,
+        items: Item[],
+        scale: number
+    ) {
         this.canvas = canvas;
         this.width = width;
         this.height = height;
-        this.scale= scale;
-        this.count = count;
-        this.ctx = this.canvas.getContext('2d');
-        this.items = items.sort((a, b) => b.r - a.r);
+        this.scale = scale;
+        this.count = items.length;
+        this.ctx = this.canvas.getContext("2d");
+        this.items = items.sort((a, b) => b.r - a.r); // sort items by radius descending
         this.circles = [];
-        this.lastClickedCircleName;
+        this.circlesMap = {};
         this.init();
     }
 
-    init () {
-        
+    init() {
         this.setCanvasSize();
         this.createCircles();
-        this.circles.forEach(async(circle) => await this.drawImage(circle));
-        this.canvas.addEventListener('click', this.handleClickedCircle);
+        this.circles.forEach(async (circle) => await this.drawImage(circle));
+        this.canvas.addEventListener("click", this.handleClickedCircle);
     }
 
-    handleClickedCircle = (e: MouseEvent) => {
-        const {offsetX, offsetY} = e;
-        const factor = this.canvas.offsetWidth / this.width;
-        const x = offsetX / factor;
-        const y = offsetY / factor;
-        const clickedCircle = this.circles.find(c => Math.abs(x - c.x)**2 + Math.abs(y - c.y)**2 <= c.r**2);
-        if(!clickedCircle) return;
-        const indexOfClickedCircle = this.circles.indexOf(clickedCircle);
-        const indexOfLastClickedCircle = this.circles.findIndex(c => c.name === this.lastClickedCircleName);
-        const redrawIdx = Math.max(0, Math.min(indexOfClickedCircle, indexOfLastClickedCircle));
-        this.items = this.circles.slice(redrawIdx).map((c) => ({
-            name: c.name, 
-            r: (c.name===clickedCircle.name && clickedCircle.name !== this.lastClickedCircleName) ? c.r*this.scale : 
-                (c.name===this.lastClickedCircleName && clickedCircle.name !== this.lastClickedCircleName) || (c.name===this.lastClickedCircleName && clickedCircle.name === this.lastClickedCircleName) ? c.r/this.scale : 
-                c.r
-        }));
-        this.circles = this.circles.slice(0, redrawIdx);
-
-        this.clearRect();
-        this.createCircles(clickedCircle.name !== this.lastClickedCircleName ? clickedCircle : undefined);
-        this.circles.forEach(circle => this.drawImage(circle));
-
-        this.lastClickedCircleName = clickedCircle.name !== this.lastClickedCircleName ? clickedCircle.name : undefined;
+    setCanvasSize() {
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
     }
 
-    getCirclePosition(currentItem: Item): Circle {
-        const radius = currentItem.r;
-        const turningPoints = this.getTurningPoints(radius);
-        const nextTurningPoint = turningPoints.reduce((tp1, tp2) => tp1.y < tp2.y ? tp1 : tp2,{x: this.width, y: this.height});
-        const currentCircle = {x: nextTurningPoint.x, y: nextTurningPoint.y, r: radius, name: currentItem.name};
-
-        return currentCircle;
-    }
-
-    createCircles(clickedCircle?: Circle) {
+    createCircles() {
         const initCircles = (idx: number) => {
-            if(idx > this.count-1) return;
+            if (idx > this.count - 1) return;
             const currentItem = this.items.shift();
-            if(!currentItem) return;
-            const currentCircle = this.getCirclePosition(currentItem);
+            if (!currentItem) return;
+            const currentCircle = this.getPositionedCircle(currentItem);
             this.lastCircle = currentCircle;
-            if(clickedCircle?.name===currentCircle.name) {
-                this.drawCircle(currentCircle.x, currentCircle.y, currentCircle.r, false, 'orange');
-            }
-            
-            initCircles(idx+1);
-        }
-        
+
+            initCircles(idx + 1);
+        };
+
         initCircles(0);
     }
 
-    getCoord(circle1: Circle, circle2: Circle, r3: number) {
-        // Extract coordinates and radii
-        const { x: x1, y: y1, r: r1 } = circle1;
-        const { x: x2, y: y2, r: r2 } = circle2;
-      
-        // Calculate the distance between the centers of circle1 and circle2 (Hypotenuse)
-        const distABX = x2 > x1 ? x2-x1 : x1-x2 
-        const distABY = y2 > y1 ? y2-y1 : y1-y2
-        const hypotenuse = Math.sqrt(distABX ** 2 + distABY ** 2);
-      
-        // Calculate angles
-        const sinAlpha = (r3 + r2) / hypotenuse;
-        const sinAlpha2 = distABY / hypotenuse;
-        const alpha = Math.asin(sinAlpha);
-        const alpha2 = Math.asin(sinAlpha2);
-      
-        // Calculate offsets
-        const b = Math.sin(alpha - alpha2) * (r1 + r3);
-        const a = Math.cos(alpha - alpha2) * (r1 + r3);
-      
-        // Calculate coordinates of circle3
-        const x3 = x1 + a;
-        const y3 = y1 + b;
-      
-        return { x: x3, y: y3 };
+    getCornerCircleRadius(r: number): number {
+        const hypothenuse = Math.sqrt(r ** 2 + r ** 2);
+        return (hypothenuse - r) / 2;
+    }
+
+    getLeftBottomMostCircle(
+        r: number,
+        circles: Circle[] = this.circles
+    ): Circle {
+        const leftOfIncoming = circles.filter((c) => c.x - c.r <= r * 2); // filter out circles that are right of incoming circle
+        const largerThanCornerCircle = leftOfIncoming.filter(
+            (c) => c.r > this.getCornerCircleRadius(r)
+        ); // filter out circles that are smaller than the corner circle
+        const initCircle = largerThanCornerCircle[0] || {
+            x: 0,
+            y: r,
+            r: 0,
+            name: "",
+        };
+        const lowestCircle = largerThanCornerCircle.reduce(
+            (outmost: Circle, current: Circle) => {
+                return current.y + current.r > outmost.y + outmost.r
+                    ? current
+                    : outmost; // return lowest positioned circle
+            },
+            initCircle
+        );
+
+        return lowestCircle.x > r
+            ? this.createInitialLeftCircle(r, lowestCircle)
+            : lowestCircle;
+    }
+
+    createInitialRightCircle = (r: number, counterCircle: Circle) => {
+        const initialX =
+            counterCircle.x +
+            Math.sqrt(
+                Math.abs(
+                    (counterCircle.r + r) ** 2 -
+                        Math.abs((counterCircle.y - r) ** 2)
+                )
+            );
+        let x = initialX;
+        let y = 0;
+        if (counterCircle.x + counterCircle.r + r * 2 > this.canvas.width) {
+            const hypothenuse = counterCircle.r + r;
+            const a = this.canvas.width - r - counterCircle.x;
+            const h = Math.sqrt(hypothenuse ** 2 - a ** 2);
+            x = this.canvas.width;
+            y = counterCircle.y + h;
+        }
+        return { x, y, r: 0, name: "" };
+    };
+
+    createInitialLeftCircle = (r: number, counterCircle?: Circle) => {
+        let y = r;
+        if (counterCircle && counterCircle.r > r) {
+            const hypothenuse = counterCircle.r + r;
+            const a = counterCircle.x - r;
+            const h = Math.sqrt(hypothenuse ** 2 - a ** 2);
+            y = counterCircle.y + h;
+        }
+        return { x: 0, y, r: 0, name: "" };
+    };
+
+    getNextCircle(
+        currentCircle: Circle,
+        r: number,
+        circles: Circle[] = this.circles
+    ): Circle {
+        const neighbouringRight = circles
+            .filter((c) => {
+                // filter out circles that are left of current circle
+                return c.x > currentCircle.x;
+            })
+            .filter((c) => {
+                // filter the neighbouring circles that stop the incoming circle from dropping through
+                const maxDist = currentCircle.r + r * 2 + c.r;
+                const dist = Math.sqrt(
+                    Math.abs(c.x - currentCircle.x) ** 2 +
+                        Math.abs(c.y - currentCircle.y) ** 2
+                );
+                return dist <= maxDist + 1;
+            });
+
+        const nextCircle = neighbouringRight.reduce(
+            (outmost: Circle, current: Circle) => {
+                const turningPointCurrent = this.getTurningPoint(
+                    r,
+                    currentCircle,
+                    current
+                );
+                const turningPointOutmost = this.getTurningPoint(
+                    r,
+                    currentCircle,
+                    outmost
+                );
+                const angleCurrent = Math.atan2(
+                    turningPointCurrent.y - currentCircle.y,
+                    turningPointCurrent.x - currentCircle.x
+                );
+                const angleOutmost = Math.atan2(
+                    turningPointOutmost.y - currentCircle.y,
+                    turningPointOutmost.x - currentCircle.x
+                );
+                return angleOutmost > angleCurrent ? outmost : current; // return the circle with the biggest radians from currentCircle center point
+            },
+            this.createInitialRightCircle(r, currentCircle)
+        );
+
+        return nextCircle;
+    }
+
+    getBounds(currentCircle: Circle) {
+        const isClose = (left: Circle, right: Circle): boolean => {
+            const maxDist = left.r + currentCircle.r * 2 + right.r;
+            const dist = Math.sqrt(
+                Math.abs(right.x - left.x) ** 2 +
+                    Math.abs(right.y - left.y) ** 2
+            );
+            return dist <= maxDist + 1;
+        };
+        // find bounds
+        const {
+            leftbound: { name: leftboundName },
+            rightbound: { name: rightboundName },
+        } = this.circlesMap[currentCircle.name];
+        let leftbound = this.circles.find((c) => c.name === leftboundName);
+        let rightbound = this.circles.find((c) => c.name === rightboundName);
+        leftbound =
+            leftbound ||
+            this.createInitialLeftCircle(currentCircle.r, rightbound);
+        rightbound =
+            rightbound ||
+            this.createInitialRightCircle(currentCircle.r, leftbound);
+
+        if (isClose(leftbound, rightbound)) {
+            return [leftbound, rightbound];
+        }
+
+        const bounds = [leftbound, rightbound];
+        let currentLeft = leftbound;
+        let currentRight = rightbound;
+        do {
+            currentLeft = this.circles.find(
+                (c) =>
+                    c.name === this.circlesMap[currentLeft.name].rightbound.name
+            );
+            currentRight = this.circles.find(
+                (c) =>
+                    c.name === this.circlesMap[currentRight.name].leftbound.name
+            );
+            if (!currentLeft || !currentRight) break;
+            if (currentLeft.name !== currentRight.name)
+                bounds.splice(Math.floor(bounds.length / 2), 0, currentRight);
+            bounds.splice(Math.floor(bounds.length / 2), 0, currentLeft);
+        } while (currentLeft.name !== currentRight.name); // loop until left and right bounds are the same
+
+        return bounds;
+    }
+
+    getTurningPoint(
+        r: number,
+        leftCircle: Circle,
+        rightCircle?: Circle
+    ): Coordinate {
+        rightCircle =
+            rightCircle || this.createInitialRightCircle(r, leftCircle); // if no right circle is given, use a dummy circle at the right edge of the canvas
+
+        const distX = rightCircle.x - leftCircle.x;
+        const distY = rightCircle.y - leftCircle.y;
+        const angleAtC = Math.atan2(distY, distX); // angle between a (dist c1-c2 center points) and x axis in radians
+        const a = Math.sqrt(distX ** 2 + Math.abs(distY) ** 2); // distance between circle1 and circle2 center points
+        const b = leftCircle.r + r; // distance between circle1 center point and incoming circle center point
+        const c = rightCircle.r + r; // distance between circle2 center point and incoming circle center point
+        const gamma = Math.acos((a ** 2 + b ** 2 - c ** 2) / (2 * a * b)); // angle between a and b at left circle center point
+
+        // right triangle
+        // a = x
+        // b = y
+        // a = c * sin(α)
+        const absRad = gamma + angleAtC; // angle between x axis and line from circle1 center point to incoming circle center point
+        const x = b * Math.cos(absRad) + leftCircle.x; // x coordinate of incoming circle center point
+        const y = b * Math.sin(absRad) + leftCircle.y; // y coordinate of incoming circle center point
+
+        return { x, y };
+    }
+
+    getTurningPoints(
+        r: number,
+        initialCircle: Circle = this.getLeftBottomMostCircle(r, this.circles),
+        circles: Circle[] = this.circles
+    ): TurningPoint[] {
+        // get outline
+        let currentCircle = initialCircle;
+        const turningPoints: TurningPoint[] = [];
+        let nextCircle = this.getNextCircle(currentCircle, r, circles);
+        do {
+            turningPoints.push({
+                ...this.getTurningPoint(r, currentCircle, nextCircle),
+                leftbound: currentCircle,
+                rightbound: nextCircle,
+                r: currentCircle.r,
+            });
+            currentCircle = nextCircle;
+            if (!currentCircle || !currentCircle.name) break;
+            nextCircle = this.getNextCircle(currentCircle, r, circles);
+        } while (currentCircle);
+
+        return turningPoints;
+    }
+
+    handleClickedCircle = (e: MouseEvent) => {
+        this.circles = Object.entries(this.circlesMap).map(
+            ([name, { x, y, r }]) => ({
+                name,
+                x,
+                y,
+                r,
+            })
+        );
+        this.clearRect();
+
+        const factor = this.canvas.width / this.canvas.offsetWidth;
+        const clickedCircle = this.circles.find((c) => {
+            const distX = Math.abs(c.x - e.offsetX * factor);
+            const distY = Math.abs(c.y - e.offsetY * factor);
+            const dist = Math.sqrt(distX ** 2 + distY ** 2);
+            return dist < c.r;
+        });
+        if (!clickedCircle)
+            return this.circles.forEach((c) => this.drawImage(c));
+
+        const indexOfCurrentCircle = this.circles.indexOf(clickedCircle);
+
+        const newCircle = {
+            name: clickedCircle.name,
+            r: clickedCircle.r * this.scale,
+            x: clickedCircle.x,
+            y: clickedCircle.y,
+        };
+        this.circles[indexOfCurrentCircle] = newCircle;
+        this.circles.slice(indexOfCurrentCircle).forEach((c) => {
+            this.recalculateCircle(c);
+        });
+        this.drawCircle(
+            this.circles.find((c) => c.name === newCircle.name),
+            "#ffc600"
+        );
+        this.circles.forEach((c) => {
+            this.drawImage(c);
+        });
+    };
+
+    recalculateCircle(currentCircle: Circle) {
+        const indexOfCurrentCircle = this.circles.indexOf(currentCircle);
+
+        const bounds = this.getBounds(currentCircle);
+
+        let newCirclePos = {
+            x: this.width + currentCircle.r * 2,
+            y: this.height + currentCircle.y * 2,
+        };
+        for (let i = 1; i < bounds.length; i++) {
+            const currentPosition = this.getTurningPoint(
+                currentCircle.r,
+                bounds[i - 1],
+                bounds[i]
+            );
+            if (currentPosition.y < newCirclePos.y) {
+                newCirclePos = currentPosition;
+            }
+        }
+        const newCircle = {
+            x: newCirclePos.x,
+            y: newCirclePos.y,
+            r: currentCircle.r,
+            name: currentCircle.name,
+        };
+        this.circles[indexOfCurrentCircle] = newCircle;
+    }
+
+    getPositionedCircle(currentItem: Item): Circle {
+        const radius = currentItem.r;
+        const turningPoints = this.getTurningPoints(radius);
+        const nextTurningPoint = turningPoints.reduce(
+            (tp1, tp2) => (tp1.y < tp2.y ? tp1 : tp2),
+            {
+                x: this.width,
+                y: this.height,
+                leftbound: this.createInitialLeftCircle(0),
+                rightbound: this.createInitialRightCircle(0, {
+                    name: "",
+                    x: 0,
+                    y: 0,
+                    r: 0,
+                }),
+            }
+        );
+        const currentCircle = {
+            x: nextTurningPoint.x,
+            y: nextTurningPoint.y,
+            r: radius,
+            name: currentItem.name,
+        };
+        this.circlesMap[currentItem.name] = {
+            x: nextTurningPoint.x,
+            y: nextTurningPoint.y,
+            leftbound: { ...nextTurningPoint.leftbound },
+            rightbound: { ...nextTurningPoint.rightbound },
+            r: currentItem.r,
+        };
+        return currentCircle;
     }
 
     get lastCircle() {
-        return this.circles[this.circles.length-1];
+        return this.circles[this.circles.length - 1];
     }
 
     set lastCircle(circle) {
@@ -129,143 +396,17 @@ export class DrawCanvas {
         return Math.min(this.width, this.height);
     }
 
-    getLeftBottomMostCircle(r: number = 0) {
-        return this.circles.filter(c => c.x - c.r <= r*2)
-        .reduce((outmost: Circle, current: Circle) => {
-            return current.y > outmost.y ? current : outmost;
-        }, {x: 0, y: 0, name: '', r: 0});
-    }
-
-    getTouchingPoints(circle1: Circle, circle2: Circle) {
-        const [leftCircle, rightCircle] = circle1.x < circle2.x ? [circle1, circle2] : [circle2, circle1];
-        const distX = rightCircle.x - leftCircle.x;
-        const distY = rightCircle.y - leftCircle.y;
-        const angle = Math.atan2(distY, distX);
-        const h = Math.sqrt(distX**2 + distY**2);
-        const angle2 = Math.acos((leftCircle.r**2 + h**2 - rightCircle.r**2) / (2 * leftCircle.r * h));
-        const x1 = leftCircle.x + Math.cos(angle+angle2) * leftCircle.r;
-        const y1 = leftCircle.y + Math.sin(angle+angle2) * leftCircle.r; 
-        const x2 = leftCircle.x + Math.cos(angle-angle2) * leftCircle.r;
-        const y2 = leftCircle.y + Math.sin(angle-angle2) * leftCircle.r; 
-
-        const item1 = !isNaN(x1 + y1) ? [{x: x1, y: y1}] : [];
-        const item2 = !isNaN(x2 + y2) && (x1 !== x2 || y1 !== y2) ? [{x: x2, y: y2}] : [];
-        return [...item1, ...item2];
-    }
-
-    getTurningPoints(r: number) {
-        if(this.circles.length === 0) return [{x: r, y: r}];
-        const turningPoints: Coordinate[] = [];
-        let currentCircle: Circle = this.getLeftBottomMostCircle(r);
-        let startingPoint: Coordinate = this.getStartingPoint(r, currentCircle);
-        let {touchingCircle, turningPoint} = this.getNextTurningPoint(currentCircle, startingPoint, r);
-        turningPoints.push(startingPoint);
-        turningPoints.push(turningPoint);
-        while(touchingCircle) {
-            startingPoint = turningPoint;
-            currentCircle = touchingCircle;
-            if(!currentCircle || !startingPoint) break;
-            let nextTurningPoint = this.getNextTurningPoint(currentCircle, startingPoint, r);
-            touchingCircle = nextTurningPoint.touchingCircle;
-            turningPoint = nextTurningPoint.turningPoint;
-            turningPoints.push(turningPoint);
-        }
-        return turningPoints;
-    }
-
-    getNextTurningPoint(currentCircle: Circle, startingPoint: Coordinate, r: number) {
-        
-        // const angle = Math.atan2(currentCircle.y - startingPoint.y, currentCircle.x - startingPoint.x);
-        // allgemeine Kreisgleichung
-        // (x – xM)² + (y – yM)² = r²
-        // (y – yM)² = r² - (x – xM)²
-        // y = √(r² - (x – xM)²) + yM
-
-        const getNextXY = (radians: number): [number, number] => [
-            currentCircle.x + (currentCircle.r+r) * Math.sin(radians),
-            currentCircle.y + (currentCircle.r+r) * Math.cos(radians),
-        ]; 
-        let [x,y] = [startingPoint.x, startingPoint.y];
-        let nextTouchingCircle;
-        let radians = Math.atan2(x-currentCircle.x, y-currentCircle.y);
-        while(
-            !nextTouchingCircle 
-            && radians-Math.atan2(x-currentCircle.x, y-currentCircle.y) < Math.PI*2 
-            && y > r
-            && x < this.width - r
-        ) {
-            radians+=0.05;
-            let nextXY = getNextXY(radians);
-            [x,y] = nextXY;
-            nextTouchingCircle = this.getNextTouchingCircle({x, y},r-1);
-        }
-        const x1 = currentCircle.x + Math.sqrt((currentCircle.r+r)**2 - (currentCircle.r-r)**2);
-        const y1 = r;
-        const x2 = this.width - r;
-        const y2 = currentCircle.y + Math.sqrt((currentCircle.r + r)**2 - (x2 - currentCircle.x)**2);
-        const exceedsCanvasWidth = x1 > this.width - r;
-        let touchingPoints: Coordinate[] = [
-            {
-                x: exceedsCanvasWidth ? x2 : x1, 
-                y: exceedsCanvasWidth ? y2 : y1
-            }
-        ];
-        if(nextTouchingCircle) touchingPoints = this.getTouchingPoints(this.extendCircle(currentCircle,r), this.extendCircle(nextTouchingCircle, r));
-        return {
-            touchingCircle: nextTouchingCircle,
-            turningPoint: touchingPoints[0]
-        }
-    }
-
-    getStartingPoint(r: number, mostBottomLeftCircle: Circle): Coordinate {
-        const y = Math.sqrt((mostBottomLeftCircle.r+r)**2 - (mostBottomLeftCircle.x-r)**2) + mostBottomLeftCircle.y;
-        return {x: r, y};
-    }
-
-    calculateRadiansWithCosine(a: number, b: number, c: number, angle: 'alpha' | 'beta' | 'gamma' = 'alpha') {
-        
-        // law of Cosines
-        const angles = {
-            alpha: Math.acos((b ** 2 + c ** 2 - a ** 2) / (2 * b * c)),
-            beta: Math.acos((a ** 2 + c ** 2 - b ** 2) / (2 * a * c)),
-            gamma: Math.acos((a ** 2 + b ** 2 - c ** 2) / (2 * a * b))
-        }
-        
-        return angles[angle];
-    }
-
-    getNextTouchingCircle(coord: Coordinate, r: number = 0) {
-        // allgemeine Kreisgleichung
-        // (x – xM)² + (y – yM)² < r²
-        const {x,y} = coord; 
-        const nextTouchingCircle = this.circles.find(c => (x - c.x)**2 + (y - c.y)**2 <= (c.r+r)**2);
-        return nextTouchingCircle;
-    }
-
-    extendCircle(circle: Circle, r: number) {
-        return {...circle, r: circle.r + r};
-    }
-
-    getDist(a: number, b: number) { 
-        const sorted = [a, b].sort((a, b) => b - a);
-        return sorted[0] - sorted[1];
-    }
-
     toRadians(deg: number) {
-        return deg * Math.PI / 180;
+        return (deg * Math.PI) / 180;
     }
 
     toDegrees(radians: number) {
         return radians * (180 / Math.PI);
     }
 
-    setCanvasSize() {
-        this.canvas.width = this.width;
-        this.canvas.height = this.height;
-    }
-
-    drawCircle(x: number, y: number, r: number, outline = false, color: string = 'black') {
-        if(!this.ctx) return;
+    drawCircle(circle: Circle, color: string = "black", outline = false) {
+        if (!this.ctx) return;
+        const { x, y, r } = circle;
         this.ctx.beginPath();
         this.ctx.arc(x, y, r, 0, Math.PI * 2);
         this.ctx.fillStyle = color;
@@ -277,17 +418,24 @@ export class DrawCanvas {
     async drawImage(circle: Circle, scale: number = 1) {
         const img = new Image();
         img.onload = () => {
-            if(this.ctx) this.ctx.drawImage(img, circle.x-circle.r, circle.y-circle.r, circle.r*2*scale, circle.r*2*scale);
+            if (this.ctx)
+                this.ctx.drawImage(
+                    img,
+                    circle.x - circle.r,
+                    circle.y - circle.r,
+                    circle.r * 2 * scale,
+                    circle.r * 2 * scale
+                );
             URL.revokeObjectURL(img.src);
         };
         img.onerror = (e) => {
             console.error("Image failed to load", e);
         };
-        img.src = await getFilledSvgUrl(ICONS, circle.name, 'white');
+        img.src = await getFilledSvgUrl(ICONS, circle.name, "white");
     }
 
     drawArc(x: number, y: number, r: number, start: number, end: number) {
-        if(!this.ctx) return;
+        if (!this.ctx) return;
         this.ctx.beginPath();
         this.ctx.arc(x, y, r, start, end, true);
         this.ctx.stroke();
@@ -295,10 +443,9 @@ export class DrawCanvas {
     }
 
     clearRect() {
-        if(!this.ctx) return;
-        this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
+        if (!this.ctx) return;
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     // window.addEventListener('resize', setCanvasSize);
-
 }
