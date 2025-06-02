@@ -35,15 +35,16 @@ function init() {
         footerlinks.forEach((footerlink) => hoverAnimation(footerlink, 20));
     if (canvas && canvas.parentElement) {
         const items: { name: string; r: number }[] = [
-            { name: "css", r: 300 },
-            { name: "html", r: 150 },
+            { name: "css", r: 290 },
+            { name: "html", r: 110 },
             { name: "php", r: 80 },
-            { name: "react", r: 260 },
-            { name: "js", r: 350 },
-            { name: "xd", r: 160 },
-            { name: "sass", r: 230 },
-            { name: "git", r: 80 },
+            { name: "react", r: 280 },
+            { name: "ts", r: 310 },
+            { name: "sass", r: 100 },
+            { name: "git", r: 100 },
             { name: "sql", r: 60 },
+            { name: "ui", r: 240 },
+            { name: "testing", r: 180 },
         ];
         new DrawCanvas(1600, 1200, canvas, items, 1.1);
     }

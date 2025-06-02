@@ -1,8 +1,8 @@
-$asset-basepath: '/public' !default;
+$asset-basepath: "" !default;
 
 @function image($path, $asset) {
-    @return url($asset-basepath + '/images' + $path + '/' + $asset);
+    @return url($asset-basepath + "/images" + $path + "/" + $asset);
 }
 @function font($path, $asset) {
-    @return url($asset-basepath + '/fonts' + $path + '/' + $asset);
+    @return url($asset-basepath + "/fonts" + $path + "/" + $asset);
 }
