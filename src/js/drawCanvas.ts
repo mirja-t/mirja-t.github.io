@@ -21,7 +21,6 @@ export class DrawCanvas {
     ctx: CanvasRenderingContext2D | null;
     items: { name: string; r: number }[];
     count: number;
-    lastClickedCircle: Circle | undefined;
     circles: Circle[];
     circlesMap: Record<string, TurningPoint> = {};
 
@@ -40,7 +39,6 @@ export class DrawCanvas {
         this.ctx = this.canvas.getContext("2d");
         this.items = items.sort((a, b) => b.r - a.r); // sort items by radius descending
         this.circles = [];
-        this.lastClickedCircle;
         this.circlesMap = {};
         this.init();
     }
@@ -57,16 +55,13 @@ export class DrawCanvas {
         this.canvas.height = this.height;
     }
 
-    createCircles(clickedCircle?: Circle) {
+    createCircles() {
         const initCircles = (idx: number) => {
             if (idx > this.count - 1) return;
             const currentItem = this.items.shift();
             if (!currentItem) return;
             const currentCircle = this.getPositionedCircle(currentItem);
             this.lastCircle = currentCircle;
-            if (clickedCircle?.name === currentCircle.name) {
-                this.drawCircle(currentCircle, "orange");
-            }
 
             initCircles(idx + 1);
         };
@@ -307,7 +302,6 @@ export class DrawCanvas {
         if (!clickedCircle)
             return this.circles.forEach((c) => this.drawImage(c));
 
-        this.lastClickedCircle = { ...clickedCircle };
         const indexOfCurrentCircle = this.circles.indexOf(clickedCircle);
 
         const newCircle = {
@@ -320,7 +314,13 @@ export class DrawCanvas {
         this.circles.slice(indexOfCurrentCircle).forEach((c) => {
             this.recalculateCircle(c);
         });
-        this.circles.forEach((c) => this.drawImage(c));
+        this.drawCircle(
+            this.circles.find((c) => c.name === newCircle.name),
+            "#ffc600"
+        );
+        this.circles.forEach((c) => {
+            this.drawImage(c);
+        });
     };
 
     recalculateCircle(currentCircle: Circle) {
@@ -431,7 +431,7 @@ export class DrawCanvas {
         img.onerror = (e) => {
             console.error("Image failed to load", e);
         };
-        img.src = await getFilledSvgUrl(ICONS, circle.name, "hotpink");
+        img.src = await getFilledSvgUrl(ICONS, circle.name, "white");
     }
 
     drawArc(x: number, y: number, r: number, start: number, end: number) {
