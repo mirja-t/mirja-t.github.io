@@ -10,12 +10,14 @@ import { generateButton } from "./generateButton";
 import { stickyElement } from "./stickyElement";
 import LinkMousefollow from "./webcomponents/LinkMousefollow";
 import { DrawCanvas } from "./drawCanvas";
+import { techstack } from "./techstack";
 
 import { parallax } from "./parallax";
 import Swup from "swup";
 
 function init() {
     const svgChart = document.getElementById("svgchart");
+    const chartDetails = document.getElementById("chart-details");
     const cardlinksWrapper = document.querySelectorAll(".card-links");
     const footerlinks = document.querySelectorAll("footer li.icon");
     const scrollElements = document.querySelectorAll(
@@ -46,7 +48,21 @@ function init() {
             { name: "ui", r: 240 },
             { name: "testing", r: 180 },
         ];
-        new DrawCanvas(1600, 1200, canvas, items, 1.1);
+        const circleCanvas = new DrawCanvas(1600, 1200, canvas, items, 1.1);
+        // Add listener
+        circleCanvas.on((e) => {
+            if (chartDetails) {
+                const heading = document.createElement("h3");
+                const content = document.createElement("p");
+
+                heading.textContent = techstack[e.detail.target].title;
+                content.textContent = techstack[e.detail.target].content;
+
+                chartDetails.innerHTML = "";
+                chartDetails.appendChild(heading);
+                chartDetails.appendChild(content);
+            }
+        });
     }
 
     shrinkLogoOnScroll();

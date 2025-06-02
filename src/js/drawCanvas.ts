@@ -43,6 +43,21 @@ export class DrawCanvas {
         this.init();
     }
 
+    private target = new EventTarget();
+
+    dispatchCustomEvent(data: any) {
+        const event = new CustomEvent("activeCircleChanged", { detail: data });
+        this.target.dispatchEvent(event);
+    }
+
+    on(callback: (event: CustomEvent) => void) {
+        this.target.addEventListener("activeCircleChanged", callback);
+    }
+
+    off(callback: (event: CustomEvent) => void) {
+        this.target.removeEventListener("activeCircleChanged", callback);
+    }
+
     init() {
         this.setCanvasSize();
         this.createCircles();
@@ -301,6 +316,8 @@ export class DrawCanvas {
         });
         if (!clickedCircle)
             return this.circles.forEach((c) => this.drawImage(c));
+
+        this.dispatchCustomEvent({ target: clickedCircle.name });
 
         const indexOfCurrentCircle = this.circles.indexOf(clickedCircle);
 
