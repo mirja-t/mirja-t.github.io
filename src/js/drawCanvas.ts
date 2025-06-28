@@ -63,6 +63,7 @@ export class DrawCanvas {
         this.createCircles();
         this.circles.forEach(async (circle) => await this.drawImage(circle));
         this.canvas.addEventListener("click", this.handleClickedCircle);
+        console.log(this.circlesMap);
     }
 
     setCanvasSize() {
@@ -445,10 +446,12 @@ export class DrawCanvas {
                 );
             URL.revokeObjectURL(img.src);
         };
-        img.onerror = (e) => {
-            console.error("Image failed to load", e);
-        };
-        img.src = await getFilledSvgUrl(ICONS, circle.name, "white");
+        try {
+            img.src = await getFilledSvgUrl(ICONS, circle.name, "hotpink");
+        } catch (error) {
+            console.log("Error loading image:", error);
+            img.src = "";
+        }
     }
 
     drawArc(x: number, y: number, r: number, start: number, end: number) {
