@@ -23,13 +23,15 @@ export class DrawCanvas {
     count: number;
     circles: Circle[];
     circlesMap: Record<string, TurningPoint> = {};
+    gravity: number;
 
     constructor(
         width: number,
         height: number,
         canvas: HTMLCanvasElement,
         items: Item[],
-        scale: number
+        scale: number,
+        gravity: "top" | "bottom" = "top"
     ) {
         this.canvas = canvas;
         this.width = width;
@@ -39,6 +41,7 @@ export class DrawCanvas {
         this.ctx = this.canvas.getContext("2d");
         this.items = items.sort((a, b) => b.r - a.r); // sort items by radius descending
         this.circles = [];
+        this.gravity = gravity === "bottom" ? -1 : 1;
         this.circlesMap = {};
         this.init();
     }
@@ -100,7 +103,7 @@ export class DrawCanvas {
         ); // filter out circles that are smaller than the corner circle
         const initCircle = largerThanCornerCircle[0] || {
             x: 0,
-            y: r,
+            y: this.gravity === 1 ? r : this.canvas.height - r, // set initial y position to top or bottom of canvas depending on gravity
             r: 0,
             name: "",
         };
@@ -119,33 +122,38 @@ export class DrawCanvas {
     }
 
     createInitialRightCircle = (r: number, counterCircle: Circle) => {
+        let y =
+            this.gravity === 1
+                ? counterCircle.y
+                : this.canvas.height - counterCircle.y; // set initial y position to top or bottom of canvas depending on gravity
         const initialX =
             counterCircle.x +
             Math.sqrt(
+                // distX
                 Math.abs(
-                    (counterCircle.r + r) ** 2 -
-                        Math.abs((counterCircle.y - r) ** 2)
+                    (counterCircle.r + r) ** 2 - // hypothenuse --> C²
+                        Math.abs((y - r) ** 2) // offset center countercircle and initial circle
                 )
             );
         let x = initialX;
-        let y = 0;
+        y = this.gravity === 1 ? 0 : this.canvas.height; // set initial y position to top or bottom of canvas depending on gravity
         if (counterCircle.x + counterCircle.r + r * 2 > this.canvas.width) {
             const hypothenuse = counterCircle.r + r;
             const a = this.canvas.width - r - counterCircle.x;
             const h = Math.sqrt(hypothenuse ** 2 - a ** 2);
             x = this.canvas.width;
-            y = counterCircle.y + h;
+            y = counterCircle.y + h * this.gravity; // adjust y position based on hypothenuse
         }
         return { x, y, r: 0, name: "" };
     };
 
     createInitialLeftCircle = (r: number, counterCircle?: Circle) => {
-        let y = r;
+        let y = this.gravity === 1 ? r : this.canvas.height - r; // set initial y position to top or bottom of canvas depending on gravity
         if (counterCircle && counterCircle.r > r) {
             const hypothenuse = counterCircle.r + r;
             const a = counterCircle.x - r;
             const h = Math.sqrt(hypothenuse ** 2 - a ** 2);
-            y = counterCircle.y + h;
+            y = counterCircle.y + h * this.gravity; // adjust y position based on hypothenuse
         }
         return { x: 0, y, r: 0, name: "" };
     };
@@ -190,6 +198,9 @@ export class DrawCanvas {
                     turningPointOutmost.y - currentCircle.y,
                     turningPointOutmost.x - currentCircle.x
                 );
+                if (this.gravity === -1) {
+                    return angleOutmost < angleCurrent ? outmost : current;
+                }
                 return angleOutmost > angleCurrent ? outmost : current; // return the circle with the biggest radians from currentCircle center point
             },
             this.createInitialRightCircle(r, currentCircle)
@@ -249,26 +260,24 @@ export class DrawCanvas {
     getTurningPoint(
         r: number,
         leftCircle: Circle,
-        rightCircle?: Circle
+        rightCircle: Circle
     ): Coordinate {
-        rightCircle =
-            rightCircle || this.createInitialRightCircle(r, leftCircle); // if no right circle is given, use a dummy circle at the right edge of the canvas
-
         const distX = rightCircle.x - leftCircle.x;
         const distY = rightCircle.y - leftCircle.y;
         const angleAtC = Math.atan2(distY, distX); // angle between a (dist c1-c2 center points) and x axis in radians
         const a = Math.sqrt(distX ** 2 + Math.abs(distY) ** 2); // distance between circle1 and circle2 center points
         const b = leftCircle.r + r; // distance between circle1 center point and incoming circle center point
         const c = rightCircle.r + r; // distance between circle2 center point and incoming circle center point
-        const gamma = Math.acos((a ** 2 + b ** 2 - c ** 2) / (2 * a * b)); // angle between a and b at left circle center point
+        const gamma = Math.acos((a ** 2 + b ** 2 - c ** 2) / (2 * a * b)); // angle between a and b at left circle center point (in radians)
 
         // right triangle
         // a = x
         // b = y
         // a = c * sin(α)
-        const absRad = gamma + angleAtC; // angle between x axis and line from circle1 center point to incoming circle center point
+        const absRad = this.gravity === 1 ? angleAtC + gamma : angleAtC - gamma;
+        // const absRad = gamma + angleAtC; // angle between x axis and line from circle1 center point to incoming circle center point
         const x = b * Math.cos(absRad) + leftCircle.x; // x coordinate of incoming circle center point
-        const y = b * Math.sin(absRad) + leftCircle.y; // y coordinate of incoming circle center point
+        const y = b * Math.sin(absRad) + leftCircle.y;
 
         return { x, y };
     }
@@ -283,10 +292,15 @@ export class DrawCanvas {
         const turningPoints: TurningPoint[] = [];
         let nextCircle = this.getNextCircle(currentCircle, r, circles);
         do {
+            const turningPoint = this.getTurningPoint(
+                r,
+                currentCircle,
+                nextCircle
+            );
             turningPoints.push({
-                ...this.getTurningPoint(r, currentCircle, nextCircle),
-                leftbound: currentCircle,
-                rightbound: nextCircle,
+                ...turningPoint,
+                leftbound: { ...currentCircle },
+                rightbound: { ...nextCircle },
                 r: currentCircle.r,
             });
             currentCircle = nextCircle;
@@ -373,15 +387,20 @@ export class DrawCanvas {
         const radius = currentItem.r;
         const turningPoints = this.getTurningPoints(radius);
         const nextTurningPoint = turningPoints.reduce(
-            (tp1, tp2) => (tp1.y < tp2.y ? tp1 : tp2),
+            (tp1, tp2) => {
+                if (this.gravity === -1) {
+                    return tp1.y > tp2.y ? tp1 : tp2;
+                }
+                return tp1.y < tp2.y ? tp1 : tp2;
+            },
             {
                 x: this.width,
-                y: this.height,
+                y: this.gravity === 1 ? this.height : 0,
                 leftbound: this.createInitialLeftCircle(0),
                 rightbound: this.createInitialRightCircle(0, {
                     name: "",
                     x: 0,
-                    y: 0,
+                    y: this.gravity === 1 ? 0 : this.canvas.height,
                     r: 0,
                 }),
             }
@@ -414,13 +433,13 @@ export class DrawCanvas {
         return Math.min(this.width, this.height);
     }
 
-    toRadians(deg: number) {
-        return (deg * Math.PI) / 180;
-    }
+    // toRadians(deg: number) {
+    //     return (deg * Math.PI) / 180;
+    // }
 
-    toDegrees(radians: number) {
-        return radians * (180 / Math.PI);
-    }
+    // toDegrees(radians: number) {
+    //     return radians * (180 / Math.PI);
+    // }
 
     drawCircle(circle: Circle, color: string = "black", outline = false) {
         if (!this.ctx) return;
@@ -454,13 +473,13 @@ export class DrawCanvas {
         }
     }
 
-    drawArc(x: number, y: number, r: number, start: number, end: number) {
-        if (!this.ctx) return;
-        this.ctx.beginPath();
-        this.ctx.arc(x, y, r, start, end, true);
-        this.ctx.stroke();
-        this.ctx.closePath();
-    }
+    // drawArc(x: number, y: number, r: number, start: number, end: number) {
+    //     if (!this.ctx) return;
+    //     this.ctx.beginPath();
+    //     this.ctx.arc(x, y, r, start, end, true);
+    //     this.ctx.stroke();
+    //     this.ctx.closePath();
+    // }
 
     clearRect() {
         if (!this.ctx) return;
