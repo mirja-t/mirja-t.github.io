@@ -29,79 +29,69 @@ describe("DrawCanvas", () => {
         expect(drawCanvas?.items.length).toBe(0);
     });
 
-    test("createInitialLeftCircle -- expect initial left circle to be at x0, y100", () => {
+    test("createInitialTurningPoint -- expect initial left circle to be at x0, y100 for first circle", () => {
         drawCanvas.circles = [];
         drawCanvas.gravity = 1; // top to bottom
-        const initialLeftCircle = drawCanvas?.createInitialLeftCircle(100);
-        expect(initialLeftCircle).toEqual({ x: 0, y: 100, r: 0, name: "" });
+        const initialLeftCircle = drawCanvas?.createInitialTurningPoint(
+            { x: 100, y: 0, r: 0, name: "" },
+            100
+        );
+        expect(initialLeftCircle).toEqual({ x: 100, y: 100, r: 100, name: "" });
     });
-    test("createInitialLeftCircle -- expect initial left circle to be at x0, y100", () => {
+    test("createInitialTurningPoint bottom gravity -- expect initial left circle to be at x0, y800 for first circle", () => {
         drawCanvas.circles = [];
         drawCanvas.gravity = -1;
-        const initialLeftCircle = drawCanvas?.createInitialLeftCircle(100);
-        expect(initialLeftCircle).toEqual({ x: 0, y: 800, r: 0, name: "" });
+        const initialLeftCircle = drawCanvas?.createInitialTurningPoint(
+            { x: 100, y: 900, r: 0, name: "" },
+            100
+        );
+        expect(initialLeftCircle).toEqual({ x: 100, y: 800, r: 100, name: "" });
     });
-
-    test("getLeftBottomMostCircle -- left bottom most circle has r: 0, x: 0, y: 100 if circles are empty", () => {
+    test("createInitialTurningPoint -- expect initial left circle to be at x100, y300", () => {
+        const circle1 = { name: "js", r: 100, x: 100, y: 100 };
+        const circle2 = { name: "css", r: 100, x: 300, y: 100 };
+        drawCanvas.circles = [circle1, circle2];
         drawCanvas.gravity = 1;
-        expect(drawCanvas?.getLeftBottomMostCircle(100)).toEqual({
-            x: 0,
-            y: 100,
-            r: 0,
-            name: "",
-        });
+        const initialLeftCircle = drawCanvas?.createInitialTurningPoint(
+            circle1,
+            100
+        );
+        expect(initialLeftCircle.x).toEqual(100);
+        expect(initialLeftCircle.y).toBeCloseTo(300, 0);
     });
-    test("getLeftBottomMostCircle bottom gravity -- left bottom most circle has r: 0, x: 0, y: 800 of canvas height 900 if circles are empty", () => {
-        drawCanvas.gravity = -1; // bottom to top
-        expect(drawCanvas?.getLeftBottomMostCircle(100)).toEqual({
-            x: 0,
-            y: 800,
-            r: 0,
-            name: "",
-        });
-    });
-
-    test("getLeftBottomMostCircle -- expect left bottom most circle.name to be js", () => {
-        drawCanvas.circles = [
-            { name: "js", r: 100, x: 100, y: 100 },
-            { name: "css", r: 100, x: 300, y: 100 },
-            { name: "html", r: 100, x: 500, y: 100 },
-        ];
-        expect(drawCanvas?.getLeftBottomMostCircle(100).name).toBe("js");
-    });
-
-    test("getLeftBottomMostCircle bottom gravity -- expect left bottom most circle.name to be js", () => {
+    test("createInitialTurningPoint bottom gravity -- expect initial left circle to be at x100, y600", () => {
+        const circle1 = { name: "js", r: 100, x: 100, y: 800 };
+        const circle2 = { name: "css", r: 100, x: 300, y: 800 };
+        drawCanvas.circles = [circle1, circle2];
         drawCanvas.gravity = -1;
-        drawCanvas.circles = [
-            { name: "js", r: 100, x: 100, y: 800 },
-            { name: "css", r: 100, x: 300, y: 800 },
-            { name: "html", r: 100, x: 500, y: 800 },
-        ];
-        expect(drawCanvas?.getLeftBottomMostCircle(100).name).toBe("js");
+        const initialLeftCircle = drawCanvas?.createInitialTurningPoint(
+            circle1,
+            100
+        );
+        expect(initialLeftCircle.x).toEqual(100);
+        expect(initialLeftCircle.y).toBeCloseTo(600, 0);
     });
 
     test("createInitialRightCircle -- expect initial right circle to be at x300, y100", () => {
-        drawCanvas.circles = [{ name: "js", r: 100, x: 100, y: 100 }];
         drawCanvas.gravity = 1; // top to bottom
         const initialRightCircle = drawCanvas?.createInitialRightCircle(100, {
             name: "js",
             r: 100,
-            x: 100,
+            x: 500,
             y: 100,
         });
-        expect(initialRightCircle).toEqual({ x: 300, y: 0, r: 0, name: "" });
+        expect(initialRightCircle).toEqual({ x: 700, y: 0, r: 0, name: "" });
     });
 
     test("createInitialRightCircle bottom gravity -- expect initial right circle to be at x300, y900", () => {
-        drawCanvas.circles = [{ name: "js", r: 100, x: 100, y: 800 }];
         drawCanvas.gravity = -1; // bottom to top
         const initialRightCircle = drawCanvas?.createInitialRightCircle(100, {
             name: "js",
             r: 100,
-            x: 100,
+            x: 500,
             y: 800,
         });
-        expect(initialRightCircle).toEqual({ x: 300, y: 900, r: 0, name: "" });
+        expect(initialRightCircle).toEqual({ x: 700, y: 900, r: 0, name: "" });
     });
 
     test("createInitialRightCircle bottom gravity -- expect initial right circle to be at x395, y900", () => {
@@ -165,6 +155,16 @@ describe("DrawCanvas", () => {
         drawCanvas.gravity = 1; // top to bottom
         const nextCircle = drawCanvas?.getNextCircle(circle2, 100);
         expect(nextCircle).toEqual(circle3);
+    });
+    test("getNextCircle -- get touching or close circle on the right. Returns last circle", () => {
+        const circle1 = { name: "js", r: 100, x: 100, y: 100 };
+        const circle2 = { name: "css", r: 100, x: 300, y: 100 };
+        const circle3 = { name: "html", r: 100, x: 500, y: 100 };
+        const circle4 = { name: "ts", r: 300, x: 849, y: 300 };
+        drawCanvas.circles = [circle1, circle2, circle3, circle4];
+        drawCanvas.gravity = 1; // top to bottom
+        const nextCircle = drawCanvas?.getNextCircle(circle3, 300);
+        expect(nextCircle).toEqual(circle4);
     });
     test("getNextCircle bottom gravity -- get touching or close circle on the right. Returns 2nd circle", () => {
         const circle1 = { name: "js", r: 100, x: 100, y: 800 };
@@ -359,6 +359,7 @@ describe("DrawCanvas", () => {
         expect(turningPoints[0].x).toBeCloseTo(50, 1);
         expect(turningPoints[0].y).toBeCloseTo(50, 1);
     });
+
     test("getTurningPoints bottom gravity -- expect turning points to be one item with topleft position if circles array is empty", () => {
         drawCanvas.circles = [];
         drawCanvas.gravity = -1; // bottom to top
@@ -366,6 +367,36 @@ describe("DrawCanvas", () => {
         expect(turningPoints).toHaveLength(1);
         expect(turningPoints[0].x).toBeCloseTo(50, 1);
         expect(turningPoints[0].y).toBeCloseTo(850, 1);
+    });
+    test("getTurningPoints -- expect turning points length to be 3", () => {
+        drawCanvas.circles = [
+            {
+                name: "js",
+                r: 100,
+                x: 100,
+                y: 100,
+            },
+            { name: "css", r: 100, x: 300, y: 100 },
+            { name: "html", r: 100, x: 500, y: 100 },
+        ];
+        drawCanvas.gravity = 1;
+        const turningPoints = drawCanvas?.getTurningPoints(300);
+        expect(turningPoints).toHaveLength(3);
+    });
+    test("getTurningPoints bottom gravity -- expect turning points length to be 3", () => {
+        drawCanvas.circles = [
+            {
+                name: "js",
+                r: 100,
+                x: 100,
+                y: 800,
+            },
+            { name: "css", r: 100, x: 300, y: 800 },
+            { name: "html", r: 100, x: 500, y: 800 },
+        ];
+        drawCanvas.gravity = -1;
+        const turningPoints = drawCanvas?.getTurningPoints(300);
+        expect(turningPoints).toHaveLength(3);
     });
 
     test("getTurningPoints -- expect turning points to be 2 points at 1 circle and left top bounds", () => {
