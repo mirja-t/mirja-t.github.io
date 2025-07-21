@@ -41,7 +41,7 @@ export class DrawCanvas {
         this.scale = scale;
         this.count = items.length;
         this.ctx = this.canvas.getContext("2d");
-        this.items = items; //.sort((a, b) => b.r - a.r); // sort items by radius descending
+        this.items = items.sort((a, b) => b.r - a.r); // sort items by radius descending
         this.circles = [];
         this.gravity = gravity === "bottom" ? -1 : 1;
         this.circlesMap = {};
@@ -316,67 +316,16 @@ export class DrawCanvas {
         return nonOverlappingTPs;
     }
 
-    getBounds(currentCircle: Circle) {
-        const isClose = (left: Circle, right: Circle): boolean => {
-            const maxDist = left.r + currentCircle.r * 2 + right.r;
-            const dist = Math.sqrt(
-                Math.abs(right.x - left.x) ** 2 +
-                    Math.abs(right.y - left.y) ** 2
-            );
-            return dist <= maxDist + 1;
-        };
-        // find bounds
-        const {
-            leftbound: { name: leftboundName },
-            rightbound: { name: rightboundName },
-        } = this.circlesMap[currentCircle.name];
-        let leftbound = this.circles.find((c) => c.name === leftboundName);
-        let rightbound = this.circles.find((c) => c.name === rightboundName);
-        leftbound =
-            leftbound ||
-            this.createInitialTurningPoint(
-                this.getInitialCircle(currentCircle.r),
-                currentCircle.r
-            );
-        rightbound =
-            rightbound ||
-            this.createInitialRightCircle(currentCircle.r, leftbound);
-
-        if (isClose(leftbound, rightbound)) {
-            return [leftbound, rightbound];
-        }
-
-        const bounds = [leftbound, rightbound];
-        let currentLeft = leftbound;
-        let currentRight = rightbound;
-        do {
-            currentLeft = this.circles.find(
-                (c) =>
-                    c.name === this.circlesMap[currentLeft.name].rightbound.name
-            );
-            currentRight = this.circles.find(
-                (c) =>
-                    c.name === this.circlesMap[currentRight.name].leftbound.name
-            );
-            if (!currentLeft || !currentRight) break;
-            if (currentLeft.name !== currentRight.name)
-                bounds.splice(Math.floor(bounds.length / 2), 0, currentRight);
-            bounds.splice(Math.floor(bounds.length / 2), 0, currentLeft);
-        } while (currentLeft.name !== currentRight.name); // loop until left and right bounds are the same
-
-        return bounds;
-    }
-
     handleClickedCircle = (e: MouseEvent) => {
-        this.circles = Object.entries(this.circlesMap).map(
-            ([name, { x, y, r }]) => ({
-                name,
-                x,
-                y,
-                r,
-            })
-        );
-        this.clearRect();
+        // this.circles = Object.entries(this.circlesMap).map(
+        //     ([name, { x, y, r }]) => ({
+        //         name,
+        //         x,
+        //         y,
+        //         r,
+        //     })
+        // );
+        // this.clearRect();
 
         const factor = this.canvas.width / this.canvas.offsetWidth;
         const clickedCircle = this.circles.find((c) => {
@@ -387,50 +336,8 @@ export class DrawCanvas {
         });
         if (!clickedCircle)
             return this.circles.forEach((c) => this.drawImage(c));
-
         this.dispatchCustomEvent({ target: clickedCircle.name });
-
-        const indexOfCurrentCircle = this.circles.indexOf(clickedCircle);
-
-        const newCircle = {
-            name: clickedCircle.name,
-            r: clickedCircle.r * this.scale,
-            x: clickedCircle.x,
-            y: clickedCircle.y,
-        };
-        this.circles[indexOfCurrentCircle] = newCircle;
-        this.circles.slice(indexOfCurrentCircle).forEach((c) => {
-            this.recalculateCircle(c);
-        });
     };
-
-    recalculateCircle(currentCircle: Circle) {
-        const indexOfCurrentCircle = this.circles.indexOf(currentCircle);
-
-        const bounds = this.getBounds(currentCircle);
-
-        let newCirclePos = {
-            x: this.width + currentCircle.r * 2,
-            y: this.height + currentCircle.y * 2,
-        };
-        for (let i = 1; i < bounds.length; i++) {
-            const currentPosition = this.getTurningPoint(
-                currentCircle.r,
-                bounds[i - 1],
-                bounds[i]
-            );
-            if (currentPosition.y < newCirclePos.y) {
-                newCirclePos = currentPosition;
-            }
-        }
-        const newCircle = {
-            x: newCirclePos.x,
-            y: newCirclePos.y,
-            r: currentCircle.r,
-            name: currentCircle.name,
-        };
-        this.circles[indexOfCurrentCircle] = newCircle;
-    }
 
     get lastCircle() {
         return this.circles[this.circles.length - 1];
