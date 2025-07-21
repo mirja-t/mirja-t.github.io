@@ -12,13 +12,14 @@ type TurningPoint = {
     r: number;
 };
 
-class Circle {
+export class Circle {
     data: {
         x: number;
         y: number;
         r: number;
         name: string;
     };
+    edges: Record<string, boolean>;
     constructor(x: number, y: number, radius: number, name: string) {
         this.data = {
             x: x,
@@ -26,6 +27,10 @@ class Circle {
             r: radius,
             name: name,
         };
+        this.edges = {};
+    }
+    addEdge(vertex: string) {
+        this.edges[vertex] = true;
     }
 }
 
@@ -152,7 +157,7 @@ export class DrawCanvas {
         return currentCircle;
     }
 
-    createInitialRightCircle = (r: number, counterCircle: Circle) => {
+    createInitialRightCircle = (r: number, counterCircle: Circle): Circle => {
         const { x: counterX, y: counterY, r: counterR } = counterCircle.data;
         let y =
             this.gravity[1] === 1 ? counterY : this.canvas.height - counterY; // set initial y position to top or bottom of canvas depending on gravity
@@ -174,7 +179,7 @@ export class DrawCanvas {
             x = this.canvas.width;
             y = counterY + h * this.gravity[1]; // adjust y position based on hypothenuse
         }
-        return { x, y, r: 0, name: "" };
+        return new Circle(x, y, 0, "");
     };
 
     createInitialTurningPoint = (outmostLeftCircle: Circle, r: number) => {
@@ -209,14 +214,7 @@ export class DrawCanvas {
                 }
                 return currentY > outmostY ? current : outmost;
             },
-            {
-                data: {
-                    x: r,
-                    y: this.gravity[1] === 1 ? 0 : this.canvas.height,
-                    r: 0,
-                    name: "",
-                },
-            }
+            new Circle(r, this.gravity[1] === 1 ? 0 : this.canvas.height, 0, "")
         );
         return initialLeftCircle;
     };
@@ -268,7 +266,7 @@ export class DrawCanvas {
                 return angleOutmost > angleCurrent ? outmost : current; // return the Circle with the biggest radians from currentCircle center point
             },
             // if there is no neighbouring Circle, create a new one
-            { data: this.createInitialRightCircle(r, currentCircle) }
+            this.createInitialRightCircle(r, currentCircle)
         );
 
         return nextCircle;
@@ -345,8 +343,8 @@ export class DrawCanvas {
             );
             turningPoints.push({
                 ...turningPoint,
-                leftbound: { ...currentCircle },
-                rightbound: { ...nextCircle },
+                leftbound: currentCircle,
+                rightbound: nextCircle,
                 r: currentCircle.data.r,
             });
             currentCircle = nextCircle;
