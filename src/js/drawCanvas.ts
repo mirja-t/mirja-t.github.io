@@ -3,7 +3,6 @@ import ICONS from "./icons.js";
 import { getFilledSvgUrl } from "./modifySvg";
 
 type Item = { name: string; r: number };
-type Circle = { x: number; y: number; r: number; name: string };
 type Coordinate = { x: number; y: number };
 type TurningPoint = {
     x: number;
@@ -12,6 +11,19 @@ type TurningPoint = {
     rightbound: Circle;
     r: number;
 };
+
+class Circle {
+    x: number;
+    y: number;
+    r: number;
+    name: string;
+    constructor(x: number, y: number, radius: number, name: string) {
+        this.x = x;
+        this.y = y;
+        this.r = radius;
+        this.name = name;
+    }
+}
 
 export class DrawCanvas {
     canvas: HTMLCanvasElement;
@@ -23,7 +35,7 @@ export class DrawCanvas {
     count: number;
     circles: Circle[];
     circlesMap: Record<string, TurningPoint> = {};
-    gravity: number;
+    gravity: [number, number];
     // debug
     currentItem: Item | null = null;
 
@@ -33,7 +45,13 @@ export class DrawCanvas {
         canvas: HTMLCanvasElement,
         items: Item[],
         scale: number,
-        gravity: "top" | "bottom" = "top"
+        gravity:
+            | "top"
+            | "bottom"
+            | "top-left"
+            | "top-right"
+            | "bottom-left"
+            | "bottom-right" = "top"
     ) {
         this.canvas = canvas;
         this.width = width;
@@ -43,7 +61,18 @@ export class DrawCanvas {
         this.ctx = this.canvas.getContext("2d");
         this.items = items.sort((a, b) => b.r - a.r); // sort items by radius descending
         this.circles = [];
-        this.gravity = gravity === "bottom" ? -1 : 1;
+        this.gravity = [
+            gravity.split("-").includes("right")
+                ? -1
+                : gravity.split("-").includes("left")
+                ? 1
+                : 0,
+            gravity.split("-").includes("bottom")
+                ? -1
+                : gravity.split("-").includes("top")
+                ? 1
+                : 0,
+        ];
         this.circlesMap = {};
         this.currentItem = null;
         this.init();
@@ -99,60 +128,57 @@ export class DrawCanvas {
         const nextTurningPoint = turningPoints.reduce(
             (tp1, tp2) => {
                 // return the turning point with the y coordinate closest to the baseline
-                if (this.gravity === -1) {
+                if (this.gravity[1] === -1) {
                     return tp1.y > tp2.y ? tp1 : tp2;
                 }
                 return tp2.y < tp1.y ? tp2 : tp1;
             },
             {
                 x: this.width - radius,
-                y: this.gravity === 1 ? this.height - radius : radius,
+                y: this.gravity[1] === 1 ? this.height - radius : radius,
             }
         );
-        const currentCircle = {
-            x: nextTurningPoint.x,
-            y: nextTurningPoint.y,
-            r: radius,
-            name: currentItem.name,
-        };
+        const currentCircle = new Circle(
+            nextTurningPoint.x,
+            nextTurningPoint.y,
+            radius,
+            currentItem.name
+        );
 
         return currentCircle;
     }
 
     createInitialRightCircle = (r: number, counterCircle: Circle) => {
+        const { x: counterX, y: counterY, r: counterR } = counterCircle;
         let y =
-            this.gravity === 1
-                ? counterCircle.y
-                : this.canvas.height - counterCircle.y; // set initial y position to top or bottom of canvas depending on gravity
+            this.gravity[1] === 1 ? counterY : this.canvas.height - counterY; // set initial y position to top or bottom of canvas depending on gravity
         const initialX =
-            counterCircle.x +
+            counterX +
             Math.sqrt(
                 // distX
                 Math.abs(
-                    (counterCircle.r + r) ** 2 - // hypothenuse --> C²
-                        Math.abs((y - r) ** 2) // offset center countercircle and initial circle
+                    (counterR + r) ** 2 - // hypothenuse --> C²
+                        Math.abs((y - r) ** 2) // offset center countercircle and initial Circle
                 )
             );
         let x = initialX;
-        y = this.gravity === 1 ? 0 : this.canvas.height; // set initial y position to top or bottom of canvas depending on gravity
-        if (counterCircle.x + counterCircle.r + r * 2 > this.canvas.width) {
-            const hypothenuse = counterCircle.r + r;
-            const a = this.canvas.width - r - counterCircle.x;
+        y = this.gravity[1] === 1 ? 0 : this.canvas.height; // set initial y position to top or bottom of canvas depending on gravity
+        if (counterX + counterR + r * 2 > this.canvas.width) {
+            const hypothenuse = counterR + r;
+            const a = this.canvas.width - r - counterX;
             const h = Math.sqrt(hypothenuse ** 2 - a ** 2);
             x = this.canvas.width;
-            y = counterCircle.y + h * this.gravity; // adjust y position based on hypothenuse
+            y = counterY + h * this.gravity[1]; // adjust y position based on hypothenuse
         }
         return { x, y, r: 0, name: "" };
     };
 
     createInitialTurningPoint = (outmostLeftCircle: Circle, r: number) => {
-        const dist = outmostLeftCircle.r + r;
-        const a = Math.abs(outmostLeftCircle.x - r);
+        const { x: outmostX, y: outmostY, r: outmostR } = outmostLeftCircle;
+        const dist = outmostR + r;
+        const a = Math.abs(outmostX - r);
         const h = Math.sqrt(dist ** 2 - a ** 2);
-        const y =
-            this.gravity === 1
-                ? outmostLeftCircle.y + h
-                : outmostLeftCircle.y - h;
+        const y = this.gravity[1] === 1 ? outmostY + h : outmostY - h;
         return {
             x: r,
             y,
@@ -162,19 +188,22 @@ export class DrawCanvas {
     };
     getInitialCircle = (r: number) => {
         const leftCircles = this.circles.filter((c) => {
-            // find circles that hold the incoming circle to the left boundary
-            return c.x - c.r <= r;
+            // find Circles that hold the incoming Circle to the left boundary
+            const { x: circleX, r: circleR } = c;
+            return circleX - circleR <= r;
         });
         const initialLeftCircle = leftCircles.reduce(
             (outmost: Circle, current: Circle) => {
-                if (this.gravity === -1) {
-                    return current.y < outmost.y ? current : outmost;
+                const { y: currentY } = current;
+                const { y: outmostY } = outmost;
+                if (this.gravity[1] === -1) {
+                    return currentY < outmostY ? current : outmost;
                 }
-                return current.y > outmost.y ? current : outmost;
+                return currentY > outmostY ? current : outmost;
             },
             {
                 x: r,
-                y: this.gravity === 1 ? 0 : this.canvas.height,
+                y: this.gravity[1] === 1 ? 0 : this.canvas.height,
                 r: 0,
                 name: "",
             }
@@ -189,11 +218,11 @@ export class DrawCanvas {
     ): Circle {
         const neighbouringRight = circles
             .filter((c) => {
-                // filter out circles that are left of current circle
+                // filter out Circles that are left of current Circle
                 return c.x > currentCircle.x;
             })
             .filter((c) => {
-                // filter the neighbouring circles that stop the incoming circle from dropping through
+                // filter the neighbouring Circles that stop the incoming Circle from dropping through
                 const maxDist = currentCircle.r + r * 2 + c.r;
                 const dist = Math.sqrt(
                     Math.abs(c.x - currentCircle.x) ** 2 +
@@ -222,12 +251,12 @@ export class DrawCanvas {
                     turningPointOutmost.y - currentCircle.y,
                     turningPointOutmost.x - currentCircle.x
                 );
-                if (this.gravity === -1) {
+                if (this.gravity[1] === -1) {
                     return angleOutmost < angleCurrent ? outmost : current;
                 }
-                return angleOutmost > angleCurrent ? outmost : current; // return the circle with the biggest radians from currentCircle center point
+                return angleOutmost > angleCurrent ? outmost : current; // return the Circle with the biggest radians from currentCircle center point
             },
-            // if there is no neighbouring circle, create a new one
+            // if there is no neighbouring Circle, create a new one
             this.createInitialRightCircle(r, currentCircle)
         );
 
@@ -239,30 +268,37 @@ export class DrawCanvas {
         leftCircle: Circle,
         rightCircle: Circle
     ): Coordinate {
-        const distX = rightCircle.x - leftCircle.x; // always positive
-        const distY = rightCircle.y - leftCircle.y;
+        const { x: leftCircleX, y: leftCircleY, r: leftCircleR } = leftCircle;
+        const {
+            x: rightCircleX,
+            y: rightCircleY,
+            r: rightCircleR,
+        } = rightCircle;
+        const distX = rightCircleX - leftCircleX; // always positive
+        const distY = rightCircleY - leftCircleY;
         const angleAtC = Math.atan2(distY, distX); // angle between a (dist c1-c2 center points) and x axis in radians
-        const a = Math.sqrt(distX ** 2 + Math.abs(distY) ** 2); // distance between circle1 and circle2 center points
-        const b = leftCircle.r + r; // distance between circle1 center point and incoming circle center point
-        const c = rightCircle.r + r; // distance between circle2 center point and incoming circle center point
-        const gamma = Math.acos((a ** 2 + b ** 2 - c ** 2) / (2 * a * b)); // angle between a and b at left circle center point (in radians)
+        const a = Math.sqrt(distX ** 2 + Math.abs(distY) ** 2); // distance between Circle1 and Circle2 center points
+        const b = leftCircleR + r; // distance between Circle1 center point and incoming Circle center point
+        const c = rightCircleR + r; // distance between Circle2 center point and incoming Circle center point
+        const gamma = Math.acos((a ** 2 + b ** 2 - c ** 2) / (2 * a * b)); // angle between a and b at left Circle center point (in radians)
 
         // right triangle
         // a = x
         // b = y
         // a = c * sin(α)
-        const absRad = this.gravity === 1 ? angleAtC + gamma : angleAtC - gamma;
-        // const absRad = gamma + angleAtC; // angle between x axis and line from circle1 center point to incoming circle center point
-        let x = b * Math.cos(absRad) + leftCircle.x; // x coordinate of incoming circle center point
-        let y = b * Math.sin(absRad) + leftCircle.y;
+        const absRad =
+            this.gravity[1] === 1 ? angleAtC + gamma : angleAtC - gamma;
+        // const absRad = gamma + angleAtC; // angle between x axis and line from Circle1 center point to incoming Circle center point
+        let x = b * Math.cos(absRad) + leftCircleX; // x coordinate of incoming Circle center point
+        let y = b * Math.sin(absRad) + leftCircleY;
 
         if (x < r) {
             // if the x coordinate is less than the radius, set it to the radius
-            // this prevents the circle from being drawn outside of the canvas
+            // this prevents the Circle from being drawn outside of the canvas
             x = r;
             y =
-                rightCircle.y +
-                Math.sqrt(c ** 2 - (rightCircle.x - r) ** 2) * this.gravity; // recalculate y position based on x position
+                rightCircleY +
+                Math.sqrt(c ** 2 - (rightCircleX - r) ** 2) * this.gravity[1]; // recalculate y position based on x position
         }
         return { x, y };
     }
@@ -285,7 +321,6 @@ export class DrawCanvas {
             return turningPoints;
         }
         let nextCircle = this.getNextCircle(currentCircle, r, circles);
-        let counter = 0;
         do {
             const turningPoint = this.getTurningPoint(
                 r,
@@ -300,13 +335,12 @@ export class DrawCanvas {
             });
             currentCircle = nextCircle;
             nextCircle = this.getNextCircle(currentCircle, r, circles);
-            counter++;
-        } while (currentCircle.name);
+        } while (!!currentCircle.name);
 
         const nonOverlappingTPs = turningPoints.filter((tp) => {
             // filter out overlapping turning points
             return this.circles.every((c) => {
-                // why is the current item already in the circles?
+                // why is the current item already in the Circles?
                 const distY = Math.abs(tp.y - c.y);
                 const distX = Math.abs(tp.x - c.x);
                 const dist = Math.sqrt(distX ** 2 + distY ** 2);
@@ -364,19 +398,20 @@ export class DrawCanvas {
 
     async drawImage(circle: Circle, scale: number = 1) {
         const img = new Image();
+        const { x: circleX, y: circleY, r: circleR, name: circleName } = circle;
         img.onload = () => {
             if (this.ctx)
                 this.ctx.drawImage(
                     img,
-                    circle.x - circle.r,
-                    circle.y - circle.r,
-                    circle.r * 2 * scale,
-                    circle.r * 2 * scale
+                    circleX - circleR,
+                    circleY - circleR,
+                    circleR * 2 * scale,
+                    circleR * 2 * scale
                 );
             URL.revokeObjectURL(img.src);
         };
         try {
-            img.src = await getFilledSvgUrl(ICONS, circle.name, "hotpink");
+            img.src = await getFilledSvgUrl(ICONS, circleName, "hotpink");
         } catch (error) {
             console.log("Error loading image:", error);
             img.src = "";
