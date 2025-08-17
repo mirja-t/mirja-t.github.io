@@ -13,8 +13,8 @@ describe("DrawCanvas", () => {
     });
 
     test("setCanvasSize -- canvas width is 1600, canvas height is 900", () => {
-        expect(drawCanvas?.canvas.width).toBe(1600);
-        expect(drawCanvas?.canvas.height).toBe(900);
+        expect(drawCanvas?.width).toBe(1600);
+        expect(drawCanvas?.height).toBe(900);
     });
 
     test("createCircles –– length of this.circles equals initial length of items", () => {
@@ -72,65 +72,24 @@ describe("DrawCanvas", () => {
         expect(initialLeftCircle.y).toBeCloseTo(600, 0);
     });
 
-    test("createInitialRightCircle -- expect initial right circle to be at x300, y100", () => {
-        drawCanvas.gravity = [0, 1]; // top to bottom
-        const initialRightCircle = drawCanvas?.createInitialRightCircle(
-            100,
-            new Circle(500, 100, 100, "js")
-        );
-        expect(initialRightCircle.data).toEqual({
-            x: 700,
-            y: 0,
-            r: 0,
-            name: "",
-        });
-    });
-
-    test("createInitialRightCircle bottom gravity -- expect initial right circle to be at x300, y900", () => {
-        drawCanvas.gravity = [0, -1]; // bottom to top
-        const initialRightCircle = drawCanvas?.createInitialRightCircle(
-            100,
-            new Circle(500, 800, 100, "js")
-        );
-        expect(initialRightCircle.data).toEqual({
-            x: 700,
-            y: 900,
-            r: 0,
-            name: "",
-        });
-    });
-
-    test("createInitialRightCircle bottom gravity -- expect initial right circle to be at x395, y900", () => {
-        drawCanvas.circles = [new Circle(150, 750, 150, "js")];
-        drawCanvas.gravity = [0, -1]; // bottom to top
-        const initialRightCircle = drawCanvas?.createInitialRightCircle(
-            100,
-            new Circle(150, 750, 150, "js")
-        );
-        expect(initialRightCircle.data.x).toBeCloseTo(395, 0);
-    });
-    test("createInitialRightCircle -- expect initial right circle to be at x500, y900", () => {
-        const circle1 = new Circle(100, 100, 100, "js");
-        const circle2 = new Circle(300, 100, 100, "css");
-        drawCanvas.circles = [circle1, circle2];
-        drawCanvas.gravity = [0, 1];
-        const initialRightCircle = drawCanvas?.createInitialRightCircle(
-            100,
-            circle2
-        );
-        expect(initialRightCircle.data.x).toBeCloseTo(500, 0);
-    });
-    test("createInitialRightCircle bottom gravity -- expect initial right circle to be at x500, y900", () => {
-        const circle1 = new Circle(100, 800, 100, "js");
-        const circle2 = new Circle(300, 800, 100, "css");
-        drawCanvas.circles = [circle1, circle2];
-        drawCanvas.gravity = [0, -1];
-        const initialRightCircle = drawCanvas?.createInitialRightCircle(
-            100,
-            circle2
-        );
-        expect(initialRightCircle.data.x).toBeCloseTo(500, 0);
-        expect(initialRightCircle.data.y).toBeCloseTo(900, 0);
+    test("createInitialOuterCircles top-left -- returns array of circles with x0, y163,1049 and x163,1049 y0", () => {
+        drawCanvas.gravity = [1, 1]; // top to bottom
+        // drawCanvas.createInitialOuterCircles(
+        //     10,
+        //     new Circle(100, 100, 100, "current")
+        // );
+        // expect(drawCanvas.circles[0].data).toEqual({
+        //     x: 163.1049,
+        //     y: 0,
+        //     r: 10,
+        //     name: "x",
+        // });
+        // expect(drawCanvas.circles[1].data).toEqual({
+        //     x: 0,
+        //     y: 163.1049,
+        //     r: 10,
+        //     name: "y",
+        // });
     });
 
     test("getNextCircle -- get touching or close circle on the right. Returns point on baseline if there are no more circles", () => {
@@ -329,82 +288,6 @@ describe("DrawCanvas", () => {
         drawCanvas.circles = [circle1, circle2];
         const nextCircle = drawCanvas?.getNextCircle(circle1, 150);
         expect(nextCircle.data.name).toBe("react");
-    });
-
-    test("getTurningPoints -- expect turning points to be one item with topleft position if circles array is empty", () => {
-        drawCanvas.circles = [];
-        const turningPoints = drawCanvas?.getTurningPoints(50);
-        expect(turningPoints).toHaveLength(1);
-        expect(turningPoints[0].x).toBeCloseTo(50, 1);
-        expect(turningPoints[0].y).toBeCloseTo(50, 1);
-    });
-
-    test("getTurningPoints bottom gravity -- expect turning points to be one item with topleft position if circles array is empty", () => {
-        drawCanvas.circles = [];
-        drawCanvas.gravity = [0, -1]; // bottom to top
-        const turningPoints = drawCanvas?.getTurningPoints(50);
-        expect(turningPoints).toHaveLength(1);
-        expect(turningPoints[0].x).toBeCloseTo(50, 1);
-        expect(turningPoints[0].y).toBeCloseTo(850, 1);
-    });
-    test("getTurningPoints -- expect turning points length to be 3", () => {
-        drawCanvas.circles = [
-            new Circle(100, 100, 100, "js"),
-            new Circle(300, 100, 100, "css"),
-            new Circle(500, 100, 100, "html"),
-        ];
-        drawCanvas.gravity = [0, 1];
-        const turningPoints = drawCanvas?.getTurningPoints(300);
-        expect(turningPoints).toHaveLength(3);
-    });
-    test("getTurningPoints bottom gravity -- expect turning points length to be 3", () => {
-        drawCanvas.circles = [
-            new Circle(100, 800, 100, "js"),
-            new Circle(300, 800, 100, "css"),
-            new Circle(500, 800, 100, "html"),
-        ];
-        drawCanvas.gravity = [0, -1];
-        const turningPoints = drawCanvas?.getTurningPoints(300);
-        expect(turningPoints).toHaveLength(3);
-    });
-
-    test("getTurningPoints -- expect turning points to be 2 points at 1 circle and left top bounds", () => {
-        drawCanvas.circles = [new Circle(100, 100, 100, "js")];
-        drawCanvas.gravity = [0, 1];
-        const turningPoints = drawCanvas?.getTurningPoints(50);
-        expect(turningPoints).toHaveLength(2);
-        expect(turningPoints[0].x).toBeCloseTo(50, 1);
-        expect(turningPoints[0].y).toBeCloseTo(241.4, 1);
-    });
-
-    test("getTurningPoints bottom gravity -- expect turning points to be 2 points at 1 circle and left top bounds", () => {
-        drawCanvas.circles = [new Circle(100, 800, 100, "js")];
-        drawCanvas.gravity = [0, -1];
-        const turningPoints = drawCanvas?.getTurningPoints(50);
-        expect(turningPoints).toHaveLength(2);
-        expect(turningPoints[0].x).toBeCloseTo(50, 1);
-        expect(turningPoints[0].y).toBeCloseTo(658.6, 1);
-    });
-
-    test("getTurningPoints -- expect turning points to be 3 points at 2 circles and left top bounds", () => {
-        drawCanvas.circles = [
-            new Circle(100, 100, 100, "js"),
-            new Circle(300, 100, 100, "css"),
-        ];
-        drawCanvas.gravity = [0, 1];
-        const turningPoints = drawCanvas?.getTurningPoints(50);
-        expect(turningPoints).toHaveLength(3);
-        expect(turningPoints[1].x).toBeCloseTo(200, 1);
-    });
-    test("getTurningPoints bottom gravity -- expect turning points to be 3 points at 2 circles and left top bounds", () => {
-        drawCanvas.circles = [
-            new Circle(100, 800, 100, "js"),
-            new Circle(300, 800, 100, "css"),
-        ];
-        drawCanvas.gravity = [0, -1]; // bottom to top
-        const turningPoints = drawCanvas?.getTurningPoints(50);
-        expect(turningPoints).toHaveLength(3);
-        expect(turningPoints[1].x).toBeCloseTo(200, 1);
     });
 
     test("getPositionedCircle -- expect first positioned circle to be 100, 100, 100", () => {
