@@ -1,9 +1,12 @@
-@use 'sass:math';
+@use "sass:math";
 
-@include nav-colors($section-color-even, $section-color-odd, '.content-wrapper');
+@include nav-colors(
+    $section-color-even,
+    $section-color-odd,
+    ".content-wrapper"
+);
 .project-details.subpage,
 .subpage {
-
     @include main-after;
 
     &:before,
@@ -16,19 +19,22 @@
         @include section-colors($section-color-even, $section-color-odd, true);
         &:before,
         &:after {
-            content: '';
+            content: "";
             position: absolute;
             display: table;
             left: 0;
-            transition: all $section-before-transition ease $section-transition-delay, 
-                background-color $section-color-transition ease $section-color-transition-delay, 
-                border-bottom-color $section-color-transition ease $section-color-transition-delay;
+            transition: all $section-before-transition ease
+                    $section-transition-delay,
+                background-color $section-color-transition ease
+                    $section-color-transition-delay,
+                border-bottom-color $section-color-transition ease
+                    $section-color-transition-delay;
         }
         &:before,
         &:after {
-            height: 0; 
+            height: 0;
             border-bottom-style: solid;
-            width: 100%; 
+            width: 100%;
         }
         &:before {
             border-left: 100vw solid transparent;
@@ -38,11 +44,10 @@
             content: none;
         }
     }
-    
 
     section.section {
         &.project-screens > .container {
-            padding: 0 $mainpadding calc( 5em + 1vw ) $mainpadding;
+            padding: 0 $mainpadding calc(5em + 1vw) $mainpadding;
             > *:first-child {
                 z-index: 1;
                 margin-top: -3vw;
@@ -91,9 +96,9 @@
                             li:nth-child(#{$j}):before {
                                 transition-delay: ($i * 0.2s) + ($j * 0.1s);
                             }
-                        } 
+                        }
                     }
-                }                  
+                }
             }
         }
         &:first-child {
@@ -110,7 +115,7 @@
             padding: 1.5em 1.5em 4em;
             flex-direction: column;
             max-width: 50em;
-            @media (max-width: $breakpoint-layout-switch-max){
+            @media (max-width: $breakpoint-layout-switch-max) {
                 .client-logo {
                     width: 170px;
                     margin-bottom: 3em;
@@ -118,10 +123,10 @@
                     padding-right: 30px;
                 }
             }
-            @media (min-width: 640px){
+            @media (min-width: 640px) {
                 flex-direction: row;
             }
-            @media (min-width: $breakpoint-layout-switch){
+            @media (min-width: $breakpoint-layout-switch) {
                 padding: 70px 3em;
                 flex-direction: column;
             }
@@ -141,10 +146,10 @@
                         padding-top: 25%;
                     }
                     > * > * {
-                        box-shadow: 20px 10px 30px rgba(0,0,0,0.15);
+                        box-shadow: 20px 10px 30px rgba(0, 0, 0, 0.15);
                     }
                 }
-                
+
                 > *:nth-child(2) {
                     position: absolute;
                     left: 50%;
@@ -165,7 +170,6 @@
                 }
             }
             @media (min-width: $breakpoint-layout-switch) {
-                
                 .headerimg {
                     > *:first-child {
                         width: 100%;
@@ -176,7 +180,7 @@
                 .headerimg {
                     transform: rotate(-5deg);
                 }
-            }   
+            }
             @media (max-width: $breakpoint-layout-switch-max) {
                 height: 60vw;
                 overflow: hidden;
@@ -199,7 +203,7 @@
         }
         aside {
             h1 {
-                font-size: calc(1.5em + .5vw);
+                font-size: calc(1.5em + 0.5vw);
                 margin-bottom: $mainpadding;
                 color: $white;
                 text-shadow: none;
@@ -207,7 +211,16 @@
         }
         &.bg-light {
             aside {
-                h1, h2, h3, h4, h5, h6, li, p, a, label {
+                h1,
+                h2,
+                h3,
+                h4,
+                h5,
+                h6,
+                li,
+                p,
+                a,
+                label {
                     color: $black;
                 }
             }
@@ -247,7 +260,8 @@
 .project-details {
     section.section {
         aside {
-            h1, h2 {
+            h1,
+            h2 {
                 text-shadow: none;
                 color: $white;
             }
@@ -259,7 +273,7 @@
 }
 
 .project-details {
-    .masonry {   
+    .masonry {
         column-width: 500px;
         width: 100%;
         @media screen and (min-width: $breakpoint-xxlarge) {
@@ -275,7 +289,7 @@
 }
 
 .project-details {
-    ul.tags {   
+    ul.tags {
         display: flex;
         margin-top: $mainpadding;
         li {
@@ -290,12 +304,3 @@
         }
     }
 }
-
-
-
-
-
-
-
-
-

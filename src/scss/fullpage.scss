@@ -1,4 +1,4 @@
-@import './base/vars';
+@import "./base/vars";
 
 $section-color-odd: $primary;
 $section-color-even: $white;
@@ -14,13 +14,14 @@ $section-color-even: $white;
     overflow: hidden;
     height: 100vh;
     position: fixed;
-    
+
     section.section {
         > .container {
             @media (min-width: $breakpoint-layout-switch) {
                 transform: translateY(-15vh);
             }
-            transition: transform $section-before-transition ease $section-content-transition-delay;
+            transition: transform $section-before-transition ease
+                $section-content-transition-delay;
         }
         &.active {
             > .container {
@@ -50,7 +51,7 @@ $section-color-even: $white;
         width: 5px;
         height: 100%;
         border-left: 1px solid $primary;
-        
+
         .scrollbar-handle {
             width: 100%;
             margin-left: -50%;
@@ -82,10 +83,12 @@ $section-color-even: $white;
 // section
 section.section {
     position: relative;
-    transition: transform $section-transition ease, 
-        background-color $section-color-transition ease $section-color-transition-delay, 
-        border-bottom-color $section-color-transition ease $section-color-transition-delay;
-        
+    transition: transform $section-transition ease,
+        background-color $section-color-transition ease
+            $section-color-transition-delay,
+        border-bottom-color $section-color-transition ease
+            $section-color-transition-delay;
+
     @media (max-width: $breakpoint-layout-switch-max) {
         height: auto !important;
         transform: translateY(0) !important;
@@ -104,7 +107,7 @@ section.section {
     > .container {
         z-index: 3;
         height: 100%;
-        padding: calc( 3em + 1vw );
+        padding: calc(3em + 1vw);
         overflow: hidden;
     }
 }
