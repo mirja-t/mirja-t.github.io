@@ -447,7 +447,7 @@ export class DrawCanvas {
             URL.revokeObjectURL(img.src);
         };
         try {
-            img.src = await getFilledSvgUrl(ICONS, circle.name, "hotpink");
+            img.src = await getFilledSvgUrl(ICONS, circle.name, "white");
         } catch (error) {
             console.log("Error loading image:", error);
             img.src = "";
