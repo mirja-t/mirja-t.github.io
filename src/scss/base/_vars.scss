@@ -23,6 +23,8 @@ $themeColorMap: (
         light-gray: #f1f1f1,
         foreground: #e6007e,
         background: #fff,
+        section-color-even: #e6007e,
+        section-color-odd: white,
     ),
     white: (
         base: black,
@@ -35,6 +37,8 @@ $themeColorMap: (
         light-gray: #f1f1f1,
         foreground: #e6007e,
         background: #fff,
+        section-color-even: purple,
+        section-color-odd: #e6007e,
     ),
 );
 
@@ -51,8 +55,8 @@ $light-gray: map-get($colors, "light-gray");
 $black: black;
 $white: white;
 
-$section-color-odd: $white;
-$section-color-even: $primary;
+$section-color-odd: map-get($colors, "section-color-odd");
+$section-color-even: map-get($colors, "section-color-even");
 
 /* =========================================
                   breakpoints 
