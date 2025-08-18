@@ -15,6 +15,9 @@ import { techstack } from "./techstack";
 import { parallax } from "./parallax";
 import Swup from "swup";
 
+// Theme
+let currentTheme = "default";
+
 function init() {
     const svgChart = document.getElementById("svgchart");
     const chartDetails = document.getElementById("chart-details");
@@ -30,23 +33,23 @@ function init() {
     const canvas = document.querySelector("canvas");
 
     if (svgChart) interactiveChart(svgChart);
-    if (sections.length) copyHeadlines(sections);
+    if (sections.length && currentTheme === "default") copyHeadlines(sections);
     if (cardlinksWrapper.length)
         cardlinksWrapper.forEach((cardlinks) => hoverAnimation(cardlinks, 20));
     if (footerlinks.length)
         footerlinks.forEach((footerlink) => hoverAnimation(footerlink, 20));
     if (canvas && canvas.parentElement) {
-        const items: { name: string; r: number }[] = [
-            { name: "css", r: 100 },
-            // { name: "html", r: 100 },
-            // { name: "php", r: 100 },
-            // { name: "react", r: 300 },
-            // { name: "ts", r: 350 },
-            // { name: "sass", r: 100 },
-            // { name: "git", r: 100 },
-            // { name: "sql", r: 60 },
-            // { name: "ui", r: 240 },
-            // { name: "testing", r: 180 },
+        const items: { id: string; name: string; r: number }[] = [
+            { id: "css", name: "css", r: 290 },
+            { id: "html", name: "html", r: 110 },
+            // { id: 'php', name: "PHP", r: 80 },
+            { id: "react", name: "react", r: 280 },
+            { id: "ts", name: "ts", r: 310 },
+            // { id: 'sass', name: "Sass", r: 100 },
+            { id: "git", name: "git", r: 100 },
+            // { id: 'sql', name: "SQL", r: 60 },
+            { id: "ui", name: "ui", r: 240 },
+            { id: "testing", name: "testing", r: 180 },
         ];
         const circleCanvas = new DrawCanvas(
             1600,

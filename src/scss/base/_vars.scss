@@ -1,80 +1,127 @@
-@use 'sass:math';
+@use "sass:math";
+@use "sass:map";
 
 /**
  * Variables
 */
 
+$currentTheme: default !default; // Change to 'light' for light theme
 
 /* =========================================
                     colors 
    ========================================= */
 
-$colors: (
-    primary:            #E6007E,
-    primary-light:      #ff7cc4,
-    primary-dark:       #970060,
-    secondary:          #ffc600,
-    secondary-light:    #ffcf75,
-    secondary-dark:     #b27a00,
-    light-gray:         #f1f1f1,
-    -black:             black,
-    -white:             white
+$themeColorMap: (
+    default: (
+        base: #e6007e,
+        primary: #e6007e,
+        primary-light: #ff7cc4,
+        primary-dark: #970060,
+        secondary: #ffc600,
+        secondary-light: #ffcf75,
+        secondary-dark: #b27a00,
+        light-gray: #f1f1f1,
+        foreground: #e6007e,
+        background: #fff,
+        section-color-even: #e6007e,
+        section-color-odd: white,
+    ),
+    white: (
+        base: black,
+        primary: #e6007e,
+        primary-light: #ff7cc4,
+        primary-dark: #970060,
+        secondary: #ffc600,
+        secondary-light: #ffcf75,
+        secondary-dark: #b27a00,
+        light-gray: #f1f1f1,
+        foreground: #e6007e,
+        background: #fff,
+        section-color-even: purple,
+        section-color-odd: #e6007e,
+    ),
 );
+$currentTheme: default;
+$colors: map-get($themeColorMap, $currentTheme);
 
-$primary:           map-get($colors, "primary");
-$primary-light:     map-get($colors, "primary-light");
-$primary-dark:      map-get($colors, "primary-dark");
-$secondary:         map-get($colors, "secondary");
-$secondary-light:   map-get($colors, "secondary-light");
-$secondary-dark:    map-get($colors, "secondary-dark");
-$light-gray:        map-get($colors, "light-gray");
-$black:             map-get($colors, "-black");
-$white:             map-get($colors, "-white");
+$baseColor: map-get($colors, "base");
+$primary: map-get($colors, "primary");
+$primary-light: map-get($colors, "primary-light");
+$primary-dark: map-get($colors, "primary-dark");
+$secondary: map-get($colors, "secondary");
+$secondary-light: map-get($colors, "secondary-light");
+$secondary-dark: map-get($colors, "secondary-dark");
+$light-gray: map-get($colors, "light-gray");
+$black: black;
+$white: white;
 
-$section-color-odd: $white;
-$section-color-even: $primary;
+$section-color-odd: map-get($colors, "section-color-odd");
+$section-color-even: map-get($colors, "section-color-even");
 
 /* =========================================
                   breakpoints 
    ========================================= */
 
 $grid-breakpoints: (
-    xxs:    480px,
-    xs:     640px,
-    s:      768px,
-    m:      992px,
-    l:      1440px,
-    xl:      1680px,
-    xxl:     1920px,
-    xxxl:    2550px
+    xxs: 480px,
+    xs: 640px,
+    s: 768px,
+    m: 992px,
+    l: 1440px,
+    xl: 1680px,
+    xxl: 1920px,
+    xxxl: 2550px,
 );
 
-$breakpoint-xxsmall:                            map-get($grid-breakpoints, "xxs");  // iPhone SE 1st gen. portrait
-$breakpoint-xsmall:                             map-get($grid-breakpoints, "xs");  // Phone portrait
-$breakpoint-small:                              map-get($grid-breakpoints, "s");  // Phone landscape
-$breakpoint-medium:                             map-get($grid-breakpoints, "m");  // Tablet Landscape
-$breakpoint-large:                              map-get($grid-breakpoints, "l"); // Desktop
-$breakpoint-xlarge:                             map-get($grid-breakpoints, "xl"); // Large Screens
-$breakpoint-xxlarge:                            map-get($grid-breakpoints, "xxl"); // XLarge Screens
-$breakpoint-xxxlarge:                           map-get($grid-breakpoints, "xxxl"); // XLarge Screens
+$breakpoint-xxsmall: map-get(
+    $grid-breakpoints,
+    "xxs"
+); // iPhone SE 1st gen. portrait
+$breakpoint-xsmall: map-get($grid-breakpoints, "xs"); // Phone portrait
+$breakpoint-small: map-get($grid-breakpoints, "s"); // Phone landscape
+$breakpoint-medium: map-get($grid-breakpoints, "m"); // Tablet Landscape
+$breakpoint-large: map-get($grid-breakpoints, "l"); // Desktop
+$breakpoint-xlarge: map-get($grid-breakpoints, "xl"); // Large Screens
+$breakpoint-xxlarge: map-get($grid-breakpoints, "xxl"); // XLarge Screens
+$breakpoint-xxxlarge: map-get($grid-breakpoints, "xxxl"); // XLarge Screens
 
 $grid-breakpoints-max: (
-    xxs:    ($breakpoint-xxsmall - 1),
-    xs:     ($breakpoint-xsmall - 1),
-    s:      ($breakpoint-small - 1),
-    m:      ($breakpoint-medium - 1),
-    l:      ($breakpoint-large - 1),
-    xl:     ($breakpoint-xlarge - 1),
-    xxl:    ($breakpoint-xxlarge - 1)
+    xxs: (
+        $breakpoint-xxsmall - 1,
+    ),
+    xs: (
+        $breakpoint-xsmall - 1,
+    ),
+    s: (
+        $breakpoint-small - 1,
+    ),
+    m: (
+        $breakpoint-medium - 1,
+    ),
+    l: (
+        $breakpoint-large - 1,
+    ),
+    xl: (
+        $breakpoint-xlarge - 1,
+    ),
+    xxl: (
+        $breakpoint-xxlarge - 1,
+    ),
 );
 
-$breakpoint-xxsmall-max:                            map-get($grid-breakpoints-max, "xxs");  // iPhone SE 1st gen. portrait
-$breakpoint-xsmall-max:                             map-get($grid-breakpoints-max, "xs");  // Phone portrait
-$breakpoint-small-max:                              map-get($grid-breakpoints-max, "s");  // Phone landscape
-$breakpoint-medium-max:                             map-get($grid-breakpoints-max, "m");  // Tablet Landscape
-$breakpoint-large-max:                              map-get($grid-breakpoints-max, "l"); // Desktop
-$breakpoint-xlarge-max:                             map-get($grid-breakpoints-max, "xl"); // Large Screens
-$breakpoint-xxlarge-max:                            map-get($grid-breakpoints-max, "xxl"); // XLarge Screens
+$breakpoint-xxsmall-max: map-get(
+    $grid-breakpoints-max,
+    "xxs"
+); // iPhone SE 1st gen. portrait
+$breakpoint-xsmall-max: map-get($grid-breakpoints-max, "xs"); // Phone portrait
+$breakpoint-small-max: map-get($grid-breakpoints-max, "s"); // Phone landscape
+$breakpoint-medium-max: map-get($grid-breakpoints-max, "m"); // Tablet Landscape
+$breakpoint-large-max: map-get($grid-breakpoints-max, "l"); // Desktop
+$breakpoint-xlarge-max: map-get($grid-breakpoints-max, "xl"); // Large Screens
+$breakpoint-xxlarge-max: map-get(
+    $grid-breakpoints-max,
+    "xxl"
+); // XLarge Screens
 
 $breakpoint-layout-switch: $breakpoint-medium;
 $breakpoint-layout-switch-max: $breakpoint-medium-max;
@@ -83,13 +130,28 @@ $breakpoint-layout-switch-max: $breakpoint-medium-max;
                     fonts 
    ========================================= */
 
+$themeHeadingsMap: (
+    default: (
+        font-family: "CamingoDos, 'Fira Sans Condensed', sans-serif",
+        font-weight: 700,
+    ),
+    white: (
+        font-family: "CamingoDos, 'Fira Sans Condensed', sans-serif",
+        font-weight: 700,
+    ),
+);
+
+$heading-styles: map-get($themeHeadingsMap, $currentTheme);
+
+$font-headings-weight: map-get($heading-styles, "font-weight");
+
 $headlines: h1, h2, h3, h4, h5, h6;
 
-$font-base: 'Noto Serif', serif;
-$font-sans-bold: 'Source Sans Pro', sans-serif;
-$font-sans: 'CamingoDos', 'Fira Sans Condensed', sans-serif;
-$font-serif: 'Noto Serif', serif;
-$font-headings: 'CamingoDos', 'Fira Sans Condensed', sans-serif;
+$font-base: "Noto Serif", serif;
+$font-sans-bold: "Source Sans Pro", sans-serif;
+$font-sans: "CamingoDos", "Fira Sans Condensed", sans-serif;
+$font-serif: "Noto Serif", serif;
+$font-headings: "CamingoDos", "Fira Sans Condensed", sans-serif;
 
 /* =========================================
                   transitions 
@@ -98,7 +160,7 @@ $font-headings: 'CamingoDos', 'Fira Sans Condensed', sans-serif;
 $section-transition: 0.5s;
 $section-before-transition: $section-transition * 1.25;
 $section-transition-delay: $section-transition * 0.5;
-$section-content-transition-delay: $section-transition * .66;
+$section-content-transition-delay: $section-transition * 0.66;
 $section-color-transition: 1s;
 $section-color-transition-delay: 0s;
 
@@ -116,16 +178,15 @@ $headline-transition-delay-up: $mask-transition-delay * 0.85;
 $paragraph-transition-delay-in: $mask-transition * 0.625;
 $paragraph-transition-delay-out: $mask-transition-delay * 0.75;
 
-
 /* =========================================
                   padding 
    ========================================= */
 
-$scalefactor: .5vw;
+$scalefactor: 0.5vw;
 
-$mainpadding:   calc( 0.75em + #{ $scalefactor } );
-$padding-xs:    calc( 0.25em + #{ $scalefactor * 0.5 } );
-$padding-xl:    calc( 1.5em + #{ $scalefactor * 2 } );
+$mainpadding: calc(0.75em + #{$scalefactor});
+$padding-xs: calc(0.25em + #{$scalefactor * 0.5});
+$padding-xl: calc(1.5em + #{$scalefactor * 2});
 
 $sections: 6;
 
@@ -133,4 +194,6 @@ $sections: 6;
                   icons 
    ========================================= */
 
-$icons: html, css, js, sass, js, php, sql, react, xd, ps, ai, ae, vscode, codepen, github, lottie, spring, slim, git, framermotion, reactrouter, bts, uikit, wp;
+$icons: html, css, js, sass, js, php, sql, react, xd, ps, ai, ae, vscode,
+    codepen, github, lottie, spring, slim, git, framermotion, reactrouter, bts,
+    uikit, wp;

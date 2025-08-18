@@ -1,36 +1,38 @@
 @import "./base/vars";
+@if $currentTheme == default {
+    section#home {
+        background-position: bottom right;
+        background-repeat: no-repeat;
+        background-position: 85% 80%;
+        background-size: 150%;
+        background-image: image("/design", "home-bg.jpg");
+        background-position: left center;
+        background-size: cover;
 
-section#home {
-    background-position: bottom right;
-    background-repeat: no-repeat;
-    background-position: 85% 80%;
-    background-size: 150%;
-    // background-image: image("/design", "home-bg.jpg");
-    background-position: left center;
-    background-size: cover;
+        .header-image {
+            padding-right: 0;
+            padding-left: 0;
+        }
 
-    .header-image {
-        padding: 100px;
-    }
-
-    .header-text {
-        @media (max-width: $breakpoint-layout-switch-max) {
-            padding-top: 4em;
+        .header-text {
+            @media (max-width: $breakpoint-layout-switch-max) {
+                padding-top: 4em;
+            }
+            @media (min-width: $breakpoint-layout-switch) {
+                flex-basis: 55%;
+                flex-shrink: 0;
+            }
+            @media (min-width: $breakpoint-xxxlarge) {
+                flex-basis: 45%;
+            }
         }
-        @media (min-width: $breakpoint-layout-switch) {
-            flex-basis: 35%;
-            flex-shrink: 0;
-        }
-        @media (min-width: $breakpoint-xxxlarge) {
-            flex-basis: 45%;
-        }
-    }
-    .container {
-        @media (min-width: $breakpoint-layout-switch) {
-            flex-direction: row-reverse;
-        }
-        &:before {
-            content: none;
+        .container {
+            @media (min-width: $breakpoint-layout-switch) {
+                flex-direction: row-reverse;
+            }
+            &:before {
+                content: none;
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 @each $name, $color in $colors {
-    .bg-#{$name} { 
-        fill: $color !important; 
+    .bg-#{$name} {
+        fill: $color !important;
         background-color: $color !important;
     }
 }
@@ -10,11 +10,31 @@ body {
     }
 }
 .bg-light {
-    h1, h2, h3, h4, h5, h6, li, p, a, small, * {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    li,
+    p,
+    a,
+    small,
+    * {
         color: $primary;
     }
     &.section.section {
-        h1, h2, h3, h4, h5, h6, li, p, a, small, * {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        li,
+        p,
+        a,
+        small,
+        * {
             color: $primary;
         }
     }
