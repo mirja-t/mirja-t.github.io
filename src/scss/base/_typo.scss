@@ -1,4 +1,4 @@
-@import './vars';
+@import "./vars";
 
 %font-base {
     font-family: $font-base;
@@ -23,7 +23,7 @@
 
 %font-headings {
     font-family: $font-headings;
-    font-weight: 700;
+    font-weight: $font-headings-weight;
 }
 
 %font-serif {
@@ -44,61 +44,73 @@ html {
     }
 }
 body {
-    color: $primary;
+    color: $baseColor;
     @extend %font-base;
 }
 
-
 @each $name, $color in $headlines {
-    #{$name}, 
-    .#{$name} { 
+    #{$name},
+    .#{$name} {
         @extend %font-headings;
     }
 }
 
-h1, h2,
-.h1, .h2 {
+h1,
+h2,
+.h1,
+.h2 {
     //text-transform: uppercase;
-    line-height: 1.1;
+    line-height: 1;
     margin-bottom: $padding-xs;
 }
 
-h1, .h1 {
+h1,
+.h1 {
     font-size: calc(2.25em + 1vw);
 }
 
-h2, .h2 {
+h2,
+.h2 {
     font-size: 1.75em;
     @media screen and (min-width: $breakpoint-xlarge) {
-        font-size: calc( 2em + 0.5vw );
+        font-size: calc(2em + 0.5vw);
     }
 }
 
-h3, h4, h5,
-.h3, .h4, .h5 {
-    margin-bottom: .25em;
+h3,
+h4,
+h5,
+.h3,
+.h4,
+.h5 {
+    margin-bottom: 0.25em;
 }
 
-h3, .h3 {
+h3,
+.h3 {
     text-transform: uppercase;
 }
 
-h4, .h4 {
+h4,
+.h4 {
     @extend %font-serif;
     text-transform: none;
     line-height: 1.2;
 }
 
-h3, .h3 {
+h3,
+.h3 {
     font-size: 1.25em;
     letter-spacing: 0.035em;
 }
 
-h4, .h4 {
+h4,
+.h4 {
     font-size: 1.15em;
 }
 
-h5, .h5 {
+h5,
+.h5 {
     font-size: 1em;
     text-transform: uppercase;
     letter-spacing: 0.035em;
@@ -151,7 +163,7 @@ strong {
 ul.list {
     margin-top: $mainpadding;
     li {
-        margin-left: 1em;            
+        margin-left: 1em;
         margin-bottom: 1em;
         list-style-type: disc;
         font-size: 0.95em;

@@ -13,6 +13,19 @@ $currentTheme: default !default; // Change to 'light' for light theme
 
 $themeColorMap: (
     default: (
+        base: #e6007e,
+        primary: #e6007e,
+        primary-light: #ff7cc4,
+        primary-dark: #970060,
+        secondary: #ffc600,
+        secondary-light: #ffcf75,
+        secondary-dark: #b27a00,
+        light-gray: #f1f1f1,
+        foreground: #e6007e,
+        background: #fff,
+    ),
+    white: (
+        base: black,
         primary: #e6007e,
         primary-light: #ff7cc4,
         primary-dark: #970060,
@@ -27,6 +40,7 @@ $themeColorMap: (
 
 $colors: map-get($themeColorMap, $currentTheme);
 
+$baseColor: map-get($colors, "base");
 $primary: map-get($colors, "primary");
 $primary-light: map-get($colors, "primary-light");
 $primary-dark: map-get($colors, "primary-dark");
@@ -111,6 +125,21 @@ $breakpoint-layout-switch-max: $breakpoint-medium-max;
 /* =========================================
                     fonts 
    ========================================= */
+
+$themeHeadingsMap: (
+    default: (
+        font-family: "CamingoDos, 'Fira Sans Condensed', sans-serif",
+        font-weight: 700,
+    ),
+    white: (
+        font-family: "CamingoDos, 'Fira Sans Condensed', sans-serif",
+        font-weight: 700,
+    ),
+);
+
+$heading-styles: map-get($themeHeadingsMap, $currentTheme);
+
+$font-headings-weight: map-get($heading-styles, "font-weight");
 
 $headlines: h1, h2, h3, h4, h5, h6;
 
