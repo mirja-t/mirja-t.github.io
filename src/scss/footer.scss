@@ -1,8 +1,12 @@
 @use "sass:string";
-@use 'sass:math';
+@use "sass:math";
 
 $icon-size: calc(2.5em + 0.5vw);
-$gradient: generate-gradient($primary, $white, $sections);
+$gradient: generate-gradient(
+    $section-color-even,
+    $section-color-odd,
+    $sections
+);
 
 footer {
     position: relative;
@@ -25,15 +29,19 @@ footer {
                 text-decoration: underline;
             }
         }
-        
     }
     [class|="iconmask"] {
-        @include iconmask($icon-size, $gradient, $sections*100% $sections*100%);
+        @include iconmask(
+            $icon-size,
+            $gradient,
+            $sections * 100% $sections * 100%
+        );
         position: relative;
         transition: all $section-transition ease;
         display: block;
     }
 }
+// Masking for the footer navigation icons
 @include nav-mask($section-color-odd, $section-color-even);
 
 #project {
@@ -44,8 +52,14 @@ footer {
                 color: $primary;
             }
             svg {
-                clip-path: polygon(0% 0%, 100% -10%, 100% 100%, 0% 110%); // not masked
-                animation: mask-up-in $logo-transition ease forwards $section-logo-transition-delay-in;
+                clip-path: polygon(
+                    0% 0%,
+                    100% -10%,
+                    100% 100%,
+                    0% 110%
+                ); // not masked
+                animation: mask-up-in $logo-transition ease forwards
+                    $section-logo-transition-delay-in;
             }
         }
     }
@@ -59,7 +73,7 @@ footer {
     .section-#{$i} {
         footer {
             [class|="iconmask"] {
-                background-position: 0% math.div(100%, ($sections - 1))*$i;
+                background-position: 0% math.div(100%, ($sections - 1)) * $i;
             }
         }
     }

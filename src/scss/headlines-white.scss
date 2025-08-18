@@ -1,0 +1,107 @@
+$leftMargin: 30vw;
+$deg: -7deg;
+
+@keyframes clipAnimation {
+    0% {
+        clip-path: inset(calc(100% - 2px) -60vw 0);
+    }
+    100% {
+        clip-path: inset(0% -60vw 0);
+    }
+}
+@keyframes translateLeftAnimation {
+    0% {
+        left: -$leftMargin;
+    }
+    100% {
+        left: 0;
+    }
+}
+@keyframes translateRightAnimation {
+    0% {
+        right: calc(100% - 100vw + $leftMargin);
+    }
+    100% {
+        right: 0;
+    }
+}
+
+@if $currentTheme == white {
+    .fullpage {
+        section.section {
+            > .container {
+                h1 {
+                    transform: rotate($deg + 10deg);
+                    transition: all 0.75s ease 0.25s;
+
+                    span {
+                        position: relative;
+                        display: inline-block;
+                        margin-left: $leftMargin;
+                        transition: transform 0.35s ease 0.35s;
+                        clip-path: inset(calc(100% - 2px) -60vw 0);
+                        @for $i from 1 through 10 {
+                            &:nth-child(#{$i}) {
+                                transform: translateY(($i - 1) * -100%);
+                            }
+                        }
+                        &:after {
+                            content: "";
+                            display: block;
+                            width: 100%;
+                            height: 4px;
+                            background-color: $primary;
+                            position: absolute;
+                            left: 0;
+                            bottom: 0;
+                        }
+                        &:after {
+                            width: 100vw;
+                            left: auto;
+                            right: calc(100% - $leftMargin);
+                        }
+                        &:nth-child(2n) {
+                            &:after {
+                                right: auto;
+                                left: -$leftMargin;
+                            }
+                        }
+                    }
+                }
+            }
+            &.active {
+                > .container {
+                    h1 {
+                        transform: rotate($deg);
+
+                        span {
+                            transform: translateY(0);
+                            animation: clipAnimation
+                                0.35s
+                                forwards
+                                ease-in-out
+                                0.35s;
+                            &:after {
+                                left: auto;
+                                animation: translateRightAnimation
+                                    0.75s
+                                    forwards
+                                    ease-in-out
+                                    0.25s;
+                            }
+                            &:nth-child(2n) {
+                                &:after {
+                                    animation: translateLeftAnimation
+                                        0.75s
+                                        forwards
+                                        ease-in-out
+                                        0.25s;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

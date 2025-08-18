@@ -1,5 +1,5 @@
-@use 'sass:math';
-@import '../mixins/breakpoints';
+@use "sass:math";
+@import "../mixins/breakpoints";
 
 $grid-gap: $mainpadding;
 $grid-gap-xs: $padding-xs;
@@ -7,7 +7,7 @@ $grid-gap-m: $padding-xl;
 
 $gutter: (
     xs: $padding-xs,
-    m:  $padding-xl
+    m: $padding-xl,
 );
 /*
 .grid {
@@ -36,7 +36,7 @@ $colums: 12;
     gap: $grid-gap;
 
     @each $name, $gap in $gutter {
-        &.gutter-#{$name} { 
+        &.gutter-#{$name} {
             //padding: calc( $gap * 0.5 );
             gap: $gap;
         }
@@ -48,7 +48,7 @@ $colums: 12;
         flex-shrink: 0;
     }
     > li {
-        flex-basis: calc( 20em + $scalefactor * 2 );
+        flex-basis: calc(20em + $scalefactor * 2);
         flex-grow: 1;
     }
 }
@@ -56,8 +56,8 @@ $colums: 12;
     flex-direction: row;
     @for $i from 1 through $colums {
         .col-#{$i} {
-            width: calc( (math.div(100%, $colums) * $i) - $grid-gap / 2);
-        } 
+            width: calc((math.div(100%, $colums) * $i) - $grid-gap / 2);
+        }
     }
 }
 
@@ -78,7 +78,7 @@ $colums: 12;
 
 @each $breakpoint in map-keys($grid-breakpoints) {
     $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
-    
+
     .grid#{$infix} {
         flex-direction: column;
         align-items: center;
@@ -87,13 +87,15 @@ $colums: 12;
             align-items: flex-start;
             @for $i from 1 through $colums {
                 .col-#{$i} {
-                    width: calc( (math.div(100%, $colums) * $i) - $grid-gap / 2);
-                } 
+                    width: calc((math.div(100%, $colums) * $i) - $grid-gap / 2);
+                }
                 @each $name, $gap in $gutter {
-                    &.gutter-#{$name} { 
+                    &.gutter-#{$name} {
                         .col-#{$i} {
-                            width: calc( (math.div(100%, $colums) * $i) - $gap / 2);
-                        } 
+                            width: calc(
+                                (math.div(100%, $colums) * $i) - $gap / 2
+                            );
+                        }
                     }
                 }
             }

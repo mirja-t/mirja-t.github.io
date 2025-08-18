@@ -1,4 +1,4 @@
-@import './base/vars';
+@import "./base/vars";
 
 $nav-primary: $black;
 $nav-secondary: $white;
@@ -47,56 +47,55 @@ nav#nav {
                 @extend %font-sans-bold;
                 text-transform: uppercase;
                 span {
-                    font-size: .8rem;
+                    font-size: 0.8rem;
                     width: 100%;
                     height: auto;
                     color: $nav-primary;
                     text-decoration: none;
                     text-shadow: 0 $nav-height $nav-secondary;
-                    transition: transform .35s ease;
+                    transition: transform 0.35s ease;
                     display: block;
                     position: relative;
                     z-index: 2;
                     padding: 0.25rem 0.5rem;
                 }
-                &:after{
-                    content: '';
+                &:after {
+                    content: "";
                     position: absolute;
                     left: 0;
                     top: 100%;
                     right: 0;
                     background-color: $nav-primary;
-                    transition: transform .35s ease;
+                    transition: transform 0.35s ease;
                     height: 100%;
                 }
             }
         }
     }
-    
+
     ul li a:hover:after,
     ul li.active a:after {
         transform: translateY(-100%);
-        transition: transform .25s ease;
+        transition: transform 0.25s ease;
     }
     ul li a:hover span,
     ul li a:focus span,
     ul li a:active span,
     ul li.active a span {
         transform: translateY(-100%);
-        transition: transform .35s ease;
+        transition: transform 0.35s ease;
     }
 }
-
 
 nav#bottom-nav {
     ul {
         justify-content: flex-end;
-        font-size: 0.95em;  
+        font-size: 0.95em;
         li {
             margin-left: $mainpadding;
             a {
                 text-decoration: none;
-                transition: color .5s ease 0.35s;
+                transition: color 0.5s ease 0.35s;
                 &:hover {
                     text-decoration: underline;
                 }
