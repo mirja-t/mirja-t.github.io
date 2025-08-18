@@ -6,6 +6,13 @@ $gradient: generate-gradient(
     $section-color-even,
     $sections
 );
+@if $currentTheme == white {
+    $gradient: generate-gradient(
+        $section-color-even,
+        $section-color-odd,
+        $sections
+    );
+}
 
 header {
     position: fixed;

@@ -41,7 +41,7 @@ $themeColorMap: (
         section-color-odd: #e6007e,
     ),
 );
-$currentTheme: default;
+$currentTheme: white;
 $colors: map-get($themeColorMap, $currentTheme);
 
 $baseColor: map-get($colors, "base");
