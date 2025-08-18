@@ -1,34 +1,33 @@
 /* Myfonts Camingo */
-@import 'camingo';
+@import "camingo";
 
 /* Core variables */
-@import 'base/__base';
-@import 'functions/__functions';
-@import 'mixins/__mixins';
+@import "base/__base";
+@import "functions/__functions";
+@import "mixins/__mixins";
 
 /* Components */
-@import 'cards';
-@import 'close';
-@import 'img';
-@import 'timeline';
-@import 'layout-details';
-@import 'project';
-@import 'header';
-@import 'footer';
-@import 'chart';
-@import 'nav';
-@import 'home';
-@import 'about';
-@import 'contact';
-@import 'form';
-@import 'headlines';
-@import 'shadowHeadline';
-@import 'icons';
-@import 'iframe';
-@import 'page-transition';
-@import 'sticky';
-@import 'fullpage'; // must be after footer
-@import 'fullpage-variant';
-@import 'layout';
-@import 'canvas';
-
+@import "cards";
+@import "close";
+@import "img";
+@import "timeline";
+@import "layout-details";
+@import "project";
+@import "header";
+@import "footer";
+@import "chart";
+@import "nav";
+@import "home";
+@import "about";
+@import "contact";
+@import "form";
+@import "headlines";
+@import "shadowHeadline";
+@import "icons";
+@import "iframe";
+@import "page-transition";
+@import "sticky";
+@import "fullpage"; // must be after footer
+// @import "fullpage-variant";
+@import "layout";
+@import "canvas";
