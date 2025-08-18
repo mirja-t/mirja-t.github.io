@@ -28,6 +28,10 @@
 @import "page-transition";
 @import "sticky";
 @import "fullpage"; // must be after footer
-// @import "fullpage-variant";
 @import "layout";
 @import "canvas";
+
+// Theme specific styles
+@import "fullpage-variant";
+@import "headlines-white";
+@import "home-white";

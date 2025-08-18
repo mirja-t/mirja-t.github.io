@@ -1,7 +1,11 @@
-@use 'sass:math';
-@import './base/vars';
+@use "sass:math";
+@import "./base/vars";
 
-$gradient: generate-gradient($white, $primary, $sections);
+$gradient: generate-gradient(
+    $section-color-odd,
+    $section-color-even,
+    $sections
+);
 
 header {
     position: fixed;
@@ -17,31 +21,39 @@ header {
     top: -1.25em;
     @media screen and (min-width: $breakpoint-small) {
         top: -2.25em;
-        max-height: 13em;   
+        max-height: 13em;
     }
     @media screen and (min-width: $breakpoint-layout-switch) {
         left: 33vw;
     }
 }
 .logo {
-    -webkit-mask: image('/design', 'mt-logo.svg') no-repeat center / contain;
-      mask: image('/design', 'mt-logo.svg') no-repeat center / contain;
-      @include iconmask(calc(4em + 5vw), $gradient, $sections*100% $sections*100%);
+    -webkit-mask: image("/design", "mt-logo.svg") no-repeat center / contain;
+    mask: image("/design", "mt-logo.svg") no-repeat center / contain;
+    @include iconmask(
+        calc(4em + 5vw),
+        $gradient,
+        $sections * 100% $sections * 100%
+    );
     display: block;
     transition: all 0.5s ease 0.25s;
-    
+
     &.small {
         transform: translate(-5vw, -10%) scale(0.7);
         transition: transform 0.5s ease;
     }
     @media screen and (min-width: $breakpoint-small) {
-        @include iconmask(calc(6em + 5vw), $gradient, $sections*100% $sections*100%);
+        @include iconmask(
+            calc(6em + 5vw),
+            $gradient,
+            $sections * 100% $sections * 100%
+        );
     }
 }
 @for $i from 0 through $sections {
     .section-#{$i} {
         .logo {
-            background-position: 0% math.div(100%, ($sections - 1))*$i;
+            background-position: 0% math.div(100%, ($sections - 1)) * $i;
         }
     }
 }
@@ -57,7 +69,7 @@ header {
     }
 }
 
-[class*='section'] {
+[class*="section"] {
     header {
         background: $white;
     }
@@ -86,4 +98,9 @@ header {
         }
     }
 }
-@include nav-mask($section-color-odd, $section-color-even, 'in', '#logowrapper');
+@include nav-mask(
+    $section-color-odd,
+    $section-color-even,
+    "in",
+    "#logowrapper"
+);
