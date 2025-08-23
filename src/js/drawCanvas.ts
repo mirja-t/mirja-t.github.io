@@ -1,14 +1,9 @@
 // @ts-ignore
 import ICONS from "./icons.js";
-import { getFilledSvgUrl } from "./modifySvg";
+// import { getFilledSvgUrl } from "./modifySvg";
 
 type Item = { name: string; r: number };
 type Coordinate = { x: number; y: number };
-type TurningPoint = {
-    x: number;
-    y: number;
-    r: number;
-};
 
 export class Circle {
     id: string;
@@ -18,7 +13,7 @@ export class Circle {
         r: number;
         name: string;
     };
-    edges: Record<string, boolean>;
+    edges: Record<string, number>;
     constructor(x: number, y: number, radius: number, name: string) {
         this.data = {
             x: x,
@@ -26,10 +21,11 @@ export class Circle {
             r: radius,
             name: name,
         };
+        this.id = name;
         this.edges = {};
     }
-    addEdge(id: string) {
-        this.edges[id] = true;
+    addEdge(id: string, angle: number = 0) {
+        this.edges[id] = angle;
     }
 }
 
@@ -73,7 +69,7 @@ export class DrawCanvas {
         this.scale = scale;
         this.count = items.length;
         this.ctx = this.canvas.getContext("2d");
-        this.items = items.sort((a, b) => b.r - a.r); // sort items by radius descending
+        this.items = items; //.sort((a, b) => b.r - a.r); // sort items by radius descending
         this.circles = [];
         this.gravity = [
             gravity.split("-").includes("right")
@@ -153,9 +149,9 @@ export class DrawCanvas {
         }
         this.setCanvasSize();
         this.createCircles();
-        this.circles.forEach(async (circle) =>
-            this.drawCircle(circle, "red", true)
-        );
+        this.circles.forEach(async (circle) => {
+            this.drawCircle(circle, "purple");
+        });
         // this.canvas.addEventListener("click", this.handleClickedCircle);
         // this.drawLine(this.toRadians(this.tilt));
     }
@@ -168,149 +164,64 @@ export class DrawCanvas {
 
     createCircles() {
         console.log("createCircles");
-        const initCircles = (idx: number) => {
-            if (idx > this.count - 1) return;
-            const currentItem = this.items.shift();
-            if (!currentItem) return;
-            const currentCircle = this.getPositionedCircle(currentItem);
+        for (let item of this.items) {
+            const currentCircle = this.getPositionedCircle(item);
             this.lastCircle = currentCircle;
-
-            initCircles(idx + 1);
-        };
-
-        initCircles(0);
+        }
+        // console.log(
+        //     "Edges: " +
+        //         this.circles
+        //             .map((c) => {
+        //                 return (
+        //                     c.id +
+        //                     ": " +
+        //                     Object.keys(c.edges)
+        //                         .map((e) => e)
+        //                         .join(", ")
+        //                 );
+        //             })
+        //             .join(" | ")
+        // );
     }
 
     getPositionedCircle(currentItem: Item): Circle {
-        console.log("getPositionedCircle", currentItem);
-        this.currentItem = currentItem;
+        // console.log("getPositionedCircle", currentItem);
 
-        const initialCircle = this.getInitialCircle(currentItem);
-
-        // return initial circle when item is first
-        if (this.circles.length === 0) {
-            return initialCircle;
+        let currentCircle = this.lastCircle;
+        if (!currentCircle) {
+            currentCircle = this.getInitialCircle(currentItem);
+            return currentCircle;
         }
 
-        // return 2nd circle
+        // return 2nd circle --> centered
         if (this.circles.length === 1) {
-            const distX = Math.sqrt(
-                (initialCircle.data.r + currentItem.r) ** 2 -
-                    (initialCircle.data.r - currentItem.r) ** 2
+            const secondCircle = new Circle(
+                currentCircle.data.x + currentCircle.data.r + currentItem.r,
+                currentCircle.data.y,
+                currentItem.r,
+                currentItem.name
             );
+            secondCircle.addEdge(
+                currentCircle.id,
+                Math.atan2(
+                    currentCircle.data.y - secondCircle.data.y,
+                    currentCircle.data.x - secondCircle.data.x
+                )
+            );
+            currentCircle.addEdge(
+                secondCircle.id,
+                Math.atan2(
+                    secondCircle.data.y - currentCircle.data.y,
+                    secondCircle.data.x - currentCircle.data.x
+                )
+            );
+            return secondCircle;
         }
-
-        const radius = currentItem.r;
-        // const setLineEnd = (angle, start = 0, dir = 1) => {
-        //     const line = document.getElementById("rad");
-
-        //     const startRad = Math.PI * start;
-        //     const alpha = ((angle / 180) * Math.PI + startRad) * dir;
-        //     const x1 = parseFloat(line.getAttribute("x1"));
-        //     const y1 = parseFloat(line.getAttribute("y1"));
-        //     const x = 50 * Math.cos(alpha) + x1;
-        //     const y = 50 * Math.sin(alpha) + y1;
-        //     line.setAttribute("x2", x);
-        //     line.setAttribute("y2", y);
-        // };
-
-        // const angle = 90;
-        // const start = -3 / 4;
-        // setLineEnd(angle, start, -1);
-
-        // const turningPoints = this.getTurningPoints(radius);
-
-        // const nextTurningPoint = turningPoints.reduce(
-        //     (tp1, tp2) => {
-        //         // return the turning point with the y coordinate closest to the baseline
-        //         if (this.gravity[1] === -1) {
-        //             return tp1.y > tp2.y ? tp1 : tp2;
-        //         }
-        //         return tp2.y < tp1.y ? tp2 : tp1;
-        //     },
-        //     {
-        //         x: this.width - radius,
-        //         y: this.gravity[1] === 1 ? this.height - radius : radius,
-        //     }
-        // );
-        // const currentCircle = new Circle(
-        //     nextTurningPoint.x,
-        //     nextTurningPoint.y,
-        //     radius,
-        //     currentItem.name
-        // );
-
-        // return currentCircle;
+        const nextCircle = this.getNextCircle(currentCircle, currentItem);
+        return nextCircle;
     }
 
-    createInitialRightCircle = (r: number, counterCircle: Circle): Circle => {
-        console.log("createInitialRightCircle", r, counterCircle);
-        const { x: counterX, y: counterY, r: counterR } = counterCircle.data;
-        let y =
-            this.gravity[1] === 1 ? counterY : this.canvas.height - counterY; // set initial y position to top or bottom of canvas depending on gravity
-        const initialX =
-            counterX +
-            Math.sqrt(
-                // distX
-                Math.abs(
-                    (counterR + r) ** 2 - // hypothenuse --> C²
-                        Math.abs((y - r) ** 2) // offset center countercircle and initial Circle
-                )
-            );
-        let x = initialX;
-        y = this.gravity[1] === 1 ? 0 : this.canvas.height; // set initial y position to top or bottom of canvas depending on gravity
-        if (counterX + counterR + r * 2 > this.canvas.width) {
-            const hypothenuse = counterR + r;
-            const a = this.canvas.width - r - counterX;
-            const h = Math.sqrt(hypothenuse ** 2 - a ** 2);
-            x = this.canvas.width;
-            y = counterY + h * this.gravity[1]; // adjust y position based on hypothenuse
-        }
-        return new Circle(x, y, 0, "");
-    };
-
-    createInitialOuterCircles = (r: number, currentCircle: Circle): Circle => {
-        console.log("createInitialOuterCircles", r, currentCircle);
-        const { x: currentX, y: currentY, r: currentR } = currentCircle.data;
-
-        // initially set the position to gravity
-        let y = this.height / 2 - (this.height / 2) * this.gravity[1]; // set initial y position to top or bottom of canvas depending on gravity
-        let x = this.width / 2 - (this.width / 2) * this.gravity[0];
-
-        const offset =
-            Math.sqrt(
-                // distX
-                Math.abs(
-                    (currentR + r) ** 2 - // hypothenuse --> C²
-                        Math.abs(currentR - r) ** 2
-                )
-            ) * this.gravity[0]; // set initial x position to right or left of counterCircle depending on gravity
-        this.drawCircle(new Circle(currentX + offset, y, 5, "")); // x
-        this.drawCircle(new Circle(x, currentY + offset, 5, "")); // y
-        return new Circle(x, y, 0, "");
-    };
-
-    createInitialTurningPoint = (outmostLeftCircle: Circle, r: number) => {
-        console.log("createInitialTurningPoint", outmostLeftCircle, r);
-        const {
-            x: outmostX,
-            y: outmostY,
-            r: outmostR,
-        } = outmostLeftCircle.data;
-        const dist = outmostR + r;
-        const a = Math.abs(outmostX - r);
-        const h = Math.sqrt(dist ** 2 - a ** 2);
-        const y = this.gravity[1] === 1 ? outmostY + h : outmostY - h;
-        return {
-            x: r,
-            y,
-            r,
-            name: "",
-        };
-    };
-
     getInitialCircle = (item: Item) => {
-        console.log("getInitialCircle", item);
         const { r, name } = item;
         const x =
             this.width / 2 -
@@ -330,161 +241,99 @@ export class DrawCanvas {
         return initialCircle;
     };
 
-    getNextCircle(
-        currentCircle: Circle,
-        r: number,
-        circles: Circle[] = this.circles
-    ): Circle {
-        console.log("getNextCircle", currentCircle, r, circles);
-        const { x: currentCircleX, y: currentCircleY } = currentCircle.data;
-        const neighbouringRight = circles
-            .filter((c) => {
-                // filter out Circles that are left of current Circle
-                return c.data.x > currentCircle.data.x;
-            })
-            .filter((c) => {
-                // filter the neighbouring Circles that stop the incoming Circle from dropping through
-                const maxDist = currentCircle.data.r + r * 2 + c.data.r;
-                const dist = Math.sqrt(
-                    Math.abs(c.data.x - currentCircleX) ** 2 +
-                        Math.abs(c.data.y - currentCircleY) ** 2
-                );
-                return dist <= maxDist + 1;
-            });
+    getCoordinates(circle1: Circle, circle2: Circle, r: number) {
+        const [xA, yA] = [circle1.data.x, circle1.data.y];
+        const [xB, yB] = [circle2.data.x, circle2.data.y];
 
-        const nextCircle = neighbouringRight.reduce(
-            (outmost: Circle, current: Circle) => {
-                const turningPointCurrent = this.getTurningPoint(
-                    r,
-                    currentCircle,
-                    current
-                );
-                const turningPointOutmost = this.getTurningPoint(
-                    r,
-                    currentCircle,
-                    outmost
-                );
-                const angleCurrent = Math.atan2(
-                    turningPointCurrent.y - currentCircleY,
-                    turningPointCurrent.x - currentCircleX
-                );
-                const angleOutmost = Math.atan2(
-                    turningPointOutmost.y - currentCircleY,
-                    turningPointOutmost.x - currentCircleX
-                );
-                if (this.gravity[1] === -1) {
-                    return angleOutmost < angleCurrent ? outmost : current;
-                }
-                return angleOutmost > angleCurrent ? outmost : current; // return the Circle with the biggest radians from currentCircle center point
-            },
-            // if there is no neighbouring Circle, create a new one
-            this.createInitialRightCircle(r, currentCircle)
+        const initialAngle = Math.atan2(yB - yA, xB - xA);
+
+        const a = circle2.data.r + r;
+        const b = circle1.data.r + r;
+        const c = Math.sqrt(Math.abs(xB - xA) ** 2 + Math.abs(yB - yA) ** 2);
+
+        // law of cosines
+
+        // a**2 = b**2+c**2-2*b*c * cos(alpha)
+        // a**2 + 2*b*c * cos(alpha) = b**2+c**2
+        // 2*b*c * cos(alpha) = b**2+c**2 - a**2
+        // cos(alpha) = (b**2+c**2 - a**2) / (2*b*c)
+        // alpha = acos(b**2+c**2 - a**2) / (2*b*c)
+
+        const alpha = Math.acos((b ** 2 + c ** 2 - a ** 2) / (2 * b * c));
+
+        const [xC, yC] = [
+            xA + b * Math.cos(initialAngle + alpha),
+            yA + b * Math.sin(initialAngle + alpha),
+        ];
+        return [xC, yC];
+    }
+
+    getNextCircle(currentCircle: Circle, currentItem: Item): Circle {
+        const counterCircles = this.circles.filter((c) => {
+            return c.edges[currentCircle.id] !== undefined;
+        });
+        let counterCircle = counterCircles.reduce((last, c) => {
+            return last.edges[currentCircle.id] > last.edges[currentCircle.id]
+                ? c
+                : last;
+        }, counterCircles[0]);
+
+        const neighbouringCircles = Object.keys(counterCircle.edges).map((id) =>
+            this.circles.find((c) => c.id === id)
         );
+        const stopper = neighbouringCircles.reduce((last, c) => {
+            const currentDiff =
+                2 * Math.PI -
+                this.radToPositive(counterCircle.edges[currentCircle.id]);
+            return currentDiff +
+                this.radToPositive(counterCircle.edges[last.id]) <
+                currentDiff + this.radToPositive(counterCircle.edges[c.id])
+                ? last
+                : c;
+        }, neighbouringCircles[0]);
+        const { name, r } = currentItem;
 
+        let [xC, yC] = this.getCoordinates(counterCircle, currentCircle, r);
+        const distXNewStopper = xC - stopper.data.x;
+        const distYNewStopper = yC - stopper.data.y;
+        const colliding =
+            Math.sqrt(distXNewStopper ** 2 + distYNewStopper ** 2) <
+            r + stopper.data.r;
+        if (colliding) {
+            counterCircle = stopper;
+            [xC, yC] = this.getCoordinates(counterCircle, currentCircle, r);
+        }
+        const nextCircle = new Circle(xC, yC, r, name);
+        nextCircle.addEdge(
+            currentCircle.id,
+            Math.atan2(
+                currentCircle.data.y - nextCircle.data.y,
+                currentCircle.data.x - nextCircle.data.x
+            )
+        );
+        currentCircle.addEdge(
+            nextCircle.id,
+            Math.atan2(
+                nextCircle.data.y - currentCircle.data.y,
+                nextCircle.data.x - currentCircle.data.x
+            )
+        );
+        nextCircle.addEdge(
+            counterCircle.id,
+            Math.atan2(
+                counterCircle.data.y - nextCircle.data.y,
+                counterCircle.data.x - nextCircle.data.x
+            )
+        );
+        counterCircle.addEdge(
+            nextCircle.id,
+            Math.atan2(
+                nextCircle.data.y - counterCircle.data.y,
+                nextCircle.data.x - counterCircle.data.x
+            )
+        );
         return nextCircle;
     }
-
-    getTurningPoint(
-        r: number,
-        leftCircle: Circle,
-        rightCircle: Circle
-    ): Coordinate {
-        console.log("getTurningPoint", r, leftCircle, rightCircle);
-        const {
-            x: leftCircleX,
-            y: leftCircleY,
-            r: leftCircleR,
-        } = leftCircle.data;
-        const {
-            x: rightCircleX,
-            y: rightCircleY,
-            r: rightCircleR,
-        } = rightCircle.data;
-        const distX = rightCircleX - leftCircleX; // always positive
-        const distY = rightCircleY - leftCircleY;
-        const angleAtC = Math.atan2(distY, distX); // angle between a (dist c1-c2 center points) and x axis in radians
-        const a = Math.sqrt(distX ** 2 + Math.abs(distY) ** 2); // distance between Circle1 and Circle2 center points
-        const b = leftCircleR + r; // distance between Circle1 center point and incoming Circle center point
-        const c = rightCircleR + r; // distance between Circle2 center point and incoming Circle center point
-        const gamma = Math.acos((a ** 2 + b ** 2 - c ** 2) / (2 * a * b)); // angle between a and b at left Circle center point (in radians)
-
-        // right triangle
-        // a = x
-        // b = y
-        // a = c * sin(α)
-        const absRad =
-            this.gravity[1] === 1 ? angleAtC + gamma : angleAtC - gamma;
-        // const absRad = gamma + angleAtC; // angle between x axis and line from Circle1 center point to incoming Circle center point
-        let x = b * Math.cos(absRad) + leftCircleX; // x coordinate of incoming Circle center point
-        let y = b * Math.sin(absRad) + leftCircleY;
-
-        if (x < r) {
-            // if the x coordinate is less than the radius, set it to the radius
-            // this prevents the Circle from being drawn outside of the canvas
-            x = r;
-            y =
-                rightCircleY +
-                Math.sqrt(c ** 2 - (rightCircleX - r) ** 2) * this.gravity[1]; // recalculate y position based on x position
-        }
-        return { x, y };
-    }
-
-    // getTurningPoints(r: number): TurningPoint[] {
-    //     console.log("getTurningPoints", r);
-    //     let circles: Circle[] = this.circles;
-    //     const initialCircle = this.getInitialCircle(r);
-    //     let currentCircle: Circle | undefined = initialCircle.data.name
-    //         ? initialCircle
-    //         : undefined;
-    //     console.log("initialCircle", initialCircle);
-    //     // let currentCircle: Circle | undefined =
-    //     // this.circles[0] ||
-    //     // new Circle(
-    //     //     this.gravity[0] === -1
-    //     //         ? this.width - r
-    //     //         : this.gravity[0] === 1
-    //     //         ? r
-    //     //         : this.width / 2,
-    //     //     this.gravity[1] === -1
-    //     //         ? this.height - r
-    //     //         : this.gravity[1] === 1
-    //     //         ? r
-    //     //         : this.height / 2,
-    //     //     r,
-    //     //     ""
-    //     // );
-
-    //     const turningPoints: TurningPoint[] = [];
-    //     if (!currentCircle) {
-    //         return turningPoints;
-    //     }
-    //     let nextCircle = this.getNextCircle(currentCircle, r, circles);
-    //     do {
-    //         const turningPoint = this.getTurningPoint(
-    //             r,
-    //             currentCircle,
-    //             nextCircle
-    //         );
-    //         turningPoints.push({
-    //             ...turningPoint,
-    //             r: currentCircle.data.r,
-    //         });
-    //         currentCircle = nextCircle;
-    //         nextCircle = this.getNextCircle(currentCircle, r, circles);
-    //     } while (!!currentCircle.data.name);
-
-    //     const nonOverlappingTPs = turningPoints.filter((tp) => {
-    //         // filter out overlapping turning points
-    //         return this.circles.every((c) => {
-    //             // why is the current item already in the Circles?
-    //             const distY = Math.abs(tp.y - c.data.y);
-    //             const distX = Math.abs(tp.x - c.data.x);
-    //             const dist = Math.sqrt(distX ** 2 + distY ** 2);
-    //             return dist + 1 > r + c.data.r; // +1 to prevent floating point errors
-    //         });
-    //     });
-    //     return nonOverlappingTPs;
-    // }
 
     handleClickedCircle = (e: MouseEvent) => {
         console.log("handleClickedCircle", e);
@@ -498,7 +347,7 @@ export class DrawCanvas {
             return dist < c.data.r;
         });
         if (!clickedCircle)
-            return this.circles.forEach((c) => this.drawImage(c));
+            return this.circles.forEach((c) => this.drawCircle(c, "purple"));
         this.dispatchCustomEvent({ target: clickedCircle.data.name });
     };
 
@@ -514,45 +363,73 @@ export class DrawCanvas {
         return Math.min(this.width, this.height);
     }
 
-    drawCircle(circle: Circle, color: string = "black", outline = false) {
-        console.log("drawCircle", circle, color, outline);
+    drawCircle(circle: Circle, outline: string = "black") {
         if (!this.ctx) return;
-        const { x, y, r } = circle.data;
+        const { x, y, r, name } = circle.data;
+
         this.ctx.beginPath();
-        this.ctx.arc(x, y, r, 0, Math.PI * 2);
-        this.ctx.fillStyle = color;
-        this.ctx.strokeStyle = color;
-        outline ? this.ctx.stroke() : this.ctx.fill();
+        this.ctx.arc(x + 2, y + 2, r - 4, 0, Math.PI * 2);
+        this.ctx.strokeStyle = outline;
+        this.ctx.lineWidth = 8;
+        this.ctx.stroke();
+        this.ctx.font = "72px serif";
+        this.ctx.textAlign = "center";
+        this.ctx.textBaseline = "middle";
+        this.ctx.fillStyle = outline;
+        this.ctx.fillText(name, x, y);
         this.ctx.closePath();
     }
 
-    async drawImage(circle: Circle, scale: number = 1) {
-        console.log("drawImage", circle, scale);
-        const img = new Image();
-        const {
-            x: circleX,
-            y: circleY,
-            r: circleR,
-            name: circleName,
-        } = circle.data;
-        img.onload = () => {
-            if (this.ctx)
-                this.ctx.drawImage(
-                    img,
-                    circleX - circleR,
-                    circleY - circleR,
-                    circleR * 2 * scale,
-                    circleR * 2 * scale
-                );
-            URL.revokeObjectURL(img.src);
-        };
-        try {
-            img.src = await getFilledSvgUrl(ICONS, circleName, "hotpink");
-        } catch (error) {
-            console.log("Error loading image:", error);
-            img.src = "";
-        }
-    }
+    // async drawImage(circle: Circle, scale: number = 1) {
+    //     console.log("drawImage", circle, scale);
+    //     const img = new Image();
+    //     const {
+    //         x: circleX,
+    //         y: circleY,
+    //         r: circleR,
+    //         name: circleName,
+    //     } = circle.data;
+    //     img.onload = () => {
+    //         if (this.ctx)
+    //             this.ctx.drawImage(
+    //                 img,
+    //                 circleX - circleR + 10,
+    //                 circleY - circleR + 10,
+    //                 (circleR - 10) * 2 * scale,
+    //                 (circleR - 10) * 2 * scale
+    //             );
+    //         URL.revokeObjectURL(img.src);
+    //     };
+    //     try {
+    //         img.src = await getFilledSvgUrl(ICONS, circleName, "white");
+    //     } catch (error) {
+    //         console.log("Error loading image:", error);
+    //         img.src = "";
+    //     }
+    //     // const img = new Image();
+    //     // img.onload = () => {
+    //     //     if (this.ctx)
+    //     //         this.ctx.drawImage(
+    //     //             img,
+    //     //             circle.x - (circle.r - 5),
+    //     //             circle.y - (circle.r - 5),
+    //     //             (circle.r - 5) * 2 * scale,
+    //     //             (circle.r - 5) * 2 * scale
+    //     //         );
+    //     //     URL.revokeObjectURL(img.src);
+    //     // };
+    //     // try {
+    //     //     img.src = await getFilledSvgUrl(ICONS, circle.name, "white");
+    //     // } catch (error) {
+    //     //     console.log("Error loading image:", error);
+    //     //     img.src = "";
+    //     // }
+    //     this.ctx.font = "50px Noto Serif";
+    //     this.ctx.fillStyle = "black";
+    //     this.ctx.textAlign = "center";
+    //     this.ctx.textBaseline = "middle";
+    //     this.ctx.fillText(circle.data.name, circle.data.x, circle.data.y);
+    // }
 
     clearRect() {
         console.log("clearRect");
@@ -560,32 +437,30 @@ export class DrawCanvas {
         this.ctx.clearRect(0, 0, this.width, this.height);
     }
 
-    drawLine(alpha: number = 90, dist: number = this.width) {
-        console.log("drawLine", alpha, dist);
+    drawLine(start: Coordinate, end: Coordinate) {
+        console.log("drawLine", start, end);
         this.ctx.beginPath();
-
-        // Set a start-point
-        const startX = this.width / 2 - (this.width / 2) * this.gravity[0];
-        const startY = this.height / 2 - (this.height / 2) * this.gravity[1];
-        this.ctx.moveTo(startX, startY);
-
-        const endX = startX + dist * this.gravity[0] * Math.sin(alpha);
-        const endY = startY + dist * this.gravity[1] * Math.cos(alpha);
+        this.ctx.moveTo(start[0], start[1]);
 
         // Set an end-point
-        this.ctx.lineTo(endX, endY);
+        this.ctx.lineTo(end[0], end[1]);
 
         // Stroke it (Do the Drawing)
         this.ctx.strokeStyle = "blue";
+        this.ctx.lineWidth = 4;
         this.ctx.stroke();
     }
 
     toRadians(degrees: number) {
-        console.log("toRadians", degrees);
         return degrees * (Math.PI / 180);
     }
+    toDegrees(radians: number) {
+        return radians * (180 / Math.PI);
+    }
+    radToPositive(radians: number) {
+        return (2 * Math.PI + radians) % (2 * Math.PI);
+    }
     getOffset(alpha: number, chord: number): number {
-        console.log("getOffset", alpha, chord);
         /** SINUSSATZ
          *
          *   a       b
@@ -603,7 +478,6 @@ export class DrawCanvas {
     }
 
     getChord(alpha: number, r: number) {
-        console.log("getChord", alpha, r);
         return 2 * r * Math.cos(this.toRadians(alpha) / 2);
     }
 

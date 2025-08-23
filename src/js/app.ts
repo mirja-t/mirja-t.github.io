@@ -40,16 +40,16 @@ function init() {
         footerlinks.forEach((footerlink) => hoverAnimation(footerlink, 20));
     if (canvas && canvas.parentElement) {
         const items: { id: string; name: string; r: number }[] = [
-            { id: "css", name: "css", r: 290 },
-            // { id: "html", name: "html", r: 110 },
-            // // { id: 'php', name: "PHP", r: 80 },
-            // { id: "react", name: "react", r: 280 },
-            // { id: "ts", name: "ts", r: 310 },
-            // // { id: 'sass', name: "Sass", r: 100 },
-            // { id: "git", name: "git", r: 100 },
-            // // { id: 'sql', name: "SQL", r: 60 },
-            // { id: "ui", name: "ui", r: 240 },
-            // { id: "testing", name: "testing", r: 180 },
+            { id: "css", name: "A", r: 150 },
+            { id: "html", name: "B", r: 120 },
+            { id: "php", name: "PHP", r: 180 },
+            { id: "react", name: "C", r: 210 },
+            { id: "ts", name: "ts", r: 240 },
+            { id: "sass", name: "Sass", r: 170 },
+            { id: "git", name: "git", r: 150 },
+            { id: "sql", name: "SQL", r: 160 },
+            { id: "ui", name: "ui", r: 240 },
+            { id: "testing", name: "testing", r: 180 },
         ];
         const circleCanvas = new DrawCanvas(
             1600,
