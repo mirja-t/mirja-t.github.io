@@ -43,13 +43,13 @@ function init() {
             { id: "css", name: "A", r: 150 },
             { id: "html", name: "B", r: 120 },
             { id: "php", name: "PHP", r: 180 },
-            { id: "react", name: "C", r: 210 },
-            { id: "ts", name: "ts", r: 240 },
+            { id: "react", name: "C", r: 110 },
+            { id: "ts", name: "ts", r: 140 },
             { id: "sass", name: "Sass", r: 170 },
             { id: "git", name: "git", r: 150 },
             { id: "sql", name: "SQL", r: 160 },
-            { id: "ui", name: "ui", r: 240 },
-            { id: "testing", name: "testing", r: 180 },
+            { id: "ui", name: "ui", r: 140 },
+            { id: "testing", name: "testing", r: 80 },
         ];
         const circleCanvas = new DrawCanvas(
             1600,

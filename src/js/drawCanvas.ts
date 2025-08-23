@@ -1,7 +1,3 @@
-// @ts-ignore
-import ICONS from "./icons.js";
-// import { getFilledSvgUrl } from "./modifySvg";
-
 type Item = { name: string; r: number };
 type Coordinate = { x: number; y: number };
 
@@ -157,36 +153,18 @@ export class DrawCanvas {
     }
 
     setCanvasSize() {
-        console.log("setCanvasSize");
         this.canvas.width = this.width;
         this.canvas.height = this.height;
     }
 
     createCircles() {
-        console.log("createCircles");
         for (let item of this.items) {
             const currentCircle = this.getPositionedCircle(item);
             this.lastCircle = currentCircle;
         }
-        // console.log(
-        //     "Edges: " +
-        //         this.circles
-        //             .map((c) => {
-        //                 return (
-        //                     c.id +
-        //                     ": " +
-        //                     Object.keys(c.edges)
-        //                         .map((e) => e)
-        //                         .join(", ")
-        //                 );
-        //             })
-        //             .join(" | ")
-        // );
     }
 
     getPositionedCircle(currentItem: Item): Circle {
-        // console.log("getPositionedCircle", currentItem);
-
         let currentCircle = this.lastCircle;
         if (!currentCircle) {
             currentCircle = this.getInitialCircle(currentItem);
@@ -281,16 +259,33 @@ export class DrawCanvas {
         const neighbouringCircles = Object.keys(counterCircle.edges).map((id) =>
             this.circles.find((c) => c.id === id)
         );
-        const stopper = neighbouringCircles.reduce((last, c) => {
-            const currentDiff =
-                2 * Math.PI -
-                this.radToPositive(counterCircle.edges[currentCircle.id]);
-            return currentDiff +
-                this.radToPositive(counterCircle.edges[last.id]) <
-                currentDiff + this.radToPositive(counterCircle.edges[c.id])
-                ? last
-                : c;
-        }, neighbouringCircles[0]);
+        const stopper = neighbouringCircles
+            .filter((c) => c.id !== currentCircle.id)
+            .reduce((last, c) => {
+                const currentDiff = this.radToPositive(
+                    counterCircle.edges[currentCircle.id]
+                );
+                return currentDiff +
+                    this.radToPositive(counterCircle.edges[last.id]) <
+                    currentDiff + this.radToPositive(counterCircle.edges[c.id])
+                    ? last
+                    : c;
+            }, neighbouringCircles[0]);
+        console.log("currentItem", currentItem.name);
+        console.log(
+            "currentCircle",
+            currentCircle.id,
+            this.radToPositive(counterCircle.edges[currentCircle.id])
+        );
+        console.log("counterCircle", counterCircle.id);
+        console.log(
+            "counterCircle.edges",
+            Object.entries(counterCircle.edges)
+                .map(([id, v]) => `${id}: ${this.radToPositive(v)}`)
+                .join(", ")
+        );
+        console.log("stopper", stopper.id);
+        console.log("__________________________________");
         const { name, r } = currentItem;
 
         let [xC, yC] = this.getCoordinates(counterCircle, currentCircle, r);
@@ -379,57 +374,6 @@ export class DrawCanvas {
         this.ctx.fillText(name, x, y);
         this.ctx.closePath();
     }
-
-    // async drawImage(circle: Circle, scale: number = 1) {
-    //     console.log("drawImage", circle, scale);
-    //     const img = new Image();
-    //     const {
-    //         x: circleX,
-    //         y: circleY,
-    //         r: circleR,
-    //         name: circleName,
-    //     } = circle.data;
-    //     img.onload = () => {
-    //         if (this.ctx)
-    //             this.ctx.drawImage(
-    //                 img,
-    //                 circleX - circleR + 10,
-    //                 circleY - circleR + 10,
-    //                 (circleR - 10) * 2 * scale,
-    //                 (circleR - 10) * 2 * scale
-    //             );
-    //         URL.revokeObjectURL(img.src);
-    //     };
-    //     try {
-    //         img.src = await getFilledSvgUrl(ICONS, circleName, "white");
-    //     } catch (error) {
-    //         console.log("Error loading image:", error);
-    //         img.src = "";
-    //     }
-    //     // const img = new Image();
-    //     // img.onload = () => {
-    //     //     if (this.ctx)
-    //     //         this.ctx.drawImage(
-    //     //             img,
-    //     //             circle.x - (circle.r - 5),
-    //     //             circle.y - (circle.r - 5),
-    //     //             (circle.r - 5) * 2 * scale,
-    //     //             (circle.r - 5) * 2 * scale
-    //     //         );
-    //     //     URL.revokeObjectURL(img.src);
-    //     // };
-    //     // try {
-    //     //     img.src = await getFilledSvgUrl(ICONS, circle.name, "white");
-    //     // } catch (error) {
-    //     //     console.log("Error loading image:", error);
-    //     //     img.src = "";
-    //     // }
-    //     this.ctx.font = "50px Noto Serif";
-    //     this.ctx.fillStyle = "black";
-    //     this.ctx.textAlign = "center";
-    //     this.ctx.textBaseline = "middle";
-    //     this.ctx.fillText(circle.data.name, circle.data.x, circle.data.y);
-    // }
 
     clearRect() {
         console.log("clearRect");
