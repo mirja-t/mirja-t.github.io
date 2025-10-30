@@ -40,23 +40,23 @@ function init() {
         footerlinks.forEach((footerlink) => hoverAnimation(footerlink, 20));
     if (canvas && canvas.parentElement) {
         const items: { id: string; name: string; r: number }[] = [
-            { id: "css", name: "A", r: 150 },
-            { id: "html", name: "B", r: 120 },
-            { id: "php", name: "PHP", r: 180 },
-            { id: "react", name: "C", r: 110 },
-            { id: "ts", name: "ts", r: 140 },
-            { id: "sass", name: "Sass", r: 170 },
-            { id: "git", name: "git", r: 150 },
-            { id: "sql", name: "SQL", r: 160 },
-            { id: "ui", name: "ui", r: 140 },
-            { id: "testing", name: "testing", r: 80 },
+            { id: "css", name: "CSS", r: 150 },
+            { id: "html", name: "HTML", r: 140 },
+            { id: "php", name: "PHP", r: 60 },
+            { id: "react", name: "React", r: 190 },
+            { id: "ts", name: "TypeScript", r: 200 },
+            { id: "sass", name: "Sass", r: 120 },
+            { id: "git", name: "git", r: 90 },
+            // // { id: "sql", name: "SQL", r: 20 },
+            { id: "ui", name: "ui", r: 180 },
+            // { id: "testing", name: "testing", r: 160 },
         ];
         const circleCanvas = new DrawCanvas(
             1600,
             1200,
             canvas,
             items,
-            1.1,
+            1.25,
             "center"
         );
         // Add listener
