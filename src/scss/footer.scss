@@ -2,6 +2,8 @@
 @use "sass:math";
 
 $icon-size: calc(2.5em + 0.5vw);
+
+// Generate gradient for footer icon masks
 $gradient: generate-gradient(
     $section-color-even,
     $section-color-odd,
@@ -49,7 +51,7 @@ footer {
         ~ footer {
             z-index: 100;
             a {
-                color: $primary;
+                color: var(--color-primary);
             }
             svg {
                 clip-path: polygon(
@@ -69,6 +71,7 @@ footer {
     position: fixed;
 }
 
+// masking footer icons
 @for $i from 0 through $sections {
     .section-#{$i} {
         footer {

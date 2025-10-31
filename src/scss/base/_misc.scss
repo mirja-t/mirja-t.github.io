@@ -1,5 +1,4 @@
 .circle {
-    
     border-radius: 50%;
     position: relative;
     margin: auto;
@@ -15,28 +14,28 @@
         overflow: hidden;
 
         &:before {
-            content: '';
+            content: "";
             display: block;
             position: absolute;
             height: 100%;
-            background-color: $secondary;
+            background-color: var(--color-secondary);
             z-index: 2;
             width: 200%;
             left: -50%;
             top: 0%;
             transform: translateY(0) rotate(-5deg);
-            transition: all .5s ease 0s;
+            transition: all 0.5s ease 0s;
             will-change: transform;
         }
     }
     &:after {
-        content: '';
+        content: "";
         display: block;
         position: absolute;
         height: 100%;
         left: 50%;
         top: 50%;
-        background-color: $secondary;
+        background-color: var(--color-secondary);
         border-radius: 50%;
         width: 100%;
         transform: translate(-55%, -48%) scale(1.025);
@@ -46,13 +45,13 @@
 .inview .circle {
     *:before {
         transform: translateY(101%) rotate(-5deg);
-        transition: all .5s ease 0.5s;
+        transition: all 0.5s ease 0.5s;
     }
-} 
+}
 
 .fullpage.down .inview .circle {
     > *:before {
         transform: translateY(-101%) rotate(-5deg);
-        transition: all .5s ease 0.2s;
+        transition: all 0.5s ease 0.2s;
     }
 }

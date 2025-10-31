@@ -3,27 +3,31 @@
 */
 
 @media print {
-  @page { margin: 1cm; }
+    @page {
+        margin: 1cm;
+    }
 
-  body {
-    background: $white;
-    color: $black;
-  }
+    body {
+        background: var(--color-background);
+        color: var(--color-foreground);
+    }
 
-  a {
-    page-break-inside: avoid;
-  }
+    a {
+        page-break-inside: avoid;
+    }
 
-  blockquote {
-    page-break-inside: avoid;
-  }
+    blockquote {
+        page-break-inside: avoid;
+    }
 
-  table,
-  pre {
-    page-break-inside: avoid;
-  }
+    table,
+    pre {
+        page-break-inside: avoid;
+    }
 
-  ul, ol, dl  {
-    page-break-before: avoid;
-  }
+    ul,
+    ol,
+    dl {
+        page-break-before: avoid;
+    }
 }

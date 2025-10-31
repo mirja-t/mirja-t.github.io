@@ -1,11 +1,9 @@
 // headlines
-@if $currentTheme == default {
-    section.section {
-        @include headline-colors($section-color-even, $section-color-odd);
-        h1,
-        h2 {
-            color: $secondary;
-        }
+section.section {
+    // @include headline-colors($section-color-even, $section-color-odd);
+    h1,
+    h2 {
+        color: var(--color-secondary); // underlying headline color
     }
 }
 
@@ -18,16 +16,11 @@
     &.down {
         section.section {
             .header-text {
-                @if $currentTheme == default {
-                    h1,
-                    h2 {
-                        clip-path: inset(0% 0 0% 0);
-                        animation: mask-up-in
-                            $section-before-transition
-                            ease
-                            forwards
-                            $headline-transition-delay-up;
-                    }
+                h1,
+                h2 {
+                    clip-path: inset(0% 0 0% 0);
+                    animation: mask-up-in $section-before-transition ease
+                        forwards $headline-transition-delay-up;
                 }
                 p {
                     clip-path: inset(100% 0 0% 0);
@@ -36,16 +29,11 @@
                 }
             }
             &:not(.active) .header-text {
-                @if $currentTheme == default {
-                    h1,
-                    h2 {
-                        clip-path: inset(100% 0 0% 0);
-                        animation: mask-up-out
-                            $section-before-transition
-                            ease
-                            forwards
-                            $headline-transition-delay-up;
-                    }
+                h1,
+                h2 {
+                    clip-path: inset(100% 0 0% 0);
+                    animation: mask-up-out $section-before-transition ease
+                        forwards $headline-transition-delay-up;
                 }
                 p {
                     animation: mask-down-in $section-before-transition ease
@@ -57,16 +45,11 @@
     &.up {
         section.section {
             .header-text {
-                @if $currentTheme == default {
-                    h1,
-                    h2 {
-                        clip-path: inset(0% 0 0% 0);
-                        animation: mask-down-in
-                            $section-before-transition
-                            ease
-                            forwards
-                            $headline-transition-delay-down;
-                    }
+                h1,
+                h2 {
+                    clip-path: inset(0% 0 0% 0);
+                    animation: mask-down-in $section-before-transition ease
+                        forwards $headline-transition-delay-down;
                 }
                 p {
                     clip-path: inset(100% 0 0% 0);
@@ -75,16 +58,11 @@
                 }
             }
             &:not(.active) .header-text {
-                @if $currentTheme == default {
-                    h1,
-                    h2 {
-                        clip-path: inset(100% 0 0% 0);
-                        animation: mask-up-out
-                            $section-before-transition
-                            ease
-                            forwards
-                            $headline-transition-delay-up;
-                    }
+                h1,
+                h2 {
+                    clip-path: inset(100% 0 0% 0);
+                    animation: mask-up-out $section-before-transition ease
+                        forwards $headline-transition-delay-up;
                 }
                 p {
                     animation: mask-up-in $section-before-transition ease

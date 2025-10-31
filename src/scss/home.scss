@@ -1,5 +1,5 @@
 @import "./base/vars";
-@if $currentTheme == default {
+body.theme-alternate {
     section#home {
         background-position: bottom right;
         background-repeat: no-repeat;
