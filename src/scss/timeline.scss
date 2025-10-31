@@ -8,7 +8,7 @@
     flex-shrink: 0;
     flex-grow: 0;
     width: calc(160px + 5vw);
-    
+
     .sticky {
         padding-top: $padding-xs;
         padding-bottom: $padding-xs;
@@ -25,7 +25,7 @@
         top: 0;
         height: 100%;
         right: $padding-xs;
-        content: '';
+        content: "";
         border-left: 1px dashed white;
         z-index: 0;
     }
@@ -33,7 +33,7 @@
         flex-grow: 1;
         > * {
             padding-right: $padding-xs;
-            border-right: 3px solid $white;
+            border-right: 3px solid var(--color-background);
             margin-right: -1px;
         }
     }
@@ -41,7 +41,7 @@
         z-index: 1;
         position: relative;
         padding-right: $padding-xs;
-        border-right: 3px solid $white;
+        border-right: 3px solid var(--color-background);
         margin-right: -1px;
     }
 }
@@ -55,7 +55,7 @@
         }
         .middle {
             > * {
-                border-left: 3px solid $white;
+                border-left: 3px solid var(--color-background);
                 padding-left: $padding-xs;
                 margin-left: -1px;
                 border-right: none;
@@ -63,7 +63,7 @@
         }
         > div:not(.middle) {
             padding-left: $padding-xs;
-            border-left: 3px solid $white;
+            border-left: 3px solid var(--color-background);
             margin-left: -1px;
             border-right: none;
         }

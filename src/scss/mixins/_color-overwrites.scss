@@ -44,9 +44,9 @@
 @mixin headline-colors($section-color-even, $section-color-odd) {
     // headlines
     h1,
-    h2 {
-        text-shadow: 0px 0px 4px $section-color-even;
-    }
+    // h2 {
+    //     text-shadow: 0px 0px 4px $section-color-even;
+    // }
     h3,
     h4,
     h5,
@@ -61,9 +61,9 @@
     // headlines every other section
     &:nth-child(2n) {
         h1,
-        h2 {
-            text-shadow: 0px 0px 4px $section-color-odd;
-        }
+        // h2 {
+        //     text-shadow: 0px 0px 4px $section-color-odd;
+        // }
         h3,
         h4,
         h5,

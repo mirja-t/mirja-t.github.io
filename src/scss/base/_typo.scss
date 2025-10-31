@@ -44,7 +44,7 @@ html {
     }
 }
 body {
-    color: $baseColor;
+    color: var(--color-base);
     @extend %font-base;
 }
 
@@ -142,13 +142,13 @@ small {
 }
 
 a {
-    color: $primary;
+    color: var(--color-primary);
     text-decoration: underline;
     &:hover {
-        color: $primary-light;
+        color: var(--color-primary-light);
     }
     &:visited {
-        color: $primary-dark;
+        color: var(--color-primary-dark);
     }
 }
 
@@ -183,5 +183,5 @@ hr {
     width: 75%;
     border: none;
     opacity: 0.5;
-    border-top: 2px dotted $white;
+    border-top: 2px dotted var(--color-background);
 }

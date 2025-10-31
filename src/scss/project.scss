@@ -205,7 +205,7 @@
             h1 {
                 font-size: calc(1.5em + 0.5vw);
                 margin-bottom: $mainpadding;
-                color: $white;
+                color: var(--color-background);
                 text-shadow: none;
             }
         }
@@ -221,7 +221,7 @@
                 p,
                 a,
                 label {
-                    color: $black;
+                    color: var(--color-foreground);
                 }
             }
         }
@@ -239,9 +239,9 @@
         &.project-screens {
             &:before,
             &:after {
-                border-bottom-color: $light-gray;
+                border-bottom-color: var(--color-gray-light);
             }
-            background-color: $light-gray;
+            background-color: var(--color-gray-light);
             .content {
                 div[class*="col"] {
                     img {
@@ -263,7 +263,7 @@
             h1,
             h2 {
                 text-shadow: none;
-                color: $white;
+                color: var(--color-background);
             }
         }
     }
@@ -296,8 +296,8 @@
             @extend %font-sans;
             padding: $padding-xs $mainpadding;
             border-radius: 2em;
-            background-color: $primary;
-            color: $white !important;
+            background-color: var(--color-primary);
+            color: var(--color-background) !important;
             margin: $padding-xs;
             white-space: nowrap;
             font-size: 80%;

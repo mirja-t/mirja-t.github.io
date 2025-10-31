@@ -5,58 +5,43 @@
  * Variables
 */
 
-$currentTheme: default !default; // Change to 'light' for light theme
-
 /* =========================================
                     colors 
    ========================================= */
 
-$themeColorMap: (
-    default: (
-        base: #e6007e,
-        primary: #e6007e,
-        primary-light: #ff7cc4,
-        primary-dark: #970060,
-        secondary: #ffc600,
-        secondary-light: #ffcf75,
-        secondary-dark: #b27a00,
-        light-gray: #f1f1f1,
-        foreground: #e6007e,
-        background: #fff,
-        section-color-even: #e6007e,
-        section-color-odd: white,
-    ),
-    white: (
-        base: black,
-        primary: #e6007e,
-        primary-light: #ff7cc4,
-        primary-dark: #970060,
-        secondary: #ffc600,
-        secondary-light: #ffcf75,
-        secondary-dark: #b27a00,
-        light-gray: #f1f1f1,
-        foreground: #e6007e,
-        background: #fff,
-        section-color-even: purple,
-        section-color-odd: #e6007e,
-    ),
-);
-$currentTheme: default;
-$colors: map-get($themeColorMap, $currentTheme);
+body {
+    --color-base: #e6007e;
+    --color-primary: #e6007e;
+    --color-primary-light: #ff7cc4;
+    --color-primary-dark: #970060;
+    --color-secondary: #ffc600;
+    --color-secondary-light: #ffcf75;
+    --color-secondary-dark: #b27a00;
+    --color-gray-light: #f1f1f1;
+    --color-section-color-even: #e6007e;
+    --color-section-color-odd: white;
+    --color-foreground: black;
+    --color-background: white;
+}
+body.theme-white {
+    --color-base: #e6007e;
+    --color-primary: #e6007e;
+    --color-primary-light: #ff7cc4;
+    --color-primary-dark: #970060;
+    --color-secondary: #ffc600;
+    --color-secondary-light: #ffcf75;
+    --color-secondary-dark: #b27a00;
+    --color-gray-light: #f1f1f1;
+    --color-section-color-even: #e6007e;
+    --color-section-color-odd: white;
+    --color-foreground: black;
+    --color-background: white;
+}
 
-$baseColor: map-get($colors, "base");
-$primary: map-get($colors, "primary");
-$primary-light: map-get($colors, "primary-light");
-$primary-dark: map-get($colors, "primary-dark");
-$secondary: map-get($colors, "secondary");
-$secondary-light: map-get($colors, "secondary-light");
-$secondary-dark: map-get($colors, "secondary-dark");
-$light-gray: map-get($colors, "light-gray");
-$black: black;
-$white: white;
-
-$section-color-odd: map-get($colors, "section-color-odd");
-$section-color-even: map-get($colors, "section-color-even");
+$section-color-odd: var(--color-section-color-odd);
+$section-color-even: var(--color-section-color-even);
+$foreground: var(--color-foreground);
+$background: var(--color-background);
 
 /* =========================================
                   breakpoints 
@@ -130,20 +115,7 @@ $breakpoint-layout-switch-max: $breakpoint-medium-max;
                     fonts 
    ========================================= */
 
-$themeHeadingsMap: (
-    default: (
-        font-family: "CamingoDos, 'Fira Sans Condensed', sans-serif",
-        font-weight: 700,
-    ),
-    white: (
-        font-family: "CamingoDos, 'Fira Sans Condensed', sans-serif",
-        font-weight: 700,
-    ),
-);
-
-$heading-styles: map-get($themeHeadingsMap, $currentTheme);
-
-$font-headings-weight: map-get($heading-styles, "font-weight");
+$font-headings-weight: 700;
 
 $headlines: h1, h2, h3, h4, h5, h6;
 

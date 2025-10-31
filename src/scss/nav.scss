@@ -1,7 +1,7 @@
 @import "./base/vars";
 
-$nav-primary: $black;
-$nav-secondary: $white;
+$nav-primary: var(--color-foreground);
+$nav-secondary: var(--color-background);
 $nav-height: 1.5rem;
 
 nav {

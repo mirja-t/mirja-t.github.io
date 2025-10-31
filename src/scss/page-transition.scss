@@ -11,7 +11,7 @@ $pagetransition-out: 500ms;
     pointer-events: none;
     &:before,
     &:after {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: 0;
@@ -21,11 +21,11 @@ $pagetransition-out: 500ms;
     }
     &:before {
         clip-path: polygon(0% 0%, 100% -10%, 100% -10%, 0% 0%);
-        background-color: $white;
+        background-color: var(--color-background);
     }
     &:after {
         clip-path: polygon(0% 110%, 100% 100%, 100% 100%, 0% 110%);
-        background-color: $white;
+        background-color: var(--color-background);
     }
 }
 .main-container {
@@ -68,7 +68,7 @@ html.is-changing .transition-scale {
         }
         &:after {
             clip-path: polygon(0% 55%, 100% 45%, 100% 100%, 0% 100%);
-            background-color: $white;
+            background-color: var(--color-background);
         }
     }
     .main-container {

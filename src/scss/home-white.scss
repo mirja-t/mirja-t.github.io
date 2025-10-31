@@ -1,4 +1,4 @@
-@if $currentTheme == white {
+body.theme-white {
     section#home {
         @media (min-width: 992px) {
             .header-text {

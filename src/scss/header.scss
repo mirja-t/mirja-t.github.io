@@ -71,7 +71,7 @@ header {
 
 [class*="section"] {
     header {
-        background: $white;
+        background: var(--color-background);
     }
     &.fullpage {
         header {
@@ -86,10 +86,10 @@ header {
             content: "";
             position: absolute;
             border-left: 1500px solid transparent;
-            border-top: 60px solid $white;
+            border-top: 60px solid var(--color-background);
             @media (min-width: $breakpoint-xxxlarge) {
                 border-left: 1800px solid transparent;
-                border-top: 90px solid $white;
+                border-top: 90px solid var(--color-background);
             }
             width: 0;
             height: 0;
