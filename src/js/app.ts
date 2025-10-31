@@ -16,7 +16,7 @@ import { parallax } from "./parallax";
 import Swup from "swup";
 
 // Theme
-let currentTheme = "alternate"; // alternate | white
+let currentTheme = "white"; // alternate | white
 const body = document.querySelector("body");
 body.classList.add(`theme-${currentTheme}`);
 
@@ -35,7 +35,7 @@ function init() {
     const canvas = document.querySelector("canvas");
 
     if (svgChart) interactiveChart(svgChart);
-    if (sections.length) copyHeadlines(sections, currentTheme === "alternate");
+    if (sections.length) copyHeadlines(sections, currentTheme);
     if (cardlinksWrapper.length)
         cardlinksWrapper.forEach((cardlinks) => hoverAnimation(cardlinks, 20));
     if (footerlinks.length)
