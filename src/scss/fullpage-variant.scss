@@ -1,183 +1,190 @@
-.section-bg {
-    display: none;
-}
-#fullpagewrapper {
-    &:before,
-    &:after {
-        position: fixed;
-    }
-    &.last-section {
-        @include main-after;
-    }
-    // last section footer
-    @for $i from 0 through $sections {
-        &.section-#{$i} {
-            &#fullpagewrapper {
-                &:before,
-                &:after {
-                    @if $i % 2 == 1 {
-                        border-bottom-color: $section-color-even;
-                    } @else {
-                        border-bottom-color: $section-color-odd;
-                    }
-                }
-            }
-        }
-    }
-    // section
-    section.section {
-        @include section-colors($section-color-even, $section-color-odd, true);
-        &:before,
-        &:after {
-            content: "";
-            position: absolute;
-            display: table;
-            left: 0;
-            transition: all $section-before-transition ease
-                    $section-transition-delay,
-                background-color $section-color-transition ease
-                    $section-color-transition-delay,
-                border-bottom-color $section-color-transition ease
-                    $section-color-transition-delay;
-        }
-        &:before,
-        &:after {
-            height: 0;
-            border-bottom-style: solid;
-            width: 100%;
-        }
-        &:before {
-            border-left: 100vw solid transparent;
-        }
-
-        @include section-after;
-    }
-    // container
-    #fullpage {
-        section.section {
-            > .container {
-                @media (max-width: $breakpoint-layout-switch-max) {
-                    &:before {
-                        display: none;
-                    }
-                }
-            }
-        }
-    }
-
-    // section background layer
+body.theme-alternate {
     .section-bg {
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 100%;
-        width: 100%;
-        height: 0;
-        background-color: var(--color-secondary);
+        display: none;
+    }
+    #fullpagewrapper {
+        &:before,
+        &:after {
+            position: fixed;
+        }
+        &.last-section {
+            @include main-after;
+        }
+        // last section footer
+        @for $i from 0 through $sections {
+            &.section-#{$i} {
+                &#fullpagewrapper {
+                    &:before,
+                    &:after {
+                        @if $i % 2 == 1 {
+                            border-bottom-color: $section-color-even;
+                        } @else {
+                            border-bottom-color: $section-color-odd;
+                        }
+                    }
+                }
+            }
+        }
+        // section
+        section.section {
+            @include section-colors($section-color-even, $section-color-odd);
+            &:before,
+            &:after {
+                content: "";
+                position: absolute;
+                display: table;
+                left: 0;
+                transition: all $section-before-transition ease
+                        $section-transition-delay,
+                    background-color $section-color-transition ease
+                        $section-color-transition-delay,
+                    border-bottom-color $section-color-transition ease
+                        $section-color-transition-delay;
+            }
+            &:before,
+            &:after {
+                height: 0;
+                border-bottom-style: solid;
+                width: 100%;
+            }
+            &:before {
+                border-left: 100vw solid transparent;
+            }
+
+            @include section-after;
+        }
+        // container
+        #fullpage {
+            section.section {
+                > .container {
+                    @media (max-width: $breakpoint-layout-switch-max) {
+                        &:before {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        // section background layer
+        .section-bg {
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            width: 100%;
+            height: 0;
+            background-color: var(--color-secondary);
+            &:before,
+            &:after {
+                content: "";
+                position: absolute;
+                display: table;
+                left: 0;
+                transition: all $section-before-transition ease
+                        $section-transition-delay,
+                    background-color $section-color-transition ease
+                        $section-color-transition-delay,
+                    border-bottom-color $section-color-transition ease
+                        $section-color-transition-delay;
+            }
+            &:before {
+                top: 0vw;
+                width: 0;
+                height: 0;
+                border-left: 100vw solid transparent;
+                border-bottom: 0vw solid var(--color-secondary);
+            }
+            &:after {
+                top: 0vw;
+                width: 100vw;
+                height: 4vw;
+                background-color: var(--color-secondary);
+            }
+        }
+        // active section
+        section.section.active {
+            .section-bg {
+                &:before {
+                    top: -7.9vw;
+                    border-bottom-width: 4vw;
+                }
+                &:after {
+                    top: -4vw;
+                }
+            }
+            @media (max-width: $breakpoint-layout-switch-max) {
+                transform: translateY(0) !important;
+            }
+        }
+    }
+
+    // bottom nav font colors
+    @include nav-colors($section-color-even, $section-color-odd);
+
+    // small screen
+    #fullpagewrapper:not(.fullpage) {
+        &:before {
+            bottom: max(1.9vw, 1.9em);
+            border-bottom-width: max(8vw, 3em);
+        }
+        &:after {
+            bottom: 0;
+            border-bottom-width: max(2vw, 2em);
+        }
+        @for $i from 0 through $sections {
+            &.section-#{$i} {
+                header {
+                    @if $i % 2 == 1 {
+                        background-color: $section-color-odd;
+                    } @else {
+                        background-color: $section-color-even;
+                    }
+                }
+            }
+        }
+    }
+    .content-wrapper {
+        position: relative;
         &:before,
         &:after {
             content: "";
             position: absolute;
             display: table;
             left: 0;
+            z-index: 4;
             transition: all $section-before-transition ease
                     $section-transition-delay,
-                background-color $section-color-transition ease
-                    $section-color-transition-delay,
-                border-bottom-color $section-color-transition ease
-                    $section-color-transition-delay;
+                border-width $section-before-transition ease
+                    $section-transition-delay,
+                bottom $section-before-transition ease $section-transition-delay;
+            border-bottom-style: solid;
         }
         &:before {
-            top: 0vw;
             width: 0;
             height: 0;
             border-left: 100vw solid transparent;
-            border-bottom: 0vw solid var(--color-secondary);
         }
         &:after {
-            top: 0vw;
-            width: 100vw;
-            height: 4vw;
-            background-color: var(--color-secondary);
+            width: 100%;
         }
+        @include main-after(0, 0, 0);
+        overflow: hidden;
     }
-    // active section
-    section.section.active {
-        .section-bg {
-            &:before {
-                top: -7.9vw;
-                border-bottom-width: 4vw;
-            }
-            &:after {
-                top: -4vw;
-            }
-        }
-        @media (max-width: $breakpoint-layout-switch-max) {
-            transform: translateY(0) !important;
-        }
-    }
-}
 
-body.theme-alternate {
-    // bottom nav font colors
-    @include nav-colors($section-color-even, $section-color-odd);
-}
-
-// small screen
-#fullpagewrapper:not(.fullpage) {
-    &:before {
-        bottom: max(1.9vw, 1.9em);
-        border-bottom-width: max(8vw, 3em);
-    }
-    &:after {
-        bottom: 0;
-        border-bottom-width: max(2vw, 2em);
-    }
-    @for $i from 0 through $sections {
-        &.section-#{$i} {
-            header {
-                @if $i % 2 == 1 {
-                    background-color: $section-color-odd;
-                } @else {
-                    background-color: $section-color-even;
-                }
-            }
+    // sections
+    #fullpage {
+        section.section {
+            @include headline-colors($foreground, $foreground);
         }
     }
-}
-.content-wrapper {
-    position: relative;
-    &:before,
-    &:after {
-        content: "";
-        position: absolute;
-        display: table;
-        left: 0;
-        z-index: 4;
-        transition: all $section-before-transition ease
-                $section-transition-delay,
-            border-width $section-before-transition ease
-                $section-transition-delay,
-            bottom $section-before-transition ease $section-transition-delay;
-        border-bottom-style: solid;
-    }
-    &:before {
-        width: 0;
-        height: 0;
-        border-left: 100vw solid transparent;
-    }
-    &:after {
-        width: 100%;
-    }
-    @include main-after(0, 0, 0);
-    overflow: hidden;
-}
 
-// sections
-#fullpage {
-    section.section {
-        @include headline-colors($foreground, $foreground);
-    }
+    // Footer typo colors
+    @include nav-colors(
+        $section-color-even,
+        $section-color-odd,
+        ".content-wrapper"
+    );
 }
 body.theme-alternate {
     #fullpage {

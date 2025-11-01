@@ -5,9 +5,9 @@ body.theme-white {
                 flex-basis: 100%;
             }
         }
-        p {
-            margin-left: 50%;
-            width: min(45%, 550px);
+        .content > div {
+            margin: auto;
+            width: min(calc(150px + 50%), 750px);
         }
     }
 }

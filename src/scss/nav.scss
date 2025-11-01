@@ -1,8 +1,8 @@
 @import "./base/vars";
 
+// topnav colors and sizes
 $nav-primary: var(--color-foreground);
 $nav-secondary: var(--color-background);
-$nav-height: 1.5rem;
 
 nav {
     ul {
@@ -20,55 +20,22 @@ nav {
 }
 
 nav#nav {
-    line-height: 1.2;
     margin-left: auto;
     max-width: calc(100% - 4vw - 3em);
-    @media screen and (min-width: $breakpoint-small) {
-        max-width: calc(100% - 5vw - 6em);
-    }
     ul {
         display: flex;
         justify-content: flex-end;
         flex-wrap: wrap;
         li {
-            overflow: hidden;
             cursor: pointer;
-            list-style-type: none;
-            font-weight: 700;
-            margin: 0 0.15rem;
+            margin: 0 0.15em;
             @media screen and (min-width: $breakpoint-small) {
-                margin: 0 0.5rem;
+                margin: 0 0.5em;
+                max-width: calc(100% - 5vw - 6em);
             }
-            a {
-                position: relative;
-                display: block;
-                height: 100%;
-                text-decoration: none;
+            @include inverted-text-item($nav-primary, $nav-secondary);
+            * {
                 @extend %font-sans-bold;
-                text-transform: uppercase;
-                span {
-                    font-size: 0.8rem;
-                    width: 100%;
-                    height: auto;
-                    color: $nav-primary;
-                    text-decoration: none;
-                    text-shadow: 0 $nav-height $nav-secondary;
-                    transition: transform 0.35s ease;
-                    display: block;
-                    position: relative;
-                    z-index: 2;
-                    padding: 0.25rem 0.5rem;
-                }
-                &:after {
-                    content: "";
-                    position: absolute;
-                    left: 0;
-                    top: 100%;
-                    right: 0;
-                    background-color: $nav-primary;
-                    transition: transform 0.35s ease;
-                    height: 100%;
-                }
             }
         }
     }

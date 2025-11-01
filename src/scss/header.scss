@@ -1,12 +1,6 @@
 @use "sass:math";
 @import "./base/vars";
 
-$gradient: generate-gradient(
-    $section-color-odd,
-    $section-color-even,
-    $sections
-);
-
 header {
     position: fixed;
     left: 0;
@@ -32,7 +26,7 @@ header {
     mask: image("/design", "mt-logo.svg") no-repeat center / contain;
     @include iconmask(
         calc(4em + 5vw),
-        $gradient,
+        var(--color-primary),
         $sections * 100% $sections * 100%
     );
     display: block;
@@ -45,16 +39,9 @@ header {
     @media screen and (min-width: $breakpoint-small) {
         @include iconmask(
             calc(6em + 5vw),
-            $gradient,
+            var(--color-primary),
             $sections * 100% $sections * 100%
         );
-    }
-}
-@for $i from 0 through $sections {
-    .section-#{$i} {
-        .logo {
-            background-position: 0% math.div(100%, ($sections - 1)) * $i;
-        }
     }
 }
 
