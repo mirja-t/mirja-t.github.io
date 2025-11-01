@@ -193,9 +193,10 @@ hr {
 .inverted-text-item {
     display: inline-flex;
     flex-wrap: wrap;
-    @extend %font-headings;
-    text-transform: uppercase;
-    @include inverted-text-item(var(--color-primary), var(--color-background));
+    @include inverted-text-item(
+        var(--color-secondary),
+        var(--color-foreground)
+    );
 }
 
 section.active {

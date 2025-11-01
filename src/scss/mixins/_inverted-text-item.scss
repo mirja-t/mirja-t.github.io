@@ -1,7 +1,6 @@
 @mixin inverted-text-item($color, $bgcolor) {
     overflow: hidden;
     list-style-type: none;
-    font-weight: 700;
     line-height: 1;
     > * {
         position: relative;

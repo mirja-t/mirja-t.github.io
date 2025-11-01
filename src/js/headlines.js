@@ -1,4 +1,4 @@
-export const copyHeadlines = (sections) => {
+export const copyHeadlines = (sections, theme) => {
     sections.forEach((section, idx) => {
         // set invers class
         if (idx % 2 === 1) {
@@ -32,13 +32,13 @@ export const copyHeadlines = (sections) => {
                 }
             }`;
 
-        // if (theme === "alternate") {
-        style.textContent += `
+        if (theme === "alternate") {
+            style.textContent += `
                 h1.invers,
                 h2.invers {
                     color: white;
                 }`;
-        // }
+        }
 
         let parent = h.parentNode;
         let container = document.createElement("div");

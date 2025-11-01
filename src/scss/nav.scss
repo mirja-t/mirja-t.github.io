@@ -36,7 +36,6 @@ nav#nav {
             @include inverted-text-item($nav-primary, $nav-secondary);
             * {
                 @extend %font-sans-bold;
-                text-transform: uppercase;
             }
         }
     }

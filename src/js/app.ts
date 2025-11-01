@@ -35,7 +35,7 @@ function init() {
     const canvas = document.querySelector("canvas");
 
     if (svgChart) interactiveChart(svgChart);
-    if (sections.length) copyHeadlines(sections);
+    if (sections.length) copyHeadlines(sections, currentTheme);
     if (cardlinksWrapper.length)
         cardlinksWrapper.forEach((cardlinks) => hoverAnimation(cardlinks, 20));
     if (footerlinks.length)
