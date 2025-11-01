@@ -185,3 +185,26 @@ hr {
     opacity: 0.5;
     border-top: 2px dotted var(--color-background);
 }
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.inverted-text-item {
+    display: inline-flex;
+    flex-wrap: wrap;
+    @extend %font-headings;
+    text-transform: uppercase;
+    @include inverted-text-item(var(--color-primary), var(--color-background));
+}
+
+section.active {
+    .inverted-text-item > *:after {
+        transform: translateY(-100%);
+        transition: transform 0.25s ease 1s;
+    }
+    .inverted-text-item > * span {
+        transform: translateY(-100%);
+        transition: transform 0.35s ease 1.25s;
+    }
+}

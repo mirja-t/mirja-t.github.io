@@ -33,11 +33,11 @@ export const copyHeadlines = (sections) => {
             }`;
 
         // if (theme === "alternate") {
-        //     style.textContent += `
-        //         h1.invers,
-        //         h2.invers {
-        //             color: white;
-        //         }`;
+        style.textContent += `
+                h1.invers,
+                h2.invers {
+                    color: white;
+                }`;
         // }
 
         let parent = h.parentNode;

@@ -1,11 +1,5 @@
 @use "sass:math";
 
-// Footer typo colors
-@include nav-colors(
-    $section-color-even,
-    $section-color-odd,
-    ".content-wrapper"
-);
 .project-details.subpage,
 .subpage {
     @include main-after;
@@ -17,7 +11,7 @@
 
     // section
     section.section {
-        @include section-colors($section-color-even, $section-color-odd, true);
+        @include section-colors($section-color-even, $section-color-odd);
         &:before,
         &:after {
             content: "";

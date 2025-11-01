@@ -1,0 +1,72 @@
+@use "sass:math";
+@import "./base/vars";
+
+$gradient-header: generate-gradient(
+    $section-color-odd,
+    $section-color-even,
+    $sections
+);
+
+// Generate gradient for footer icon masks
+
+body.theme-alternate {
+    .logo {
+        -webkit-mask: image("/design", "mt-logo.svg") no-repeat center / contain;
+        mask: image("/design", "mt-logo.svg") no-repeat center / contain;
+        @include iconmask(
+            calc(4em + 5vw),
+            $gradient-header,
+            $sections * 100% $sections * 100%
+        );
+        display: block;
+
+        transition: all 0.5s ease 0.25s;
+
+        &.small {
+            transform: translate(-5vw, -10%) scale(0.7);
+            transition: transform 0.5s ease;
+        }
+        @media screen and (min-width: $breakpoint-small) {
+            @include iconmask(
+                calc(6em + 5vw),
+                $gradient-header,
+                $sections * 100% $sections * 100%
+            );
+        }
+    }
+    @for $i from 0 through $sections {
+        .section-#{$i} {
+            .logo {
+                background-position: 0% math.div(100%, ($sections - 1)) * $i;
+            }
+        }
+    }
+}
+$gradient-footer: generate-gradient(
+    $section-color-even,
+    $section-color-odd,
+    $sections
+);
+body.theme-alternate {
+    footer {
+        [class|="iconmask"] {
+            @include iconmask(
+                $icon-size,
+                $gradient-footer,
+                $sections * 100% $sections * 100%
+            );
+        }
+    }
+    // masking footer icons
+    @for $i from 0 through $sections {
+        .section-#{$i} {
+            footer {
+                [class|="iconmask"] {
+                    background-position: 0%
+                        math.div(100%, ($sections - 1)) *
+                        $i;
+                }
+            }
+        }
+    }
+}
