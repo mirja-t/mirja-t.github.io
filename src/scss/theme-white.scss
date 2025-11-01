@@ -1,11 +1,11 @@
 body.theme-white {
-    section#home {
+    section.section {
         @media (min-width: 992px) {
             .header-text {
                 flex-basis: 100%;
             }
         }
-        .content > div {
+        .content {
             margin: auto;
             width: min(calc(150px + 50%), 750px);
         }
