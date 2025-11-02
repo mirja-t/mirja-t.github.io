@@ -1,33 +1,31 @@
 @mixin inverted-text-item($color, $bgcolor) {
     overflow: hidden;
-    list-style-type: none;
     line-height: 1;
-    > * {
-        position: relative;
-        display: block;
-        height: 100%;
+    position: relative;
+    display: inline-block;
+    height: 100%;
+    text-decoration: none;
+    margin-bottom: -0.25em;
+    * {
+        width: 100%;
+        height: auto;
+        color: $color;
         text-decoration: none;
-        span {
-            width: 100%;
-            height: auto;
-            color: $color;
-            text-decoration: none;
-            text-shadow: 0 1.25em $bgcolor;
-            transition: transform 0.35s ease;
-            display: block;
-            position: relative;
-            z-index: 2;
-            padding: 0.125em 0.25em;
-        }
-        &:after {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 100%;
-            right: 0;
-            background-color: $color;
-            transition: transform 0.35s ease;
-            height: 100%;
-        }
+        text-shadow: 0 1.25em $bgcolor;
+        transition: transform 0.35s ease;
+        display: block;
+        position: relative;
+        z-index: 2;
+        padding: 0.125em 0.25em;
+    }
+    &:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 100%;
+        right: 0;
+        background-color: $color;
+        transition: transform 0.35s ease;
+        height: 100%;
     }
 }

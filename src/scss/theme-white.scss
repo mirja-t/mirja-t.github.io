@@ -1,0 +1,14 @@
+body.theme-white {
+    section.section {
+        .header-text {
+            .content {
+                margin: auto;
+                width: calc(150px + 50%);
+                max-width: 650px;
+                p {
+                    font-size: calc(1rem + 0.25vw);
+                }
+            }
+        }
+    }
+}
