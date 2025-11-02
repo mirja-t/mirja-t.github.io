@@ -31,9 +31,5 @@
 @import "layout";
 @import "canvas";
 
-// Theme specific styles
-@import "fullpage-alternate";
-@import "fullpage-white";
-// @import "headlines-white";
-@import "theme-white";
-@import "theme-alternate";
+// Themes
+@import "themes/__themes";

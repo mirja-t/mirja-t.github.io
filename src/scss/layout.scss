@@ -25,6 +25,11 @@ section.section {
             flex-shrink: 0;
             flex-grow: 1;
         }
+        .content {
+            width: calc(150px + 50%);
+            max-width: 650px;
+            margin: auto;
+        }
     }
 
     .header-image {
