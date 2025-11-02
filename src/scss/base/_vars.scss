@@ -9,35 +9,6 @@
                     colors 
    ========================================= */
 
-body {
-    --color-base: #e6007e;
-    --color-primary: #e6007e;
-    --color-primary-light: #ff7cc4;
-    --color-primary-dark: #970060;
-    --color-secondary: #ffc600;
-    --color-secondary-light: #ffcf75;
-    --color-secondary-dark: #b27a00;
-    --color-gray-light: #f1f1f1;
-    --color-section-color-even: #e6007e;
-    --color-section-color-odd: white;
-    --color-foreground: black;
-    --color-background: white;
-}
-body.theme-white {
-    --color-base: black;
-    --color-primary: #c00070;
-    --color-primary-light: #ff7cc4;
-    --color-primary-dark: #83006f;
-    --color-secondary: #feb029;
-    --color-secondary-light: #ffcf75;
-    --color-secondary-dark: #b27a00;
-    --color-gray-light: #f1f1f1;
-    --color-section-color-even: #c00070;
-    --color-section-color-odd: white;
-    --color-foreground: black;
-    --color-background: white;
-}
-
 $section-color-odd: var(--color-section-color-odd);
 $section-color-even: var(--color-section-color-even);
 $foreground: var(--color-foreground);
