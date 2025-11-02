@@ -40,8 +40,8 @@ nav#nav {
         }
     }
 
-    ul li a:hover:after,
-    ul li.active a:after {
+    ul li:hover:after,
+    ul li.active:after {
         transform: translateY(-100%);
         transition: transform 0.25s ease;
     }

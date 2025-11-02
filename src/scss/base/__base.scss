@@ -1,44 +1,47 @@
+/* CSS Vars */
+@import "base";
+
 /* Fonts */
-@import 'fonts';
+@import "fonts";
 
 /* Core variables */
-@import 'vars';
+@import "vars";
 
 /* Mixins, helpers and functions */
-@import '../mixins/__mixins';
+@import "../mixins/__mixins";
 
 /* CSS Reset */
-@import 'reset';
+@import "reset";
 
 /* CSS print */
-@import 'print';
+@import "print";
 
 /* Typography */
-@import 'typo';
+@import "typo";
 
 /* Colors */
-@import 'colors';
+@import "colors";
 
 /* Sizing */
-@import 'size';
+@import "size";
 
 /* Sizing */
-@import 'button';
+@import "button";
 
 /* Spacing */
-@import 'spacing';
+@import "spacing";
 
 /* Display */
-@import 'display';
+@import "display";
 
-/* Grid */ 
-@import 'grid';
+/* Grid */
+@import "grid";
 
 /* Alignment */
-@import 'vertical-align';
+@import "vertical-align";
 
-/* Animations */ 
-@import 'animations';
+/* Animations */
+@import "animations";
 
-/* Miscellaneous */ 
-@import 'misc';
+/* Miscellaneous */
+@import "misc";
