@@ -14,7 +14,6 @@
         "swup": "^3.0.4"
     },
     "devDependencies": {
-        "concurrently": "^9.2.1",
         "file-loader": "^6.2.0",
         "jsdom": "^26.1.0",
         "sass": "^1.58.0",
