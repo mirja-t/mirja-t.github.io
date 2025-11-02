@@ -3,7 +3,7 @@
         height: 0;
     }
     50% {
-        height: 100%;
+        height: 150%;
     }
     100% {
         height: 0;
@@ -16,7 +16,8 @@ body.theme-white {
     #fullpagewrapper {
         // section
         section.section {
-            &:before {
+            &:before,
+            &:after {
                 content: "";
                 position: absolute;
                 display: table;
@@ -35,6 +36,12 @@ body.theme-white {
                 border-left: 100vw solid transparent;
                 top: 0;
                 background: var(--color-secondary);
+            }
+            &:after {
+                height: 5em;
+                width: 100%;
+                bottom: 0;
+                // background-color: var(--color-background);
             }
             &.active:before {
                 animation: screen 1s forwards;
