@@ -1,0 +1,9 @@
+body.theme-white {
+    .row-xs {
+        flex-direction: column;
+    }
+    .timeline {
+        align-items: flex-start;
+        text-align: left;
+    }
+}

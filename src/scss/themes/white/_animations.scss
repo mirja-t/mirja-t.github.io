@@ -1,0 +1,27 @@
+$gradient-white: linear-gradient(
+    0deg,
+    var(--color-primary) 0%,
+    var(--color-primary) 33.33%,
+    var(--color-secondary) 33.33%,
+    var(--color-secondary) 66.66%,
+    var(--color-primary) 66.66%,
+    var(--color-primary) 100%
+);
+@for $i from 0 through $sections {
+    @keyframes move-up-#{$i} {
+        from {
+            background-position-y: 100%;
+        }
+        to {
+            background-position-y: 0%;
+        }
+    }
+    @keyframes move-down-#{$i} {
+        from {
+            background-position-y: 0%;
+        }
+        to {
+            background-position-y: 100%;
+        }
+    }
+}

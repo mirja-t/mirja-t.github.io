@@ -1,0 +1,31 @@
+@use "sass:math";
+@import "../../base/vars";
+
+body.theme-white {
+    footer {
+        [class|="iconmask"] {
+            @include iconmask($icon-size, $gradient-white, 100% 300%);
+        }
+    }
+    // masking footer icons
+    @for $i from 0 through $sections {
+        .section-#{$i} {
+            &.down {
+                footer {
+                    [class|="iconmask"] {
+                        background-position: 0% 0%;
+                        animation: move-down-#{$i} 600ms forwards 500ms;
+                    }
+                }
+            }
+            &.up {
+                footer {
+                    [class|="iconmask"] {
+                        background-position: 0% 100%;
+                        animation: move-up-#{$i} 600ms forwards 700ms;
+                    }
+                }
+            }
+        }
+    }
+}

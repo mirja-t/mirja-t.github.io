@@ -1,0 +1,22 @@
+body.theme-white {
+    // masking footer icons
+    .logo {
+        @include iconmask($icon-size, $gradient-white, 100% 300%);
+    }
+    @for $i from 0 through $sections {
+        .section-#{$i} {
+            &.down {
+                .logo {
+                    background-position: 0% 0%;
+                    animation: move-down-#{$i} 600ms forwards 500ms;
+                }
+            }
+            &.up {
+                .logo {
+                    background-position: 0% 100%;
+                    animation: move-up-#{$i} 600ms forwards 700ms;
+                }
+            }
+        }
+    }
+}
