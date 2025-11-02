@@ -1,16 +1,13 @@
 body.theme-white {
     section.section {
-        @media (min-width: 992px) {
-            .header-text {
-                flex-basis: 100%;
-            }
-        }
-        .content {
-            margin: auto;
-            width: calc(150px + 50%);
-            max-width: 650px;
-            p {
-                font-size: calc(1rem + 0.25vw);
+        .header-text {
+            .content {
+                margin: auto;
+                width: calc(150px + 50%);
+                max-width: 650px;
+                p {
+                    font-size: calc(1rem + 0.25vw);
+                }
             }
         }
     }

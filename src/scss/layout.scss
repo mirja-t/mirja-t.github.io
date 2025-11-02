@@ -23,6 +23,7 @@ section.section {
         @media (min-width: $breakpoint-layout-switch) {
             flex-basis: 33%;
             flex-shrink: 0;
+            flex-grow: 1;
         }
     }
 
