@@ -1,0 +1,31 @@
+@use "sass:math";
+@import "./base/vars";
+
+$gradient-footer: generate-gradient(
+    $section-color-even,
+    $section-color-odd,
+    $sections
+);
+body.theme-alternate {
+    footer {
+        [class|="iconmask"] {
+            @include iconmask(
+                $icon-size,
+                $gradient-footer,
+                $sections * 100% $sections * 100%
+            );
+        }
+    }
+    // masking footer icons
+    @for $i from 0 through $sections {
+        .section-#{$i} {
+            footer {
+                [class|="iconmask"] {
+                    background-position: 0%
+                        math.div(100%, ($sections - 1)) *
+                        $i;
+                }
+            }
+        }
+    }
+}
