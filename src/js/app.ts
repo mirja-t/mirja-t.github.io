@@ -1,4 +1,4 @@
-import "../scss/app.scss";
+import "../scss/_app.scss";
 import { copyHeadlines } from "./headlines";
 import { interactiveChart } from "./chart";
 import { Fullpage } from "./fullpage";

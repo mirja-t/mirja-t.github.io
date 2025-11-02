@@ -5,5 +5,27 @@ body.theme-white {
     .timeline {
         align-items: flex-start;
         text-align: left;
+        margin-bottom: 1em;
+        width: 100%;
+        flex-wrap: wrap;
+        .middle {
+            order: 3;
+            flex-basis: 100%;
+            flex-shrink: 0;
+        }
+        > div:first-child {
+            order: 2;
+            margin-left: 0.25em;
+            padding-left: 0.75em;
+            position: relative;
+            &:before {
+                content: "–";
+                position: absolute;
+                left: 0;
+            }
+        }
+        > div:nth-child(3) {
+            order: 1;
+        }
     }
 }
