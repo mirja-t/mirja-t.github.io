@@ -1,20 +1,32 @@
 body.theme-white {
     // masking footer icons
+    $gradient-header: linear-gradient(
+        0deg,
+        var(--color-primary) 0%,
+        var(--color-primary) 33.33%,
+        var(--color-background) 33.33%,
+        var(--color-background) 66.66%,
+        var(--color-primary) 66.66%,
+        var(--color-primary) 100%
+    );
     .logo {
-        @include iconmask($icon-size, $gradient-white, 100% 300%);
+        @include iconmask(calc(4em + 5vw), $gradient-header, 100% 300%);
+        @media screen and (min-width: $breakpoint-small) {
+            @include iconmask(calc(6em + 5vw), $gradient-header, 100% 300%);
+        }
     }
     @for $i from 0 through $sections {
         .section-#{$i} {
             &.down {
                 .logo {
                     background-position: 0% 0%;
-                    animation: move-down-#{$i} 600ms forwards 500ms;
+                    animation: move-down-#{$i} 1000ms forwards 200ms;
                 }
             }
             &.up {
                 .logo {
                     background-position: 0% 100%;
-                    animation: move-up-#{$i} 600ms forwards 700ms;
+                    animation: move-up-#{$i} 1000ms forwards 0ms;
                 }
             }
         }
