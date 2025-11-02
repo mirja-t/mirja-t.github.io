@@ -1,5 +1,5 @@
 @use "sass:math";
-@import "./base/vars";
+@import "../../base/vars";
 
 $gradient-header: generate-gradient(
     $section-color-odd,
