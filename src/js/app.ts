@@ -16,7 +16,7 @@ import { parallax } from "./parallax";
 import Swup from "swup";
 
 // Theme
-let currentTheme = "white"; // alternate | white
+let currentTheme = "alternate"; // alternate | white
 const body = document.querySelector("body");
 body.classList.add(`theme-${currentTheme}`);
 
