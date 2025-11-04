@@ -13,6 +13,8 @@ $section-color-odd: var(--color-section-color-odd);
 $section-color-even: var(--color-section-color-even);
 $foreground: var(--color-foreground);
 $background: var(--color-background);
+$primary: var(--color-primary);
+$secondary: var(--color-secondary);
 
 /* =========================================
                   breakpoints 
@@ -91,8 +93,9 @@ $font-headings-weight: 700;
 $headlines: h1, h2, h3, h4, h5, h6;
 
 $font-base: "Noto Serif", serif;
-$font-sans-bold: "Source Sans Pro", sans-serif;
-$font-sans: "CamingoDos", "Fira Sans Condensed", sans-serif;
+$font-sans-bold: "CamingoDos", "Fira Sans Condensed", "Source Sans Pro",
+    sans-serif;
+$font-sans: "CamingoDos", "Fira Sans Condensed", "Source Sans Pro", sans-serif;
 $font-serif: "Noto Serif", serif;
 $font-headings: "CamingoDos", "Fira Sans Condensed", sans-serif;
 
@@ -139,4 +142,5 @@ $sections: 6;
 
 $icons: html, css, js, sass, js, php, sql, react, xd, ps, ai, ae, vscode,
     codepen, github, lottie, spring, slim, git, framermotion, reactrouter, bts,
-    uikit, wp;
+    uikit, wp, xing, storybook, vite, tailwind, ts, mui, nextjs, d3, leaflet, ol,
+    cypress, jest, linting, rtl;

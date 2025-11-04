@@ -9,11 +9,8 @@ import { shrinkLogoOnScroll } from "./shrinkLogoOnScroll";
 import { generateButton } from "./generateButton";
 import { stickyElement } from "./stickyElement";
 import LinkMousefollow from "./webcomponents/LinkMousefollow";
-import { DrawCanvas } from "./drawCanvas";
-import { techstack } from "./techstack";
 
 import { parallax } from "./parallax";
-import Swup from "swup";
 
 // Theme
 let currentTheme = "alternate"; // alternate | white
@@ -22,7 +19,7 @@ body.classList.add(`theme-${currentTheme}`);
 
 function init() {
     const svgChart = document.getElementById("svgchart");
-    const chartDetails = document.getElementById("chart-details");
+    // const chartDetails = document.getElementById("chart-details");
     const cardlinksWrapper = document.querySelectorAll(".card-links");
     const footerlinks = document.querySelectorAll("footer li.icon");
     const scrollElements = document.querySelectorAll(
@@ -32,7 +29,7 @@ function init() {
     const sections = document.querySelectorAll("#fullpage .section");
     const stickyContainer = document.querySelectorAll(".sticky-container");
     const logo = document.getElementById("logowrapper");
-    const canvas = document.querySelector("canvas");
+    // const canvas = document.querySelector("canvas");
 
     if (svgChart) interactiveChart(svgChart);
     if (sections.length) copyHeadlines(sections, currentTheme);
@@ -40,35 +37,6 @@ function init() {
         cardlinksWrapper.forEach((cardlinks) => hoverAnimation(cardlinks, 20));
     if (footerlinks.length)
         footerlinks.forEach((footerlink) => hoverAnimation(footerlink, 20));
-    if (canvas && canvas.parentElement) {
-        const items: { id: string; name: string; r: number }[] = [
-            { id: "css", name: "css", r: 290 },
-            { id: "html", name: "html", r: 110 },
-            // { id: 'php', name: "PHP", r: 80 },
-            { id: "react", name: "react", r: 280 },
-            { id: "ts", name: "ts", r: 310 },
-            // { id: 'sass', name: "Sass", r: 100 },
-            { id: "git", name: "git", r: 100 },
-            // { id: 'sql', name: "SQL", r: 60 },
-            { id: "ui", name: "ui", r: 240 },
-            { id: "testing", name: "testing", r: 180 },
-        ];
-        const circleCanvas = new DrawCanvas(1600, 1200, canvas, items, 1.1);
-        // Add listener
-        circleCanvas.on((e) => {
-            if (chartDetails) {
-                const heading = document.createElement("h3");
-                const content = document.createElement("p");
-
-                heading.textContent = techstack[e.detail.target].title;
-                content.textContent = techstack[e.detail.target].content;
-
-                chartDetails.innerHTML = "";
-                chartDetails.appendChild(heading);
-                chartDetails.appendChild(content);
-            }
-        });
-    }
 
     shrinkLogoOnScroll();
     if (scrollElements.length) {
@@ -125,9 +93,6 @@ function resetChart(sectionNumber: number) {
             .forEach((el) => el.remove());
     }
 }
-
-const swupContainer = document.getElementById("swup");
-swupContainer ? new Swup() : null;
 
 document.addEventListener("swup:contentReplaced", () => {
     init();

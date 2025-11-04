@@ -16,6 +16,12 @@
     font-style: italic;
 }
 
+%font-italic-bold {
+    font-family: $font-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+
 %font-sans-bold {
     font-family: $font-sans-bold;
     font-weight: 700;
@@ -139,6 +145,11 @@ p {
 small {
     @extend %font-italic;
     font-size: 0.8em;
+    line-height: 1.1;
+}
+
+.bold {
+    font-weight: 700;
 }
 
 a {
@@ -166,7 +177,6 @@ ul.list {
         margin-left: 1em;
         margin-bottom: 1em;
         list-style-type: disc;
-        font-size: 0.95em;
 
         strong {
             text-transform: uppercase;
@@ -194,9 +204,16 @@ hr {
     display: inline-flex;
     flex-wrap: wrap;
     @include inverted-text-item(
-        var(--color-secondary),
+        var(--color-secondary-light),
         var(--color-foreground)
     );
+    &.tag {
+        border-radius: 0.2em;
+        @extend %font-sans;
+        border: 1px solid var(--color-secondary-light);
+        margin: 0 0.125em;
+        padding: 0.05em 0.125em;
+    }
 }
 
 section.active {
