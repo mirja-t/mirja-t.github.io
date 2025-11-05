@@ -210,9 +210,9 @@ hr {
     &.tag {
         border-radius: 0.2em;
         @extend %font-sans;
-        border: 1px solid var(--color-secondary-light);
         margin: 0 0.125em;
         padding: 0.05em 0.125em;
+        font-size: 0.9em;
     }
 }
 

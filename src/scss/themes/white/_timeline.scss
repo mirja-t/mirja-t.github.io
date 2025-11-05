@@ -1,23 +1,17 @@
 body.theme-white {
-    ul.cv ul {
-        @extend %font-sans;
-    }
     .timeline {
-        font-size: 1em;
         margin-bottom: 0.5em;
         flex-wrap: wrap;
         * {
             line-height: 1.2;
-            margin-bottom: 0;
         }
     }
+    .position {
+        margin-right: 0.5em;
+    }
     .company {
-        @extend %font-headings;
-        font-weight: 400;
-        margin-left: 0.5em;
         padding-left: 0.5em;
         position: relative;
-        font-size: 1.25em;
         margin-top: -0.25em;
         &:before {
             content: "|";
@@ -26,14 +20,9 @@ body.theme-white {
         }
     }
     .date {
-        @extend %font-italic;
-        margin-bottom: 0.25em;
-        color: var(--color-primary);
-        font-size: 0.9em;
         flex-basis: 100%;
     }
     .tech {
-        line-height: 1.1;
-        margin-top: 0.25em;
+        color: var(--color-gray);
     }
 }
