@@ -13,8 +13,9 @@ import LinkMousefollow from "./webcomponents/LinkMousefollow";
 import { parallax } from "./parallax";
 
 // Theme
-let currentTheme = "alternate"; // alternate | white
+let currentTheme = "white"; // alternate | white
 const body = document.querySelector("body");
+body.classList = "";
 body.classList.add(`theme-${currentTheme}`);
 
 function init() {
