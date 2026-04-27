@@ -42,51 +42,11 @@ $section-color-even: $section-color-odd-prev;
     }
 }
 
-// content scrolling
-.fullpage {
-    .js-scrollcontent {
-        position: relative;
-    }
-    .scrollbar {
-        position: absolute;
-        top: 0;
-        right: -1.5em;
-        width: 5px;
-        height: 100%;
-        border-left: 1px solid var(--color-primary);
-
-        .scrollbar-handle {
-            width: 100%;
-            margin-left: -50%;
-            background-color: var(--color-primary);
-            height: 40px;
-            cursor: pointer;
-            position: relative;
-            border-radius: 3px;
-            transition: width 0.15s ease, margin-left 0.15s ease;
-            &.dragging,
-            &:hover {
-                width: 9px;
-                margin-left: calc(-50% - 2px);
-                border-radius: 4px;
-                transition: width 0.15s ease, margin-left 0.15s ease;
-            }
-        }
-    }
-    section:nth-child(2n) {
-        .scrollbar {
-            border-left-color: var(--color-background);
-            .scrollbar-handle {
-                background-color: var(--color-background);
-            }
-        }
-    }
-}
-
 // section
 section.section {
     position: relative;
-    transition: transform $section-transition ease,
+    transition:
+        transform $section-transition ease,
         background-color $section-color-transition ease
             $section-color-transition-delay,
         border-bottom-color $section-color-transition ease
