@@ -1,72 +1,165 @@
-![Screenshot of homepage](./dist/assets/images/screenshot-homepage.jpg "Screenshot of homepage")
+# Mirja Tschakarov Portfolio Website
 
-# Homepage
+[Visit Portfolio](https://mirja-t.github.io/)
 
-For this project I created an application that displays each section of a onepager on 100% of the viewport, so navigating on the page appears as though navigating through multiple pages with a smooth page transition. A standalone of the fullscreen class can be found here:
+## 🚀 Tech Stack
 
-[Fullscreen Onepager](https://github.com/mirja-t/fullscreen-onepager)
+- **Frontend Framework**: Vanilla TypeScript + JavaScript (ES2020)
+- **Build Tool**: Vite 6.3.5 with ES modules
+- **Styling**: Sass/SCSS with component architecture
+- **Testing**: Vitest 3.1.3 with jsdom environment
+- **Page Transitions**: Swup 3.0.4
+- **TypeScript**: 5.8.3 with bundler module resolution
+- **Deployment**: GitHub Pages via `docs/` directory
 
-## Features
+## ✨ Features
 
--   JS App Fullscreen Onepager
--   Custom scrollbar
--   Hover animation with mouse follow
--   Interactive svg chart
--   clip-path transitions on section transition and card hover
+- **Fullscreen Onepager**: Custom JavaScript fullpage implementation
+- **Smooth Transitions**: Custom clip-path animations and page transitions
+- **Mouse Follow Effects**: Dynamic hover animations
+- **Web Components**: Custom elements for reusable components
+- **Responsive Design**: Mobile-first with 991px breakpoint
 
-## Live site
+## 🛠️ Quick Start
 
-[Homepage](https://mirja-t.github.io/)
+### Prerequisites
 
-## Compiling
+- Node.js 16+
+- npm
 
-### Homepage
+### Installation & Development
 
-npm sass-prod:
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd mirja-tschakarov.de
 
-### github.io
+# Install dependencies
+npm install
 
-npm sass-prod: uncomment base --> @import 'fonts';
+# Start development server
+npm run dev
 
-# GitHub Copilot Instructions
+# Run tests
+npm test
 
-## Project Overview
+# Build for production
+npm run build
 
-This is a personal portfolio website built as a **fullscreen onepager** with smooth page transitions. The app displays each section at 100% viewport height, creating a page-like navigation experience. Key feature: custom JavaScript fullpage implementation with TypeScript, SCSS, and Vite tooling.
+# Preview production build
+npm run preview
+```
 
-## Architecture Patterns
+## 📁 Project Structure
+
+```
+src/
+├── js/
+│   ├── app.ts              # Main entry point, component initialization
+│   ├── fullpage.js         # Custom fullpage navigation (vanilla JS)
+│   ├── drawCanvas.ts       # Interactive SVG chart with circle packing
+│   ├── techstack.ts        # Tech stack data for chart
+│   └── webcomponents/      # Custom web components
+├── scss/
+│   ├── app.scss           # Main SCSS entry point
+│   ├── base/              # Variables, mixins, functions
+│   ├── components/        # Individual component styles
+│   └── themes/            # Theme-specific styles
+├── html/                  # HTML templates
+└── i18n/                 # Internationalization files
+
+public/                   # Static assets (fonts, images)
+docs/                    # Production build output (GitHub Pages)
+```
+
+## 🔧 Available Scripts
+
+| Command           | Description                                    |
+| ----------------- | ---------------------------------------------- |
+| `npm run dev`     | Start Vite development server with hot reload  |
+| `npm run build`   | TypeScript compilation + Vite production build |
+| `npm run preview` | Preview production build locally               |
+| `npm test`        | Run Vitest test suite                          |
+| `sass:watch`      | Watch and compile SCSS (alternative to Vite)   |
+
+## 🎨 Theme System
+
+The project includes a flexible theme system controlled via SCSS variables:
+
+```scss
+// src/scss/base/_vars.scss
+$currentTheme: "default"; // or 'white'
+```
+
+### Available Themes
+
+- **Default**: Pink/yellow color scheme
+- **White**: Modified light color scheme
+
+### Adding New Themes
+
+1. Update `$themeColorMap` in `src/scss/base/_vars.scss`
+2. Add conditional styles with `@if $currentTheme == 'your-theme'`
+3. Update `currentTheme` variable in `src/js/app.ts` for JS components
+
+## 🏗️ Architecture Overview
 
 ### Core App Structure
 
--   **Entry point**: `src/js/app.ts` - imports all modules and initializes components
--   **Main classes**: `Fullpage` class in `src/js/fullpage.js` handles viewport-based section navigation
--   **Canvas system**: `DrawCanvas` class in `src/js/drawCanvas.ts` manages interactive SVG chart with circle packing algorithm
--   **Page transitions**: Uses Swup library for smooth page transitions between routes
+- **Entry Point**: `src/js/app.ts` - Initializes all components and event listeners
+- **Fullpage Navigation**: `src/js/fullpage.js` - Handles viewport-based section navigation
+- **Page Transitions**: Swup integration for smooth route transitions
+- **Web Components**: Custom elements in `src/js/webcomponents/`
 
-### TypeScript/JavaScript Mixing
+### TypeScript Configuration
 
--   Mix of `.ts` and `.js` files (legacy + modern)
--   `Fullpage` class is vanilla JS, newer components like `DrawCanvas` are TypeScript
--   Import pattern: TypeScript files import from `.js` extensions due to Vite bundling
+Modern TypeScript setup with bundler module resolution:
+
+- **Target**: ES2020 with DOM support
+- **Module System**: ESNext with Vite bundler mode
+- **Import Extensions**: Allows `.ts` imports from `.js` files
+- **Strict Mode**: Disabled for gradual migration from vanilla JS
 
 ### SCSS Architecture
 
--   **Entry**: `src/scss/app.scss` imports all component styles
--   **Structure**: Base styles, functions, mixins, then components
--   **Import order matters**: `fullpage.scss` must be imported after `footer.scss`
--   **Fonts**: Custom Camingo font imported via `camingo.scss`
+Component-based styling with clear import hierarchy:
 
-### Theme System
+```scss
+// src/scss/app.scss
+@import "base/vars"; // Variables and themes first
+@import "base/mixins"; // Then mixins and functions
+@import "components/*"; // Component styles
+```
 
--   **Theme switching**: Controlled by `$currentTheme` variable in `src/scss/base/_vars.scss`
--   **Available themes**: `default` (pink/yellow scheme) and `white` (modified color scheme)
--   **Theme configuration**: `$themeColorMap` defines color palettes for each theme
--   **Conditional styles**: Theme-specific SCSS files use `@if $currentTheme == white` guards
--   **JavaScript awareness**: `app.ts` tracks `currentTheme` for conditional component behavior
+**⚠️ Important**: `fullpage.scss` must be imported after `footer.scss` due to style dependencies.
 
-## Key Components
+## 🧪 Testing Setup
+
+- **Framework**: Vitest with jsdom environment
+- **Coverage**: Automatic coverage reports in `coverage/`
+- **Example Tests**: `src/js/drawCanvas.test.ts` for chart algorithms
+
+```bash
+# Run tests with coverage
+npm test
+
+# Watch mode during development
+npm test -- --watch
+```
+
+## 🚀 Deployment
+
+The project is configured for **GitHub Pages** deployment:
+
+1. **Build Command**: `npm run build`
+2. **Output Directory**: `docs/` (configured in `vite.config.ts`)
+3. **GitHub Pages**: Serve from `docs/` folder in main branch
+
+## 🧩 Key Components
 
 ### Fullpage Navigation (`src/js/fullpage.js`)
+
+Custom fullpage implementation with smooth section transitions:
 
 ```javascript
 // Initialize fullpage with configuration
@@ -76,92 +169,145 @@ const fullpage = new Fullpage(fpwrapper, fp, nav, {
 });
 ```
 
+**Features**:
+
+- Viewport-based section navigation
+- Mobile-responsive (switches behavior at 991px)
+- Callback system for section changes
+- Custom scrollbar integration
+
 ### Interactive Canvas Chart (`src/js/drawCanvas.ts`)
 
--   Circle packing algorithm for tech stack visualization
--   Event-driven architecture with custom events
--   Usage: `const circleCanvas = new DrawCanvas(width, height, canvas, items, scale)`
-
-### Swup Integration
-
--   Page transitions handled in `app.ts` event listeners
--   `swup:contentReplaced` - reinitialize components
--   `swup:transitionEnd` - setup parallax effects
-
-## Build & Development
-
-### Commands
-
--   `npm run dev` - Vite dev server
--   `npm run build` - TypeScript compilation + Vite build to `docs/` directory
--   `npm test` - Vitest test runner
-
-### Build Output
-
--   **Production**: `docs/` directory (configured in `vite.config.ts` for GitHub Pages)
--   **Deployment**: GitHub Pages from `docs/` folder
-
-### Testing Setup
-
--   **Framework**: Vitest with jsdom environment
--   **Example**: `src/js/drawCanvas.test.ts` tests circle packing algorithms
--   **Coverage**: Generated to `coverage/` directory
-
-## File Patterns
-
-### Component Initialization
-
-Most components follow this pattern in `app.ts`:
+Circle packing algorithm for tech stack visualization:
 
 ```typescript
-if (elementExists) {
-    initializeComponent(elementExists, options);
-}
+// Usage example
+const circleCanvas = new DrawCanvas(width, height, canvas, items, scale);
+
+// Event-driven updates
+canvas.addEventListener("circlesReady", () => {
+    // Chart is ready for interaction
+});
 ```
 
-### Event Handling
+**Features**:
 
--   Custom events for component communication
--   Mouse follow animations use CSS custom properties
--   Scroll-based effects use intersection observers pattern
+- Dynamic circle packing layout
+- Event-driven architecture
+- Responsive scaling
+- Interactive hover states
+
+### Swup Page Transitions
+
+Smooth page transitions with component reinitialization:
+
+```typescript
+// Event listeners in app.ts
+document.addEventListener("swup:contentReplaced", () => {
+    init(); // Reinitialize all components
+});
+
+document.addEventListener("swup:transitionEnd", () => {
+    setupParallax(); // Setup scroll effects
+});
+```
 
 ### Web Components
 
--   Custom elements like `LinkMousefollow` in `src/js/webcomponents/`
--   Defined in `app.ts`: `customElements.define('link-mousefollow', LinkMousefollow)`
+Custom elements for reusable functionality:
 
-## Development Guidelines
+```javascript
+// Define custom elements
+customElements.define("link-mousefollow", LinkMousefollow);
+customElements.define("icon-tag", IconTag);
+
+// Usage in HTML
+<link-mousefollow href="/page">Link text</link-mousefollow>;
+```
+
+## 👩‍💻 Development Guidelines
 
 ### Adding New Components
 
-1. Create component file in `src/js/`
-2. Import and initialize in `app.ts` `init()` function
-3. Add corresponding SCSS in `src/scss/` and import in `app.scss`
-4. Consider mobile breakpoint behavior (991px)
+1. **Create Component File**: Add to `src/js/`
+2. **Import & Initialize**: Add to `src/js/app.ts` `init()` function
+3. **Add Styles**: Create SCSS file and import in `src/scss/app.scss`
+4. **Consider Breakpoints**: Account for mobile behavior (991px breakpoint)
+5. **Add Tests**: Create corresponding `.test.ts` file if needed
 
-### Theme Development
+#### Component Pattern Example
 
--   **Switch themes**: Change `$currentTheme` in `src/scss/base/_vars.scss` (line 44)
--   **Add theme styles**: Create conditional blocks with `@if $currentTheme == themename`
--   **Theme-specific imports**: Uncomment theme imports in `app.scss` (lines 35-37)
--   **Color system**: Extend `$themeColorMap` for new themes with full color palette
--   **JavaScript integration**: Update `currentTheme` variable in `app.ts` for theme-aware components
+```typescript
+// Component initialization pattern in app.ts
+const myElement = document.querySelector(".my-component");
+if (myElement) {
+    initMyComponent(myElement, options);
+}
+```
 
-### Modifying Fullpage Behavior
+### Fullpage Navigation Customization
 
--   Edit `src/js/fullpage.js` for navigation logic
--   Section changes trigger callbacks defined in config
--   Responsive behavior switches at breakpoint
+**Modifying Navigation Logic**:
 
-### Canvas/Chart Updates
+- Edit `src/js/fullpage.js` for core navigation behavior
+- Section change callbacks defined in initialization config
+- Responsive behavior controlled by `breakpoint` option
 
--   Modify `src/js/drawCanvas.ts` for chart logic
--   Update `src/js/techstack.ts` for content data
--   Test changes with existing Vitest tests
+**Adding Section Callbacks**:
 
-## Critical Dependencies
+```javascript
+const fullpage = new Fullpage(wrapper, sections, nav, {
+    onSectionChange: [existingCallback, newCallback],
+});
+```
 
--   **Swup**: Page transition library
--   **Vite**: Build tool and dev server
--   **TypeScript**: Configured with bundler module resolution
--   **SCSS**: Component-based styling architecture
+### Canvas & Chart Development
+
+**Updating Chart Logic**:
+
+- Modify `src/js/drawCanvas.ts` for visualization algorithms
+- Update `src/js/techstack.ts` for data changes
+- Test with existing Vitest tests in `src/js/drawCanvas.test.ts`
+
+**Adding New Chart Types**:
+
+1. Extend `DrawCanvas` class or create new chart class
+2. Import and initialize in `app.ts`
+3. Add corresponding styles to `src/scss/chart.scss`
+
+### Performance Considerations
+
+- **Intersection Observers**: Use for scroll-based animations
+- **CSS Custom Properties**: For dynamic style updates
+- **Event Delegation**: For handling multiple similar elements
+- **Image Optimization**: All images should be optimized for web
+
+### Browser Support
+
+- **Target**: Modern browsers with ES2020 support
+- **Fallbacks**: Consider mobile Safari and older Edge versions
+- **Testing**: Test on mobile devices for touch interactions
+
+## 📦 Dependencies
+
+### Production Dependencies
+
+- **[Swup](https://swup.js.org/)** `^3.0.4` - Page transition library
+
+### Development Dependencies
+
+- **[Vite](https://vitejs.dev/)** `^6.3.5` - Build tool and development server
+- **[TypeScript](https://www.typescriptlang.org/)** `^5.8.3` - Type-safe JavaScript
+- **[Sass](https://sass-lang.com/)** `^1.58.0` - CSS preprocessor
+- **[Vitest](https://vitest.dev/)** `^3.1.3` - Unit testing framework
+- **[jsdom](https://github.com/jsdom/jsdom)** `^26.1.0` - DOM environment for tests
+
+## 📄 License
+
+This project is private. All rights reserved.
+
+## 🔗 Related Projects
+
+- [Fullscreen Onepager](https://github.com/mirja-t/fullscreen-onepager) - Standalone fullscreen navigation component
+
+---
