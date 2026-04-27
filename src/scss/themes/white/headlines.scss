@@ -3,6 +3,6 @@ section.section {
     // @include headline-colors($section-color-even, $section-color-odd);
     h1,
     h2 {
-        color: var(--color-background); // underlying headline color
+        color: var(--color-primary); // underlying headline color
     }
 }

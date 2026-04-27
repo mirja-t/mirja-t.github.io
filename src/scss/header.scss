@@ -18,7 +18,8 @@ header {
         max-height: 13em;
     }
     @media screen and (min-width: $breakpoint-layout-switch) {
-        left: 33vw;
+        left: 30vw;
+        transform: translateX(-50%);
     }
 }
 .logo {

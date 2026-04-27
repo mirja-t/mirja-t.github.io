@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Ebene_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 64 64">
+  <!-- Generator: Adobe Illustrator 29.4.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 152)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #1d1d1b;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path class="st0" d="M32,0C14.3,0,0,14.3,0,32s14.3,32,32,32,32-14.3,32-32S49.7,0,32,0ZM49.4,58.6L23.3,24.9v20h-4.3v-25.4h5.3l16.2,20.9v-20.9h4.2v25.4h-.7l8.6,11.1c-1.1.9-2.2,1.8-3.4,2.6Z"/>
+</svg>

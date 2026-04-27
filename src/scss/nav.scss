@@ -59,13 +59,16 @@ nav#bottom-nav {
         justify-content: flex-end;
         font-size: 0.95em;
         li {
-            margin-left: $mainpadding;
+            margin-right: $mainpadding;
             a {
                 text-decoration: none;
                 transition: color 0.5s ease 0.35s;
                 &:hover {
                     text-decoration: underline;
                 }
+            }
+            &.icon {
+                margin-right: 0.75em;
             }
         }
     }

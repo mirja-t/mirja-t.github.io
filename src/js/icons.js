@@ -9,6 +9,7 @@ import sql from "/images/design/icon-sql.svg";
 import ui from "/images/design/icon-ui.svg";
 import testing from "/images/design/icon-testing.svg";
 import ts from "/images/design/icon-ts.svg";
+import email from "/images/design/icon-email.svg";
 
 const ICONS = {
     css,
@@ -22,5 +23,6 @@ const ICONS = {
     ui,
     testing,
     ts,
+    email,
 };
 export default ICONS;

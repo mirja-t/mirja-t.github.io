@@ -42,14 +42,16 @@
     }
 }
 
-.inview .circle {
+.inview .circle,
+.js-disabled .circle {
     *:before {
         transform: translateY(101%) rotate(-5deg);
         transition: all 0.5s ease 0.5s;
     }
 }
 
-.fullpage.down .inview .circle {
+.fullpage.down .inview .circle,
+.js-disabled .circle {
     > *:before {
         transform: translateY(-101%) rotate(-5deg);
         transition: all 0.5s ease 0.2s;
