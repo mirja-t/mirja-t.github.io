@@ -1,10 +1,10 @@
 {
     "meta": {
         "lang": "en",
-        "title": "Mirja T. – Frontend Developer",
-        "description": "Mirja T. Homepage - Frontend Developer and Webdesigner",
+        "title": "Mirja Tschakarov – Frontend Developer",
+        "description": "Mirja Tschakarov Homepage - Frontend Developer and Webdesigner",
         "keywords": "SVG skills chart, frontend developer, webdesign",
-        "author": "Mirja T."
+        "author": "Mirja Tschakarov"
     },
     "navigation": {
         "logoTitle": "back to homepage",
@@ -14,7 +14,7 @@
     },
     "home": {
         "title": "Frontend Development and Webdesign",
-        "description": "Hi, I am Mirja, Frontend developer with a strong background in building complex web applications, combining solid programming expertise with a deep understanding of user-centric design."
+        "description": "I am Mirja, Frontend Developer with over 10 years of experience in web development, UI/UX design, and data-driven applications. Specialized in React, TypeScript, and scalable frontend architectures."
     },
     "skills": {
         "title": "Tech Stack and Skills",
@@ -53,63 +53,70 @@
                 "date": "10/2024 – 12/2025",
                 "title": "Senior Frontend Developer",
                 "company": "4cast (Potsdam)",
-                "tasks": [
-                    "Responsibility for frontend architecture, technical setups, and scalability",
-                    "Development of a design system and automated testing workflows",
-                    "Ensuring accessibility, responsiveness, and performance",
-                    "Close collaboration with backend engineers and data scientists",
-                    "Moderation and shared responsibility for sprint plannings and refinements",
-                    "Coaching and mentoring of developers"
-                ]
+                "tasks": {
+                    "desc": "Leading frontend development of a web application that supports data scientists in managing and analyzing wind energy projects",
+                    "0": "Selection and implementation of technical setups and responsibility for architectural decisions for a scalable frontend, including building a design system and test workflows",
+                    "1": "Ensuring accessibility (WCAG), responsiveness, and cross-browser compatibility",
+                    "2": "Implementation of modern frontend patterns (e.g., Hooks, Code Splitting) to improve performance and maintainability",
+                    "3": "Planning and implementation of new features in close coordination with backend team and data scientists (API design, data models, UX optimization)",
+                    "4": "Active participation and moderation of sprint planning and refinements in the agile development process",
+                    "5": "Onboarding, coaching, and mentoring of junior and mid-level developers"
+                }
             },
             "frontend4cast": {
                 "date": "05/2023 – 09/2024",
                 "title": "Frontend Developer",
                 "company": "4cast (Potsdam)",
-                "tasks": [
-                    "Conceptualization and introduction of a design system",
-                    "Development of new features and UI/UX improvements",
-                    "Performance optimizations through refactoring and code reviews",
-                    "Introduction of coding standards and automated tests"
-                ]
+                "tasks": {
+                    "desc": "Development of web applications for machine learning processes and wind farm project planning based on geo and location data",
+                    "0": "Conceptualization, introduction, and maintenance of a component-based design system as well as establishing automated tests to ensure code quality",
+                    "1": "Improving usability through redesign of UI components",
+                    "2": "Development of new features and improvement of existing functions",
+                    "3": "Performance optimization through refactoring existing components and regular code reviews",
+                    "4": "State management with React Context for modular, maintainable component architectures",
+                    "5": "Introduction of coding standards, linting, Prettier, and TypeScript strict mode for consistent code quality",
+                    "6": "Participation in sprint planning, refinements, and retrospectives in the agile development process"
+                }
             },
             "offensichtbar": {
                 "date": "02/2014 – 10/2024",
                 "title": "Frontend Developer and Webdesigner",
                 "company": "offensichtbar (Berlin)",
-                "tasks": [
-                    "Concept and development of interactive learning platforms, web applications, games, and corporate websites",
-                    "UX and UI design, component development, frontend implementation, launch, and ongoing product support",
-                    "Technical project leadership including requirements analysis and client consulting"
-                ],
+                "tasks": {
+                    "0": "Conceptualization, design, and implementation of interactive learning platforms and modules, web applications, games, and corporate websites",
+                    "1": "Client consulting, project management, and long-term support",
+                    "2": "Implementation of React and WordPress-based frontends"
+                },
                 "clients": "Clients (among others): Dior (LVMH) • Shiseido • NORDMETALL-Stiftung • Wärme Hamburg (via compactteam)"
             },
             "artDirectorFreelance": {
                 "date": "10/2010 – 01/2014",
                 "title": "Art Director (freelance)",
-                "tasks": [
-                    "Concept, execution, and supervision of branding and print projects"
-                ],
+                "tasks": {
+                    "0": "Conceptualization, implementation, and support of projects in branding, print, and web design"
+                },
                 "clients": "Clients (among others): World Vision (via greenkern) • Schroedel Schulbuchverlag (via kapieren.de) • KASSELWASSER (via roberts)"
             },
             "krowne": {
                 "date": "10/2007 – 09/2010",
                 "title": "Art Director",
                 "company": "Krowne Communications (Berlin)",
-                "tasks": [
-                    "Leadership of corporate design and publishing projects, development of consistent brand identities"
-                ]
+                "tasks": {
+                    "0": "Leadership of campaign, corporate design, and publishing projects (e.g., Bundesdruckerei)"
+                }
             },
             "graphicDesigner": {
                 "date": "2004 – 2007",
                 "title": "Graphic Designer (freelance)",
-                "tasks": ["Editorial design and packaging for agencies"],
+                "tasks": {
+                    "0": "Layout of print media (e.g., brochures, catalogs), packaging, etc. in agency operations"
+                },
                 "clients": "Clients (among others): Hapag Lloyd (via the Ad Store) • Bombardier (via Salz)"
             }
         },
         "education": {
             "date": "1999 – 2003",
-            "degree": "Diplom-Designerin (FH) • Hochschule Hannover"
+            "degree": "Institute for Design (IND), Hamburg"
         }
     },
     "footer": {

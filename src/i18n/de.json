@@ -1,10 +1,10 @@
 {
     "meta": {
         "lang": "de",
-        "title": "Mirja T. – Frontend-Entwicklerin",
-        "description": "Mirja T. Homepage - Frontend-Entwicklerin und Webdesignerin",
+        "title": "Mirja Tschakarov – Frontend-Entwicklerin",
+        "description": "Mirja Tschakarov Homepage - Frontend-Entwicklerin und Webdesignerin",
         "keywords": "SVG Skills Chart, Frontend-Entwicklerin, Webdesign",
-        "author": "Mirja T."
+        "author": "Mirja Tschakarov"
     },
     "navigation": {
         "logoTitle": "zurück zur Startseite",
@@ -14,7 +14,7 @@
     },
     "home": {
         "title": "Frontend-Entwicklung und Webdesign",
-        "description": "Hallo, ich bin Mirja, Frontend Entwicklerin mit über 10 Jahren Erfahrung in Webentwicklung, UI/UX-Design und datengetriebenen Anwendungen. Spezialisiert auf React, TypeScript und skalierbare Frontend-Architekturen."
+        "description": "Ich bin Mirja, Frontend Entwicklerin mit über 10 Jahren Erfahrung in Webentwicklung, UI/UX-Design und datengetriebenen Anwendungen. Spezialisiert auf React, TypeScript und skalierbare Frontend-Architekturen."
     },
     "skills": {
         "title": "Tech Stack und Skills",
@@ -36,7 +36,7 @@
         "engineering": {
             "title": "Engineering-Praktiken:",
             "codeReviews": "Code Reviews",
-            "technicalOwnership": "Technical Ownership",
+            "technicalOwnership": "Technische Verantwortung",
             "mentoring": "Mentoring",
             "guidelines": "Frontend-Guidelines",
             "cicd": "CI/CD"
@@ -53,63 +53,70 @@
                 "date": "10/2024 – 12/2025",
                 "title": "Senior Frontend-Entwicklerin",
                 "company": "4cast (Potsdam)",
-                "tasks": [
-                    "Verantwortung für Frontend-Architektur, technische Setups und Skalierbarkeit",
-                    "Entwicklung eines Design Systems und automatisierter Test-Workflows",
-                    "Sicherstellung von Barrierefreiheit, Responsivität und Performance",
-                    "Enge Zusammenarbeit mit Backend-Ingenieuren und Data Scientists",
-                    "Moderation und geteilte Verantwortung für Sprint-Planungen und Refinements",
-                    "Coaching und Mentoring von Entwicklern"
-                ]
+                "tasks": {
+                    "desc": "Leitung der Frontend-Entwicklung einer Webanwendung, die Data Scientists bei der Verwaltung und Analyse von Windenergieprojekten unterstützt",
+                    "0": "Auswahl und Implementierung technischer Setups sowie Verantwortung für Architekturentscheidungen für ein skalierbares Frontend, einschließlich Aufbau eines Design Systems und Test-Workflows",
+                    "1": "Sicherstellung von Barrierefreiheit (WCAG), Responsiveness und Cross-Browser-Kompatibilität",
+                    "2": "Implementierung moderner Frontend-Patterns (z. B. Hooks, Code Splitting) zur Verbesserung von Performance und Wartbarkeit",
+                    "3": "Planung und Umsetzung neuer Features in enger Abstimmung mit Backend-Team und Data Scientists (API-Design, Datenmodelle, UX-Optimierung)",
+                    "4": "Aktive Mitgestaltung und Moderation von Sprint Plannings und Refinements im agilen Entwicklungsprozess",
+                    "5": "Onboarding, Coaching und Mentoring von Junior- und Mid-Level-Entwickler*innen"
+                }
             },
             "frontend4cast": {
                 "date": "05/2023 – 09/2024",
                 "title": "Frontend-Entwicklerin",
                 "company": "4cast (Potsdam)",
-                "tasks": [
-                    "Konzeption und Einführung eines Design Systems",
-                    "Entwicklung neuer Features und UI/UX-Verbesserungen",
-                    "Performance-Optimierungen durch Refactoring und Code Reviews",
-                    "Einführung von Coding-Standards und automatisierten Tests"
-                ]
+                "tasks": {
+                    "desc": "Entwicklung von Webanwendungen für Machine-Learning-Prozesse und die Planung von Windparkprojekten auf Basis von Geo- und Standortdaten",
+                    "0": "Konzeption, Einführung und Pflege eines komponentenbasierten Design Systems sowie Etablierung automatisierter Tests zur Sicherstellung der Codequalität",
+                    "1": "Verbesserung der Usability durch Redesign von UI-Komponenten",
+                    "2": "Entwicklung neuer Features und Verbesserung bestehender Funktionen",
+                    "3": "Performance-Optimierung durch Refactoring bestehender Komponenten und regelmäßige Code Reviews",
+                    "4": "State-Management mit React Context für modulare, wartbare Komponentenarchitekturen",
+                    "5": "Einführung von Coding Standards, Linting, Prettier und TypeScript Strict Mode für konsistente Codequalität",
+                    "6": "Teilnahme an Sprint Planning, Refinements und Retrospektiven im agilen Entwicklungsprozess"
+                }
             },
             "offensichtbar": {
                 "date": "02/2014 – 10/2024",
                 "title": "Frontend-Entwicklerin und Webdesignerin",
                 "company": "offensichtbar (Berlin)",
-                "tasks": [
-                    "Konzept und Entwicklung interaktiver Lernplattformen, Webanwendungen, Spiele und Corporate Websites",
-                    "UX- und UI-Design, Komponentenentwicklung, Frontend-Implementierung, Launch und laufender Produktsupport",
-                    "Technische Projektleitung einschließlich Anforderungsanalyse und Kundenberatung"
-                ],
-                "clients": "Kunden (u.a.): Dior (LVMH) • Shiseido • NORDMETALL-Stiftung • Wärme Hamburg (via compactteam)"
+                "tasks": {
+                    "0": "Konzeption, Design und Umsetzung interaktiver Lernplattformen und -Module, Webanwendungen, Spielen sowie Corporate Websites",
+                    "1": "Kundenberatung, Projektmanagement und langfristige Betreuung",
+                    "2": "Umsetzung von React- und WordPress-basierten Frontends"
+                },
+                "clients": "Kunden (u. A.): Dior (LVMH) • Shiseido • NORDMETALL-Stiftung • Wärme Hamburg (via compactteam)"
             },
             "artDirectorFreelance": {
                 "date": "10/2010 – 01/2014",
-                "title": "Art Director (freiberuflich)",
-                "tasks": [
-                    "Konzept, Umsetzung und Betreuung von Branding- und Print-Projekten"
-                ],
-                "clients": "Kunden (u.a.): World Vision (via greenkern) • Schroedel Schulbuchverlag (via kapieren.de) • KASSELWASSER (via roberts)"
+                "title": "Artdirektorin (freiberuflich)",
+                "tasks": {
+                    "0": "Konzeption, Umsetzung und Betreuung von Projekten in den Bereichen Branding, Print und Webdesign"
+                },
+                "clients": "Kunden (u. A.): World Vision (via greenkern) • Schroedel Schulbuchverlag (via kapieren.de) • KASSELWASSER (via roberts)"
             },
             "krowne": {
                 "date": "10/2007 – 09/2010",
-                "title": "Art Director",
+                "title": "Artdirektorin",
                 "company": "Krowne Communications (Berlin)",
-                "tasks": [
-                    "Leitung von Corporate Design und Publishing-Projekten, Entwicklung konsistenter Markenidentitäten"
-                ]
+                "tasks": {
+                    "0": "Leitung von Kampagnen-, Corporate-Design- und Publishing-Projekten (z. B. Bundesdruckerei)"
+                }
             },
             "graphicDesigner": {
                 "date": "2004 – 2007",
                 "title": "Grafikdesignerin (freiberuflich)",
-                "tasks": ["Editorial Design und Packaging für Agenturen"],
-                "clients": "Kunden (u.a.): Hapag Lloyd (via the Ad Store) • Bombardier (via Salz)"
+                "tasks": {
+                    "0": "Layout von Printmedien (z. B. Broschüren, Kataloge), Packaging, etc. im Agenturbetrieb"
+                },
+                "clients": "Kunden (u. A.): Hapag Lloyd (via the Ad Store) • Bombardier (via Salz)"
             }
         },
         "education": {
             "date": "1999 – 2003",
-            "degree": "Diplom-Designerin (FH) • Hochschule Hannover"
+            "degree": "Institut für Design (IND), Hamburg"
         }
     },
     "footer": {
