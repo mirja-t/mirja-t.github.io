@@ -1,0 +1,120 @@
+{
+    "meta": {
+        "lang": "de",
+        "title": "Mirja T. – Frontend-Entwicklerin",
+        "description": "Mirja T. Homepage - Frontend-Entwicklerin und Webdesignerin",
+        "keywords": "SVG Skills Chart, Frontend-Entwicklerin, Webdesign",
+        "author": "Mirja T."
+    },
+    "navigation": {
+        "logoTitle": "zurück zur Startseite",
+        "who": "Wer",
+        "how": "Wie",
+        "what": "Was"
+    },
+    "home": {
+        "title": "Frontend-Entwicklung und Webdesign",
+        "description": "Hallo, ich bin Mirja, Frontend Entwicklerin mit über 10 Jahren Erfahrung in Webentwicklung, UI/UX-Design und datengetriebenen Anwendungen. Spezialisiert auf React, TypeScript und skalierbare Frontend-Architekturen."
+    },
+    "skills": {
+        "title": "Tech Stack und Skills",
+        "frontend": {
+            "title": "Frontend:",
+            "react": "React",
+            "nextjs": "Next.js",
+            "typescript": "TypeScript",
+            "htmlCss": "HTML, SCSS/CSS",
+            "designSystems": "Design Systeme (Storybook)",
+            "d3": "d3",
+            "framerMotion": "Framer Motion",
+            "reactLeaflet": "React Leaflet",
+            "openLayers": "OpenLayers",
+            "linting": "Linting",
+            "vite": "Vite",
+            "testing": "Frontend-Testing (Unit, Component, e2e)"
+        },
+        "engineering": {
+            "title": "Engineering-Praktiken:",
+            "codeReviews": "Code Reviews",
+            "technicalOwnership": "Technical Ownership",
+            "mentoring": "Mentoring",
+            "guidelines": "Frontend-Guidelines",
+            "cicd": "CI/CD"
+        }
+    },
+    "about": {
+        "portraitAlt": "Portrait Mirja Tschakarov",
+        "name": "Mirja Tschakarov",
+        "jobTitle": "Frontend-Entwicklerin und Webdesignerin"
+    },
+    "cv": {
+        "positions": {
+            "senior4cast": {
+                "date": "10/2024 – 12/2025",
+                "title": "Senior Frontend-Entwicklerin",
+                "company": "4cast (Potsdam)",
+                "tasks": [
+                    "Verantwortung für Frontend-Architektur, technische Setups und Skalierbarkeit",
+                    "Entwicklung eines Design Systems und automatisierter Test-Workflows",
+                    "Sicherstellung von Barrierefreiheit, Responsivität und Performance",
+                    "Enge Zusammenarbeit mit Backend-Ingenieuren und Data Scientists",
+                    "Moderation und geteilte Verantwortung für Sprint-Planungen und Refinements",
+                    "Coaching und Mentoring von Entwicklern"
+                ]
+            },
+            "frontend4cast": {
+                "date": "05/2023 – 09/2024",
+                "title": "Frontend-Entwicklerin",
+                "company": "4cast (Potsdam)",
+                "tasks": [
+                    "Konzeption und Einführung eines Design Systems",
+                    "Entwicklung neuer Features und UI/UX-Verbesserungen",
+                    "Performance-Optimierungen durch Refactoring und Code Reviews",
+                    "Einführung von Coding-Standards und automatisierten Tests"
+                ]
+            },
+            "offensichtbar": {
+                "date": "02/2014 – 10/2024",
+                "title": "Frontend-Entwicklerin und Webdesignerin",
+                "company": "offensichtbar (Berlin)",
+                "tasks": [
+                    "Konzept und Entwicklung interaktiver Lernplattformen, Webanwendungen, Spiele und Corporate Websites",
+                    "UX- und UI-Design, Komponentenentwicklung, Frontend-Implementierung, Launch und laufender Produktsupport",
+                    "Technische Projektleitung einschließlich Anforderungsanalyse und Kundenberatung"
+                ],
+                "clients": "Kunden (u.a.): Dior (LVMH) • Shiseido • NORDMETALL-Stiftung • Wärme Hamburg (via compactteam)"
+            },
+            "artDirectorFreelance": {
+                "date": "10/2010 – 01/2014",
+                "title": "Art Director (freiberuflich)",
+                "tasks": [
+                    "Konzept, Umsetzung und Betreuung von Branding- und Print-Projekten"
+                ],
+                "clients": "Kunden (u.a.): World Vision (via greenkern) • Schroedel Schulbuchverlag (via kapieren.de) • KASSELWASSER (via roberts)"
+            },
+            "krowne": {
+                "date": "10/2007 – 09/2010",
+                "title": "Art Director",
+                "company": "Krowne Communications (Berlin)",
+                "tasks": [
+                    "Leitung von Corporate Design und Publishing-Projekten, Entwicklung konsistenter Markenidentitäten"
+                ]
+            },
+            "graphicDesigner": {
+                "date": "2004 – 2007",
+                "title": "Grafikdesignerin (freiberuflich)",
+                "tasks": ["Editorial Design und Packaging für Agenturen"],
+                "clients": "Kunden (u.a.): Hapag Lloyd (via the Ad Store) • Bombardier (via Salz)"
+            }
+        },
+        "education": {
+            "date": "1999 – 2003",
+            "degree": "Diplom-Designerin (FH) • Hochschule Hannover"
+        }
+    },
+    "footer": {
+        "mailTitle": "schreib mir",
+        "codepenTitle": "mein Codepen-Profil",
+        "githubTitle": "mein Github-Profil"
+    }
+}

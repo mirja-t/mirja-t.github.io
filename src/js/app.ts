@@ -9,8 +9,12 @@ import { shrinkLogoOnScroll } from "./shrinkLogoOnScroll";
 import { generateButton } from "./generateButton";
 import { stickyElement } from "./stickyElement";
 import LinkMousefollow from "./webcomponents/LinkMousefollow";
+import { ClientTemplateRenderer } from "./clientTemplateRenderer";
 
 import { parallax } from "./parallax";
+
+// Initialize client-side template renderer
+const templateRenderer = new ClientTemplateRenderer();
 
 // Theme
 let currentTheme = "white"; // alternate | white
@@ -18,13 +22,15 @@ const body = document.querySelector("body");
 body.classList = "";
 body.classList.add(`theme-${currentTheme}`);
 
-function init() {
+async function init() {
+    // Initialize i18n rendering first
+    await templateRenderer.init();
     const svgChart = document.getElementById("svgchart");
     // const chartDetails = document.getElementById("chart-details");
     const cardlinksWrapper = document.querySelectorAll(".card-links");
     const footerlinks = document.querySelectorAll("footer li.icon");
     const scrollElements = document.querySelectorAll(
-        ".project-details .content"
+        ".project-details .content",
     );
     const contactbuttonwrapper = document.getElementById("contactbutton");
     const sections = document.querySelectorAll("#fullpage .section");
@@ -53,7 +59,7 @@ function init() {
     }
 
     const contentwrapper = document.querySelector(
-        ".content-wrapper:not(#fullpagewrapper)"
+        ".content-wrapper:not(#fullpagewrapper)",
     );
     if (contentwrapper) addSectionCountClass(contentwrapper);
 
@@ -64,7 +70,9 @@ function init() {
         hoverAnimation(logo, 10);
     }
 }
-init();
+
+// Initialize the app
+init().catch(console.error);
 
 function initFullpage() {
     const logo = document.getElementById("logowrapper");
