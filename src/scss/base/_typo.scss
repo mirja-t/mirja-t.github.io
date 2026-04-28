@@ -216,7 +216,8 @@ hr {
     }
 }
 
-section.active {
+section.active,
+.inview {
     .inverted-text-item:after {
         transform: translateY(-100%);
         transition: transform 0.25s ease 1s;

@@ -29,9 +29,7 @@ async function init() {
     // const chartDetails = document.getElementById("chart-details");
     const cardlinksWrapper = document.querySelectorAll(".card-links");
     const footerlinks = document.querySelectorAll("footer li.icon");
-    const scrollElements = document.querySelectorAll(
-        ".project-details .content",
-    );
+    const scrollElements = document.querySelectorAll(".scrollspy");
     const contactbuttonwrapper = document.getElementById("contactbutton");
     const sections = document.querySelectorAll("#fullpage .section");
     const stickyContainer = document.querySelectorAll(".sticky-container");
