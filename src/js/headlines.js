@@ -4,7 +4,11 @@ const getTranslations = async (language) => {
         const baseUrl = import.meta.env.BASE_URL.endsWith("/")
             ? import.meta.env.BASE_URL
             : `${import.meta.env.BASE_URL}/`;
-        return `${baseUrl}i18n/${language}.json`;
+        const response = await fetch(`${baseUrl}i18n/${language}.json`);
+        if (!response.ok) {
+            throw new Error(`Failed to load ${language} translations`);
+        }
+        return await response.json();
     } catch (error) {
         console.error(`Failed to load translations for ${language}:`, error);
         // Fallback to German as default
