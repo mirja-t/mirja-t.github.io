@@ -44,7 +44,8 @@ const detectLanguage = () => {
 // Set up language change listener for headlines
 const setupHeadlineLanguageListener = (sections, theme) => {
     const languageSwitcher = document.getElementById("language-switcher");
-    if (languageSwitcher) {
+    if (languageSwitcher && !languageSwitcher.dataset.headlineListenerAttached) {
+        languageSwitcher.dataset.headlineListenerAttached = "true";
         languageSwitcher.addEventListener("change", async (event) => {
             const target = event.target;
             if (target.type === "radio" && target.name === "language") {
@@ -72,11 +73,8 @@ export const copyHeadlines = async (sections, theme) => {
         console.error("Could not load translations, using original text");
     }
 
-    // Set up language change listener (only once)
-    if (!window.headlineListenerSetup) {
-        setupHeadlineLanguageListener(sections, theme);
-        window.headlineListenerSetup = true;
-    }
+    // Set up language change listener (guards against duplicate attachment on the element itself)
+    setupHeadlineLanguageListener(sections, theme);
 
     sections.forEach((section, idx) => {
         // set invers class
