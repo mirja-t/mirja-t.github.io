@@ -1,7 +1,10 @@
 // Simple translation fetcher for headlines
 const getTranslations = async (language) => {
     try {
-        const response = await fetch(`/src/i18n/${language}.json`);
+        const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+            ? import.meta.env.BASE_URL
+            : `${import.meta.env.BASE_URL}/`;
+        const response = await fetch(`${baseUrl}i18n/${language}.json`);
         if (!response.ok) {
             throw new Error(`Failed to load ${language} translations`);
         }
