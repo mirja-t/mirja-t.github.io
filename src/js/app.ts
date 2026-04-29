@@ -45,11 +45,7 @@ async function init() {
 
     shrinkLogoOnScroll();
     if (scrollElements.length) {
-        scrollElements.forEach((el) => {
-            window.addEventListener("scroll", function () {
-                scrollSpy(el);
-            });
-        });
+        scrollElements.forEach((el) => scrollSpy(el));
     }
 
     if (contactbuttonwrapper) {
