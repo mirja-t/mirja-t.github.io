@@ -86,17 +86,6 @@ export class ClientTemplateRenderer {
             }
         });
 
-        // Update elements with data-i18n-html attributes (for HTML content)
-        document.querySelectorAll("[data-i18n-html]").forEach((element) => {
-            const key = element.getAttribute("data-i18n-html");
-            if (key) {
-                const value = this.getNestedValue(translations, key);
-                if (value !== undefined) {
-                    element.innerHTML = String(value);
-                }
-            }
-        });
-
         // Update attributes with data-i18n-attr
         document.querySelectorAll("[data-i18n-attr]").forEach((element) => {
             const attrConfig = element.getAttribute("data-i18n-attr");
