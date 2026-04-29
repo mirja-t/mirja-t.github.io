@@ -20,19 +20,15 @@ nav {
 }
 
 nav#nav {
-    margin-left: auto;
-    max-width: calc(100% - 4vw - 3em);
+    display: flex;
+    justify-content: flex-end;
     ul {
         display: flex;
         justify-content: flex-end;
         flex-wrap: wrap;
         li {
             cursor: pointer;
-            margin: 0 0.15em;
-            @media screen and (min-width: $breakpoint-small) {
-                margin: 0 0.5em;
-                max-width: calc(100% - 5vw - 6em);
-            }
+            margin: 0 1px;
             @include inverted-text-item($nav-primary, $nav-secondary);
             * {
                 @extend %font-sans-bold;
@@ -51,6 +47,80 @@ nav#nav {
     ul li.active a span {
         transform: translateY(-100%);
         transition: transform 0.35s ease;
+    }
+    #language-switcher {
+        @extend %font-sans-bold;
+        margin-left: 0.75em;
+        position: relative;
+        overflow: hidden;
+        fieldset {
+            display: flex;
+            border: 1px solid var(--color-foreground);
+            position: relative;
+            > div {
+                position: relative;
+                overflow: hidden;
+            }
+            &:has(div:first-child:hover)::after {
+                left: 0;
+                width: 50%;
+            }
+            &:has(div:nth-child(2):hover)::after {
+                width: 50%;
+            }
+            &::after {
+                content: "";
+                width: 0;
+                height: 100%;
+                background-color: var(--color-secondary);
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transition: all 0.35s ease;
+                z-index: 0;
+            }
+        }
+        label {
+            cursor: pointer;
+            padding: 0.25em 0.25em;
+            position: relative;
+            z-index: 2;
+            color: var(--color-foreground);
+            text-shadow: 100px 0 var(--color-background);
+            left: 0;
+            transition: left 0.35s ease;
+        }
+        div:nth-child(2) {
+            &:has(:checked) ~ .background {
+                left: 50%;
+            }
+            label {
+                text-shadow: -100px 0 var(--color-background);
+            }
+            input[type="radio"]:checked + label {
+                left: 100px;
+            }
+        }
+        input[type="radio"] {
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+        input[type="radio"]:checked + label {
+            left: -100px;
+        }
+        .background {
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-foreground);
+            position: absolute;
+            top: 0;
+            left: -50%;
+            transition: left 0.7s ease;
+            z-index: 1;
+        }
     }
 }
 

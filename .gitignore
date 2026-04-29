@@ -1,0 +1,28 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# fonts
+/public/fonts
+/public/images
+
+# pages
+/src/html
+/dist/*.html
+
+# de
+/dist_de
+/dist
+
+# style
+/src/scss/fullpage_bak.scss
+/src/scss/camingo.scss
+
+package-lock.json
+
+.DS_Store
+.env
+.env.development

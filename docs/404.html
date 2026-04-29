@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Redirecting...</title>
+        <script>
+            // Simple client-side routing for GitHub Pages
+            const path = window.location.pathname;
+            const supportedLanguages = ["en", "de"];
+
+            // Extract language from path
+            const pathSegments = path.split("/").filter((segment) => segment);
+            const potentialLang = pathSegments[0];
+
+            if (supportedLanguages.includes(potentialLang)) {
+                // Redirect to language-specific page
+                window.location.href = `/${potentialLang}/`;
+            } else {
+                // Redirect to default English page
+                window.location.href = "/";
+            }
+        </script>
+    </head>
+    <body>
+        <p>
+            If you are not redirected automatically, <a href="/">click here</a>.
+        </p>
+    </body>
+</html>
