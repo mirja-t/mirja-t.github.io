@@ -6,7 +6,7 @@
     "scripts": {
         "sass:watch": "sass src/scss/app.scss public/style.css --watch",
         "dev": "vite",
-        "build": "tsc && vite build && tsx scripts/build-i18n.ts",
+        "build": "tsc && vite build",
         "preview": "vite preview",
         "test": "vitest"
     },

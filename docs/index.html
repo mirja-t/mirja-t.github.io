@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
     <head>
         <meta charset="UTF-8" />
-        <title>Mirja T. – Frontend Developer</title>
-        <meta name="description" content="Mirja T. Homepage" />
-        <meta name="keywords" content="SVG skills chart" />
+        <title data-i18n="meta.title">Mirja T. – Frontend-Entwicklerin</title>
+        <meta name="description" content="Mirja T. Homepage - Frontend-Entwicklerin und Webdesignerin" />
+        <meta name="keywords" content="SVG Skills Chart, Frontend-Entwicklerin, Webdesign" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="author" content="Mirja T." />
         <link rel="icon" href="dist/favicon.ico" />
-      <script type="module" crossorigin src="/assets/index-DZkgKIrv.js"></script>
-      <link rel="stylesheet" crossorigin href="/assets/index-iiHP1AaQ.css">
+      <script type="module" crossorigin src="/assets/index-kWGu7ggd.js"></script>
+      <link rel="stylesheet" crossorigin href="/assets/index-CM4qTkUg.css">
     </head>
    <body class="js-disabled theme-white">
         <div id="fullpagewrapper" class="content-wrapper">
@@ -18,22 +18,35 @@
                     id="logowrapper"
                     class="mousefollow logo-wrapper"
                     href="#section-0"
-                    title="back to homepage"
+                    data-i18n-attr='{"title": "navigation.logoTitle"}'
                 >
                     <span class="logo"></span>
                 </link-mousefollow>
                 <nav id="nav">
                     <ul>
                         <li id="section-0" class="active">
-                            <a href="#section-0"><span>Who</span></a>
+                            <a href="#section-0"><span data-i18n="navigation.who">Wer</span></a>
                         </li>
                         <li id="section-1">
-                            <a href="#section-1"><span>How</span></a>
+                            <a href="#section-1"><span data-i18n="navigation.how">Wie</span></a>
                         </li>
                         <li id="section-2">
-                            <a href="#section-2"><span>What</span></a>
+                            <a href="#section-2"><span data-i18n="navigation.what">Was</span></a>
                         </li>
                     </ul>
+                    <form id="language-switcher">
+                        <fieldset aria-label="Language">
+                            <div>
+                                <input type="radio" id="en" name="language" value="en">
+                                <label for="en">EN</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="de" name="language" value="de" checked>
+                                <label for="de">DE</label>
+                            </div>
+                            <span class="background"></span>
+                        </fieldset>
+                    </form>
                 </nav>
             </header>
             <main id="fullpage" class="main-container">
@@ -42,14 +55,9 @@
                         <div class="header-text middlewrapper-m">
                             <div class="middle js-scrollcontainer">
                                 <div class="content">
-                                    <h1>Frontend Development and Webdesign</h1>
-                                    <p>
-                                        Hi, I am Mirja, Frontend
-                                        developer with a strong background in
-                                        building complex web applications,
-                                        combining solid programming expertise
-                                        with a deep understanding of
-                                        user-centric design.
+                                    <h1 data-i18n="home.title">Frontend-Entwicklung und Webdesign</h1>
+                                    <p data-i18n="home.description">
+                                        Ich bin Mirja, Frontend-Entwicklerin mit über 10 Jahren Erfahrung in Webentwicklung, UI/UX-Design und datengetriebenen Anwendungen. Spezialisiert auf React, TypeScript und skalierbare Frontend-Architekturen.
                                     </p>
                                 </div>
                             </div>
@@ -61,63 +69,63 @@
                     <div class="container">
                         <div class="header-text middlewrapper-m">
                             <div class="middle">
-                                <div id="chart-details" class="content left">
+                                <div id="chart-details" class="content left scrollspy">
                                     <h2>
-                                        <span>Tech Stack and Skills</span>
+                                        <span data-i18n="skills.title">Tech Stack und Skills</span>
                                     </h2>
-                                    <h6>Frontend:</h6>
+                                    <h6 data-i18n="skills.frontend.title">Frontend:</h6>
                                     <p>
                                         <span class="icon tag inverted-text-item"
-                                            ><span class="icon-prefix-react">React</span></span
+                                            ><span class="icon-prefix-react" data-i18n="skills.frontend.react">React</span></span
                                         >
                                         <span class="tag inverted-text-item"
-                                            ><span class="icon-prefix-nextjs">Next.js</span></span
+                                            ><span class="icon-prefix-nextjs" data-i18n="skills.frontend.nextjs">Next.js</span></span
                                         >
                                         <span class="tag inverted-text-item"
-                                            ><span class="icon-prefix-ts">TypeScript</span></span
+                                            ><span class="icon-prefix-ts" data-i18n="skills.frontend.typescript">TypeScript</span></span
                                         >
                                         <span class="tag inverted-text-item"
-                                            ><span class="icon-prefix-tailwind">HTML, SCSS/CSS</span></span
+                                            ><span class="icon-prefix-tailwind" data-i18n="skills.frontend.htmlCss">HTML, SCSS/CSS</span></span
                                         >
                                         <span class="tag inverted-text-item"
-                                            ><span class="icon-prefix-storybook">Design Systems (Storybook)</span></span
+                                            ><span class="icon-prefix-storybook" data-i18n="skills.frontend.designSystems">Design Systeme (Storybook)</span></span
                                         >
                                         <span class="tag inverted-text-item"
-                                            ><span class="icon-prefix-d3">d3</span></span
+                                            ><span class="icon-prefix-d3" data-i18n="skills.frontend.d3">d3</span></span
                                         >
                                         <span class="tag inverted-text-item"
-                                            ><span class="icon-prefix-leaflet">Framer Motion</span></span>
+                                            ><span class="icon-prefix-leaflet" data-i18n="skills.frontend.framerMotion">Framer Motion</span></span>
                                         <span class="tag inverted-text-item"
-                                            ><span class="icon-prefix-leaflet">React Leaflet</span></span>
+                                            ><span class="icon-prefix-leaflet" data-i18n="skills.frontend.reactLeaflet">React Leaflet</span></span>
                                         <span class="tag inverted-text-item"
-                                            ><span class="icon-prefix-ol">OpenLayers</span></span>
+                                            ><span class="icon-prefix-ol" data-i18n="skills.frontend.openLayers">OpenLayers</span></span>
                                         <span class="tag inverted-text-item"
-                                            ><span class="icon-prefix-linting">Linting</span></span
+                                            ><span class="icon-prefix-linting" data-i18n="skills.frontend.linting">Linting</span></span
                                         >
                                             </span>
                                         <span class="tag inverted-text-item"
-                                            ><span class="icon-prefix-vite">Vite</span></span
+                                            ><span class="icon-prefix-vite" data-i18n="skills.frontend.vite">Vite</span></span
                                         >
                                         <span class="tag inverted-text-item"
-                                            ><span class="icon-prefix-vite">Frontend Testing (Unit, Component, e2e)</span></span
+                                            ><span class="icon-prefix-vite" data-i18n="skills.frontend.testing">Frontend-Testing (Unit, Component, e2e)</span></span
                                         >
                                     </p>
-                                     <h6>Engineering Practices:</h6>
+                                     <h6 data-i18n="skills.engineering.title">Engineering-Praktiken:</h6>
                                     <p>
                                         <span class="tag inverted-text-item"
-                                            ><span class="icon-prefix-vite">Code Reviews</span></span
+                                            ><span class="icon-prefix-vite" data-i18n="skills.engineering.codeReviews">Code Reviews</span></span
                                         >
                                         <span class="tag inverted-text-item"
-                                            ><span class="icon-prefix-vite">Technical Ownership</span></span
+                                            ><span class="icon-prefix-vite" data-i18n="skills.engineering.technicalOwnership">Technische Verantwortung</span></span
                                         >
                                         <span class="tag inverted-text-item"
-                                            ><span class="icon-prefix-vite">Mentoring</span></span
+                                            ><span class="icon-prefix-vite" data-i18n="skills.engineering.mentoring">Mentoring</span></span
                                         >
                                         <span class="tag inverted-text-item"
-                                            ><span class="icon-prefix-vite">Frontend-Guidelines</span></span
+                                            ><span class="icon-prefix-vite" data-i18n="skills.engineering.guidelines">Frontend-Guidelines</span></span
                                         >
                                         <span class="tag inverted-text-item"
-                                            ><span class="icon-prefix-vite">CI/CD</span></span
+                                            ><span class="icon-prefix-vite" data-i18n="skills.engineering.cicd">CI/CD</span></span
                                         >
                                     </p>
                                 </div>
@@ -133,11 +141,11 @@
                                 <div class="content">
                                     <div class="circle">
                                         <div>
-                                            <img src="/images/content/mirja-t-header.png" alt="Portrait Mirja Tschakarov" />
+                                            <img src="/images/content/mirja-t-header.png" data-i18n-attr='{"alt": "about.portraitAlt"}' alt="Portrait Mirja Tschakarov" />
                                         </div>
                                     </div>
-                                    <h5 class="m-t" style="text-align: center;">Mirja Tschakarov</h5>
-                                    <p style="text-align: center; font-size: 0.8em;">Frontend Developer and Webdesigner</p>
+                                    <h5 class="m-t" style="text-align: center;" data-i18n="about.name">Mirja Tschakarov</h5>
+                                    <p style="text-align: center; font-size: 0.8em;" data-i18n="about.jobTitle">Frontend-Entwicklerin und Webdesignerin</p>
                                 </div>
                             </div>
                         </div>
@@ -148,89 +156,93 @@
                                         <ul class="cv list list-xl">
                                             <li>
                                                 <div class="timeline">
-                                                    <p class="date h6">10/2024 – 12/2025</p>
-                                                    <h4 class="position">Senior Frontend Developer</h4>
-                                                    <h6 class="h5 company">4cast (Potsdam)</h6>
+                                                    <p class="date h6" data-i18n="cv.positions.senior4cast.date">10/2024 – 12/2025</p>
+                                                    <h4 class="position" data-i18n="cv.positions.senior4cast.title">Senior Frontend-Entwicklerin</h4>
+                                                    <h6 class="company" data-i18n="cv.positions.senior4cast.company">4cast (Potsdam)</h6>
                                                 </div>
                                                 <div class="description">
+                                                    <p data-i18n="cv.positions.senior4cast.tasks.desc">Leitung der Frontend-Entwicklung einer Webanwendung, die Data Scientists bei der Verwaltung und Analyse von Windenergieprojekten unterstützt</p>
                                                 <ul>
-                                                    <li>Responsibility for frontend architecture, technical setups, and scalability</li>
-                                                    <li>Development of a design system and automated testing workflows</li>
-                                                    <li>Ensuring accessibility, responsiveness, and performance</li>
-                                                    <li>Close collaboration with backend engineers and data scientists</li>
-                                                    <li>Moderation and shared responsibility for sprint plannings and refinements</li>
-                                                    <li>Coaching and mentoring of developers</li>
+                                                    <li data-i18n="cv.positions.senior4cast.tasks.0">Auswahl und Implementierung technischer Setups sowie Verantwortung für Architekturentscheidungen für ein skalierbares Frontend, einschließlich Aufbau eines Design Systems und Test-Workflows</li>
+                                                    <li data-i18n="cv.positions.senior4cast.tasks.1">Sicherstellung von Barrierefreiheit (WCAG), Responsiveness und Cross-Browser-Kompatibilität</li>
+                                                    <li data-i18n="cv.positions.senior4cast.tasks.2">Implementierung moderner Frontend-Patterns (z. B. Hooks, Code Splitting) zur Verbesserung von Performance und Wartbarkeit</li>
+                                                    <li data-i18n="cv.positions.senior4cast.tasks.3">Planung und Umsetzung neuer Features in enger Abstimmung mit Backend-Team und Data Scientists (API-Design, Datenmodelle, UX-Optimierung)</li>
+                                                    <li data-i18n="cv.positions.senior4cast.tasks.4">Aktive Mitgestaltung und Moderation von Sprint Plannings und Refinements im agilen Entwicklungsprozess</li>
+                                                    <li data-i18n="cv.positions.senior4cast.tasks.5">Onboarding, Coaching und Mentoring von Junior- und Mid-Level-Entwickler*innen</li>
                                                 </ul>
                                                 </div>
                                                 <div class="timeline">
-                                                    <p class="date h6">05/2023 – 09/2024</p>
-                                                    <h4 class="position">Frontend Developer</h4>
-                                                    <h6 class="h5 company">4cast (Potsdam)</h6>
+                                                    <p class="date h6" data-i18n="cv.positions.frontend4cast.date">05/2023 – 09/2024</p>
+                                                    <h4 class="position" data-i18n="cv.positions.frontend4cast.title">Frontend-Entwicklerin</h4>
+                                                    <h6 class="company" data-i18n="cv.positions.frontend4cast.company">4cast (Potsdam)</h6>
                                                 </div>
                                                 <div class="description">
+                                                    <p data-i18n="cv.positions.frontend4cast.tasks.desc">Entwicklung von Webanwendungen für Machine-Learning-Prozesse und die Planung von Windparkprojekten auf Basis von Geo- und Standortdaten</p> 
                                                 <ul>
-                                                    <li>Conceptualization and introduction of a design system</li>
-                                                    <li>Development of new features and UI/UX improvements</li>
-                                                    <li>Performance optimizations through refactoring and code reviews</li>
-                                                    <li>Introduction of coding standards and automated tests</li>
+                                                    <li data-i18n="cv.positions.frontend4cast.tasks.0">Konzeption, Einführung und Pflege eines komponentenbasierten Design Systems sowie Etablierung automatisierter Tests zur Sicherstellung der Codequalität</li>
+                                                    <li data-i18n="cv.positions.frontend4cast.tasks.1">Verbesserung der Usability durch Redesign von UI-Komponenten</li>
+                                                    <li data-i18n="cv.positions.frontend4cast.tasks.2">Entwicklung neuer Features und Verbesserung bestehender Funktionen</li>
+                                                    <li data-i18n="cv.positions.frontend4cast.tasks.3">Performance-Optimierung durch Refactoring bestehender Komponenten und regelmäßige Code Reviews</li>
+                                                    <li data-i18n="cv.positions.frontend4cast.tasks.4">State-Management mit React Context für modulare, wartbare Komponentenarchitekturen</li>
+                                                    <li data-i18n="cv.positions.frontend4cast.tasks.5">Einführung von Coding Standards, Linting, Prettier und TypeScript Strict Mode für konsistente Codequalität</li>
+                                                    <li data-i18n="cv.positions.frontend4cast.tasks.6">Teilnahme an Sprint Planning, Refinements und Retrospektiven im agilen Entwicklungsprozess</li>
                                                 </ul>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="timeline">
-                                                    <p class="date h6">02/2014 – 10/2024</p>
-                                                    <h4 class="position">Frontend Entwicklerin and Webdesigner</h4>
-                                                    <h6 class="company">offensichtbar (Berlin)</h6>
+                                                    <p class="date h6" data-i18n="cv.positions.offensichtbar.date">02/2014 – 10/2024</p>
+                                                    <h4 class="position" data-i18n="cv.positions.offensichtbar.title">Frontend-Entwicklerin und Webdesignerin</h4>
+                                                    <h6 class="company" data-i18n="cv.positions.offensichtbar.company">offensichtbar (Berlin)</h6>
                                                 </div>
                                                 <div class="description">
                                                 <ul>
-                                                    <li>Concept and development of interactive learning platforms, web applications, games, and corporate websites</li>
-                                                    <li>UX and UI design, component development, frontend implementation, launch, and ongoing product support</li>
-                                                    <li>Technical project leadership including requirements analysis and client consulting</li>
+                                                    <li data-i18n="cv.positions.offensichtbar.tasks.0">Konzeption, Design und Umsetzung interaktiver Lernplattformen und -Module, Webanwendungen, Spielen sowie Corporate Websites</li>
+                                                    <li data-i18n="cv.positions.offensichtbar.tasks.1">Kundenberatung, Projektmanagement und langfristige Betreuung</li>
+                                                    <li data-i18n="cv.positions.offensichtbar.tasks.2">Umsetzung von React- und WordPress-basierten Frontends</li>
                                                 </ul>
-                                                <p class="tech"><small>Clients (among others): Dior (LVMH) • Shiseido • NORDMETALL-Stiftung • Wärme Hamburg (via compactteam)</small></p>
+                                                <p class="tech"><small data-i18n="cv.positions.offensichtbar.clients">Kunden (u. A.): Dior (LVMH) • Shiseido • NORDMETALL-Stiftung • Wärme Hamburg (via compactteam)</small></p>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="timeline">
-                                                    <p class="date h6">10/2010 – 01/2014</p>
-                                                    <h4 class="position">Art Director (freelance)</h4>
+                                                    <p class="date h6" data-i18n="cv.positions.artDirectorFreelance.date">10/2010 – 01/2014</p>
+                                                    <h4 class="position" data-i18n="cv.positions.artDirectorFreelance.title">Artdirektorin (freiberuflich)</h4>
                                                 </div>
                                                 <div class="description">
                                                     <ul>
-
-                                                        <li>Concept, execution, and supervision of branding and print projects</li>
+                                                        <li data-i18n="cv.positions.artDirectorFreelance.tasks.0">Konzeption, Umsetzung und Betreuung von Projekten in den Bereichen Branding, Print und Webdesign</li>
                                                     </ul>
-                                                <p class="tech"><small>Clients (among others): World Vision (via greenkern) • Schroedel Schulbuchverlag (via kapieren.de) • KASSELWASSER (via roberts)</small></p>
+                                                <p class="tech"><small data-i18n="cv.positions.artDirectorFreelance.clients">Kunden (u. A.): World Vision (via greenkern) • Schroedel Schulbuchverlag (via kapieren.de) • KASSELWASSER (via roberts)</small></p>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="timeline">
-                                                <p class="date h6">10/2007 – 09/2010</p>
-                                                <h4 class="position">Art Director</h4>
-                                                <h6 class="company">Krowne Communications (Berlin)</h6></div>
+                                                <p class="date h6" data-i18n="cv.positions.krowne.date">10/2007 – 09/2010</p>
+                                                <h4 class="position" data-i18n="cv.positions.krowne.title">Artdirektorin</h4>
+                                                <h6 class="company" data-i18n="cv.positions.krowne.company">Krowne Communications (Berlin)</h6></div>
                                                 <div class="description">
                                                     <ul>
-
-                                                        <li>Leadership of corporate design and publishing projects, development of consistent brand identities</li>
+                                                        <li data-i18n="cv.positions.krowne.tasks.0">Leitung von Kampagnen-, Corporate-Design- und Publishing-Projekten (z. B. Bundesdruckerei)</li>
                                                     </ul>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="timeline">
-                                                <p class="date h6">2004 – 2007</p>
-                                                <h4 class="position">Graphic Designer (freelance)</h4>
+                                                <p class="date h6" data-i18n="cv.positions.graphicDesigner.date">2004 – 2007</p>
+                                                <h4 class="position" data-i18n="cv.positions.graphicDesigner.title">Grafikdesignerin (freiberuflich)</h4>
                                                 <div class="description">
                                                     <ul>
-                                                        <li>Editorial design and packaging for agencies</li>
+                                                        <li data-i18n="cv.positions.graphicDesigner.tasks.0">Layout von Printmedien (z. B. Broschüren, Kataloge), Packaging, etc. im Agenturbetrieb</li>
                                                     </ul>
-                                                <p class="tech"><small>Clients (among others): Hapag Lloyd (via the Ad Store) • Bombardier (via Salz)</small></p>
+                                                <p class="tech"><small data-i18n="cv.positions.graphicDesigner.clients">Kunden (u. A.): Hapag Lloyd (via the Ad Store) • Bombardier (via Salz)</small></p>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="timeline">
-                                                <p class="date h6">2001 – 2004</p>
-                                                <h6 class="company">Communication Design, Institut für Design (IN.D)</h6></div>
+                                                <p class="date h6" data-i18n="cv.education.date">1999 – 2003</p>
+                                                <h4 class="position" data-i18n="cv.education.title">Studium Kommunikationsdesign</h4>
+                                                <h6 class="company" data-i18n="cv.education.degree">Institut für Design (IND), Hamburg</h6></div>
                                             </li>
                                         </ul>
                                     </div>
@@ -249,7 +261,7 @@
                             <link-mousefollow
                                 class="mousefollow"
                                 href="mailto:email.mirja.t@gmail.com"
-                                title="mail me"
+                                data-i18n-attr='{"title": "footer.mailTitle"}'
                                 target="_blank"
                                 offset="-10%"
                                 outline
@@ -261,7 +273,7 @@
                             <link-mousefollow
                                 class="mousefollow"
                                 href="https://codepen.io/mirja-t"
-                                title="my Codepen profile"
+                                data-i18n-attr='{"title": "footer.codepenTitle"}'
                                 target="_blank"
                                 offset="-10%"
                                 outline
@@ -273,7 +285,7 @@
                             <link-mousefollow
                                 class="mousefollow"
                                 href="https://github.com/mirja-t/"
-                                title="my Github profile"
+                                data-i18n-attr='{"title": "footer.githubTitle"}'
                                 target="_blank"
                                 offset="-10%"
                                 outline
