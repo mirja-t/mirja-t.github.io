@@ -45,12 +45,22 @@ export class ClientTemplateRenderer {
     }
 
     /**
+     * Build a translation asset URL that respects the app base path
+     */
+    private getTranslationUrl(language: string): string {
+        const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+            ? import.meta.env.BASE_URL
+            : `${import.meta.env.BASE_URL}/`;
+        return `${baseUrl}i18n/${language}.json`;
+    }
+
+    /**
      * Load translation data for specified language
      */
     private async loadTranslations(language: string): Promise<TranslationData> {
         if (!this.translationCache.has(language)) {
             try {
-                const response = await fetch(`/src/i18n/${language}.json`);
+                const response = await fetch(this.getTranslationUrl(language));
                 if (!response.ok) {
                     throw new Error(`Failed to load ${language} translations`);
                 }
