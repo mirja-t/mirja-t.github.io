@@ -1,11 +1,10 @@
 // Simple translation fetcher for headlines
 const getTranslations = async (language) => {
     try {
-        const response = await fetch(`/src/i18n/${language}.json`);
-        if (!response.ok) {
-            throw new Error(`Failed to load ${language} translations`);
-        }
-        return await response.json();
+        const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+            ? import.meta.env.BASE_URL
+            : `${import.meta.env.BASE_URL}/`;
+        return `${baseUrl}i18n/${language}.json`;
     } catch (error) {
         console.error(`Failed to load translations for ${language}:`, error);
         // Fallback to German as default
@@ -44,7 +43,10 @@ const detectLanguage = () => {
 // Set up language change listener for headlines
 const setupHeadlineLanguageListener = (sections, theme) => {
     const languageSwitcher = document.getElementById("language-switcher");
-    if (languageSwitcher && !languageSwitcher.dataset.headlineListenerAttached) {
+    if (
+        languageSwitcher &&
+        !languageSwitcher.dataset.headlineListenerAttached
+    ) {
         languageSwitcher.dataset.headlineListenerAttached = "true";
         languageSwitcher.addEventListener("change", async (event) => {
             const target = event.target;
