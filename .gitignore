@@ -21,8 +21,6 @@
 /src/scss/fullpage_bak.scss
 /src/scss/camingo.scss
 
-package-lock.json
-
 .DS_Store
 .env
 .env.development

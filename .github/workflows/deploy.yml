@@ -1,0 +1,39 @@
+name: Deploy to IONOS
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v5
+
+            - name: Setup Node
+              uses: actions/setup-node@v5
+              with:
+                  node-version: 24
+                  cache: npm
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Test
+              run: npm run test
+
+            - name: Build site
+              run: npm run build
+
+            - name: Deploy via SFTP
+              uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+              with:
+                  server: ${{ secrets.HOMEPAGE_HOST }}
+                  username: ${{ secrets.HOMEPAGE_USER }}
+                  password: ${{ secrets.HOMEPAGE_PASSWORD }}
+                  local_path: ./docs/*
+                  remote_path: ${{ secrets.HOMEPAGE_TARGET_DIR }}
+                  sftpArgs: "-o ConnectTimeout=5"
