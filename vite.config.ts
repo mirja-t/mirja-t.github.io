@@ -3,7 +3,7 @@ import path from "path";
 
 // vite.config.js or vite.config.ts
 export default defineConfig(({ command }) => ({
-    base: command === "build" ? "/mirja-tschakarov.de/" : "/",
+    base: "/",
     build: {
         outDir: "docs",
     },
