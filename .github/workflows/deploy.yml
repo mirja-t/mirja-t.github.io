@@ -29,11 +29,11 @@ jobs:
               run: npm run build
 
             - name: Deploy via SFTP
-              uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+              uses: Dylan700/sftp-upload-action@latest
               with:
                   server: ${{ secrets.HOMEPAGE_HOST }}
                   username: ${{ secrets.HOMEPAGE_USER }}
                   password: ${{ secrets.HOMEPAGE_PASSWORD }}
-                  local_path: ./docs/*
-                  remote_path: ${{ secrets.HOMEPAGE_TARGET_DIR }}
-                  sftpArgs: "-o ConnectTimeout=5"
+                  port: 22
+                  uploads: |
+                      ./dist/ => ${{ secrets.HOMEPAGE_TARGET_DIR }}
