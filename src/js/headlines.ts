@@ -1,10 +1,10 @@
 import {
     getTranslations,
-    getNestedValue,
     detectLanguage,
     setLanguageRadio,
     setupLanguageListener,
-} from "./languageUtils.js";
+} from "./languageUtils.ts";
+import { getNestedValue } from "./getNestedValue.ts";
 
 // Copy and style headlines with shadow DOM effects
 export const copyHeadlines = async (sections, theme) => {

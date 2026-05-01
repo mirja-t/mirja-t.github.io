@@ -1,5 +1,5 @@
 import "../scss/_app.scss";
-import { copyHeadlines } from "./headlines";
+import { copyHeadlines } from "./headlines.ts";
 import { interactiveChart } from "./chart";
 import { Fullpage } from "./fullpage";
 import { hoverAnimation } from "./hoverAnimation";
