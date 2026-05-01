@@ -6,7 +6,7 @@
 .pnp.js
 
 # fonts
-/public/fonts
+/public/fonts/camingo
 /public/images
 
 # pages
@@ -19,7 +19,6 @@
 
 # style
 /src/scss/fullpage_bak.scss
-/src/scss/camingo.scss
 
 .DS_Store
 .env

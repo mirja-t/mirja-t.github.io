@@ -1,0 +1,44 @@
+/**
+ * @license
+ * MyFonts Webfont Build ID 3931214, 2020-07-30T09:31:14-0400
+ * 
+ * The fonts listed in this notice are subject to the End User License
+ * Agreement(s) entered into by the website owner. All other parties are 
+ * explicitly restricted from using the Licensed Webfonts(s).
+ * 
+ * You may obtain a valid license at the URLs below.
+ * 
+ * Webfont: CamingoDos-Bold by Jan Fromm
+ * URL: https://www.myfonts.com/fonts/jan-fromm/camingo-dos/bold/
+ * 
+ * Webfont: CamingoDos-Light by Jan Fromm
+ * URL: https://www.myfonts.com/fonts/jan-fromm/camingo-dos/light/
+ * 
+ * 
+ * Webfonts copyright: Copyright (c) 2006-2011 by Jan Fromm. All rights reserved.
+ * 
+ * © 2020 MyFonts Inc
+*/
+
+/* @import must be at top of file, otherwise CSS will not work */
+//@import url("//hello.myfonts.net/count/3bfc4e");
+@import "./functions/basepath";
+
+@font-face {
+    font-family: "CamingoDos";
+    font-style: normal;
+    font-weight: bold;
+    font-stretch: normal;
+    src:
+        font("/camingo", "normal_normal_bold.woff2") format("woff2"),
+        font("/camingo", "normal_normal_bold.woff") format("woff");
+}
+@font-face {
+    font-family: "CamingoDos";
+    font-style: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    src:
+        font("/camingo", "normal_normal_normal.woff2") format("woff2"),
+        font("/camingo", "normal_normal_normal.woff") format("woff");
+}
