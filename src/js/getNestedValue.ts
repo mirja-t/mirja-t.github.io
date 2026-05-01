@@ -13,9 +13,13 @@ export const getNestedValue = (
             return undefined;
         }
         return prop in current ? current[prop] : undefined;
-    }, obj) as string | undefined;
+    }, obj);
     if (value === undefined) {
         console.warn(`Translation key not found: ${key}`);
+        return undefined;
+    }
+    if (typeof value !== "string") {
+        console.warn(`Invalid translation value for key: ${key}`);
         return undefined;
     }
     return value;
