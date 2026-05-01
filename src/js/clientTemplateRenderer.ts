@@ -3,8 +3,9 @@
  * Handles language detection and template rendering in the browser
  */
 
-type TranslationData = Record<string, any>;
-
+type TranslationData = {
+    [key: string]: TranslationData | string;
+};
 export class ClientTemplateRenderer {
     private translationCache: Map<string, TranslationData> = new Map();
     private supportedLanguages = ["en", "de"];
@@ -123,9 +124,9 @@ export class ClientTemplateRenderer {
      */
     private updateDocumentMeta(translations: TranslationData): void {
         const meta = translations.meta;
-        if (meta) {
+        if (meta && typeof meta === "object") {
             // Update title
-            if (meta.title) {
+            if ("title" in meta && typeof meta.title === "string") {
                 document.title = meta.title;
             }
 
@@ -133,7 +134,12 @@ export class ClientTemplateRenderer {
             const descriptionMeta = document.querySelector(
                 'meta[name="description"]',
             );
-            if (descriptionMeta && meta.description) {
+            if (
+                descriptionMeta &&
+                typeof meta === "object" &&
+                "description" in meta &&
+                typeof meta.description === "string"
+            ) {
                 descriptionMeta.setAttribute("content", meta.description);
             }
 
@@ -141,14 +147,23 @@ export class ClientTemplateRenderer {
             const keywordsMeta = document.querySelector(
                 'meta[name="keywords"]',
             );
-            if (keywordsMeta && meta.keywords) {
+            if (
+                keywordsMeta &&
+                typeof meta === "object" &&
+                "keywords" in meta &&
+                typeof meta.keywords === "string"
+            ) {
                 keywordsMeta.setAttribute("content", meta.keywords);
             }
 
             // Update lang attribute
-            if (meta.lang) {
+            if ("lang" in meta && typeof meta.lang === "string") {
                 document.documentElement.setAttribute("lang", meta.lang);
             }
+        } else {
+            console.warn(
+                "Meta information is missing or invalid in translations",
+            );
         }
     }
 
@@ -186,11 +201,21 @@ export class ClientTemplateRenderer {
     /**
      * Get nested object value by dot notation
      */
-    private getNestedValue(obj: any, key: string): any {
-        return key.split(".").reduce((current, prop) => {
-            return current && current[prop] !== undefined
-                ? current[prop]
-                : undefined;
-        }, obj);
+    private getNestedValue(
+        obj: TranslationData,
+        key: string,
+    ): string | undefined {
+        const value = key.split(".").reduce((current, prop) => {
+            if (!current || typeof current !== "object") {
+                console.warn(`Invalid translation path: ${key}`);
+                return undefined;
+            }
+            return prop in current ? current[prop] : undefined;
+        }, obj) as string | undefined;
+        if (value === undefined) {
+            console.warn(`Translation key not found: ${key}`);
+            return undefined;
+        }
+        return value;
     }
 }
