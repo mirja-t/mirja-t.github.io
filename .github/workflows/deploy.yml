@@ -28,12 +28,15 @@ jobs:
             - name: Build site
               run: npm run build
 
+            - name: Install lftp
+              run: sudo apt-get update && sudo apt-get install -y lftp
+
             - name: Deploy via SFTP
-              uses: Dylan700/sftp-upload-action@latest
-              with:
-                  server: ${{ secrets.HOMEPAGE_HOST }}
-                  username: ${{ secrets.HOMEPAGE_USER }}
-                  password: ${{ secrets.HOMEPAGE_PASSWORD }}
-                  port: 22
-                  uploads: |
-                      ./dist/ => ${{ secrets.HOMEPAGE_TARGET_DIR }}
+              run: |
+                  lftp -u "${{ secrets.HOMEPAGE_USER }}","${{ secrets.HOMEPAGE_PASSWORD }}" sftp://${{ secrets.HOMEPAGE_HOST }} <<EOF
+                  set sftp:auto-confirm yes
+                  set net:max-retries 2
+                  set net:timeout 20
+                  mirror -R --verbose ./docs/ ${{ secrets.HOMEPAGE_TARGET_DIR }}
+                  bye
+                  EOF
