@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title data-i18n="imprint.meta.title">
+            Mirja Tschakarov – Frontend Developer
+        </title>
+        <meta
+            name="description"
+            content="Impressum Mirja Tschakarov"
+            data-i18n-attr='{"content": "imprint.meta.description"}'
+        />
+        <meta
+            name="keywords"
+            content="webdesign, frontend development, portfolio"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="Mirja Tschakarov" />
+        <link rel="icon" href="favicon.ico" />
+        <script type="module" defer src="src/js/app.ts"></script>
+    </head>
+    <body>
+        <div id="swup" class="transition-scale">
+            <div class="page-mask"></div>
+            <div class="content-wrapper subpage">
+                <header>
+                    <link-mousefollow
+                        id="logowrapper"
+                        class="mousefollow logo-wrapper"
+                        href="/#section-0"
+                        title="Zur Startseite"
+                        data-i18n-attr='{"title": "navigation.logoTitle"}'
+                    >
+                        <span class="logo"></span>
+                    </link-mousefollow>
+                    <nav id="nav">
+                        <ul>
+                            <li>
+                                <a href="/#section-0"
+                                    ><span data-i18n="imprint.navigation.back"
+                                        >Zurück</span
+                                    ></a
+                                >
+                            </li>
+                        </ul>
+                        <form id="language-switcher">
+                            <fieldset aria-label="Language">
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id="en"
+                                        name="language"
+                                        value="en"
+                                    />
+                                    <label for="en">EN</label>
+                                </div>
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id="de"
+                                        name="language"
+                                        value="de"
+                                    />
+                                    <label for="de">DE</label>
+                                </div>
+                                <span class="background"></span>
+                            </fieldset>
+                        </form>
+                    </nav>
+                </header>
+                <main>
+                    <section class="section">
+                        <div class="container">
+                            <aside>
+                                <div class="p-y">
+                                    <h1 class="h4" data-i18n="imprint.title">
+                                        Impressum
+                                    </h1>
+                                </div>
+                            </aside>
+                            <div class="header-image">
+                                <div class="grid">
+                                    <div class="row">
+                                        <div class="col-12 p-y">
+                                            <h3
+                                                class="h5"
+                                                data-i18n="imprint.responsible.title"
+                                            >
+                                                Responsible for this site
+                                                according to § 5 TMG:
+                                            </h3>
+                                            <p>
+                                                Mirja Tschakarov<br />
+                                                Friedrichsberger Straße 5<br />
+                                                10243 Berlin
+                                            </p>
+                                            <h3
+                                                class="h5"
+                                                data-i18n="imprint.contact.title"
+                                            >
+                                                Contact
+                                            </h3>
+                                            <p>
+                                                <span
+                                                    data-i18n="imprint.contact.email"
+                                                    >Email: </span
+                                                >email.mirja.t@gmail.com
+                                            </p>
+                                            <p>
+                                                <span
+                                                    data-i18n="imprint.contact.phone"
+                                                    >Phone:</span
+                                                >
+                                                017667594878
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+                <footer>
+                    <nav id="bottom-nav">
+                        <ul>
+                            <li>
+                                <a
+                                    href="/imprint"
+                                    data-i18n="footer.imprintTitle"
+                                    >Imprint</a
+                                >
+                            </li>
+                            <li class="icon">
+                                <link-mousefollow
+                                    class="mousefollow"
+                                    href="mailto:email.mirja.t@gmail.com"
+                                    title="my Codepen profile"
+                                    data-i18n-attr='{"title": "footer.mailTitle"}'
+                                    target="_blank"
+                                    offset="-10%"
+                                    outline
+                                >
+                                    <span class="iconmask-codepen"></span>
+                                </link-mousefollow>
+                            </li>
+                            <li class="icon">
+                                <link-mousefollow
+                                    class="mousefollow"
+                                    href="https://codepen.io/mirja-t"
+                                    title="my Codepen profile"
+                                    data-i18n-attr='{"title": "footer.codepenTitle"}'
+                                    target="_blank"
+                                    offset="-10%"
+                                    outline
+                                >
+                                    <span class="iconmask-codepen"></span>
+                                </link-mousefollow>
+                            </li>
+                            <li class="icon">
+                                <link-mousefollow
+                                    class="mousefollow"
+                                    href="https://github.com/mirja-t/"
+                                    title="my Github profile"
+                                    data-i18n-attr='{"title": "footer.githubTitle"}'
+                                    target="_blank"
+                                    offset="-10%"
+                                    outline
+                                >
+                                    <span class="iconmask-github"></span>
+                                </link-mousefollow>
+                            </li>
+                        </ul>
+                    </nav>
+                </footer>
+            </div>
+        </div>
+    </body>
+</html>

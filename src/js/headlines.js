@@ -1,75 +1,12 @@
-// Simple translation fetcher for headlines
-const getTranslations = async (language) => {
-    try {
-        const baseUrl = import.meta.env.BASE_URL.endsWith("/")
-            ? import.meta.env.BASE_URL
-            : `${import.meta.env.BASE_URL}/`;
-        const response = await fetch(`${baseUrl}i18n/${language}.json`);
-        if (!response.ok) {
-            throw new Error(`Failed to load ${language} translations`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error(`Failed to load translations for ${language}:`, error);
-        // Fallback to German as default
-        if (language !== "de") {
-            return getTranslations("de");
-        }
-        return null;
-    }
-};
+import {
+    getTranslations,
+    getNestedValue,
+    detectLanguage,
+    setLanguageRadio,
+    setupLanguageListener,
+} from "./languageUtils.js";
 
-// Get nested value from object using dot notation
-const getNestedValue = (obj, path) => {
-    return path.split(".").reduce((current, key) => current?.[key], obj);
-};
-
-// Detect current language
-const detectLanguage = () => {
-    const supportedLanguages = ["en", "de"];
-    const defaultLanguage = "de";
-
-    // First, check if there's a selected radio button
-    const selectedRadio = document.querySelector(
-        'input[name="language"]:checked',
-    );
-    if (selectedRadio && supportedLanguages.includes(selectedRadio.value)) {
-        return selectedRadio.value;
-    }
-
-    // Fall back to browser language detection
-    const browserLang = navigator.language.split("-")[0];
-    return supportedLanguages.includes(browserLang)
-        ? browserLang
-        : defaultLanguage;
-};
-
-// Set up language change listener for headlines
-const setupHeadlineLanguageListener = (sections, theme) => {
-    const languageSwitcher = document.getElementById("language-switcher");
-    if (
-        languageSwitcher &&
-        !languageSwitcher.dataset.headlineListenerAttached
-    ) {
-        languageSwitcher.dataset.headlineListenerAttached = "true";
-        languageSwitcher.addEventListener("change", async (event) => {
-            const target = event.target;
-            if (target.type === "radio" && target.name === "language") {
-                const language = target.value;
-                const supportedLanguages = ["en", "de"];
-                if (supportedLanguages.includes(language)) {
-                    // Clear existing shadow headlines before re-rendering
-                    document
-                        .querySelectorAll(".shadowHeadline")
-                        .forEach((el) => el.remove());
-                    // Re-run copyHeadlines with new language
-                    await copyHeadlines(sections, theme);
-                }
-            }
-        });
-    }
-};
-
+// Copy and style headlines with shadow DOM effects
 export const copyHeadlines = async (sections, theme) => {
     // Get current language and translations
     const currentLanguage = detectLanguage();
@@ -79,8 +16,18 @@ export const copyHeadlines = async (sections, theme) => {
         console.error("Could not load translations, using original text");
     }
 
-    // Set up language change listener (guards against duplicate attachment on the element itself)
-    setupHeadlineLanguageListener(sections, theme);
+    // Set the correct radio button to match detected language
+    setLanguageRadio(currentLanguage);
+
+    // Set up language change listener with callback to re-render headlines
+    setupLanguageListener(async (language) => {
+        // Clear existing shadow headlines before re-rendering
+        document
+            .querySelectorAll(".shadowHeadline")
+            .forEach((el) => el.remove());
+        // Re-run copyHeadlines with new language
+        await copyHeadlines(sections, theme);
+    });
 
     sections.forEach((section, idx) => {
         // set invers class
