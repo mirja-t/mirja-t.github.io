@@ -20,7 +20,7 @@ export const copyHeadlines = async (sections, theme) => {
     setLanguageRadio(currentLanguage);
 
     // Set up language change listener with callback to re-render headlines
-    setupLanguageListener(async (language) => {
+    setupLanguageListener(async (_language) => {
         // Clear existing shadow headlines before re-rendering
         document
             .querySelectorAll(".shadowHeadline")
