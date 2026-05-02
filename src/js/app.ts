@@ -37,7 +37,21 @@ async function init() {
     // const canvas = document.querySelector("canvas");
 
     if (svgChart) interactiveChart(svgChart);
-    if (sections.length) copyHeadlines(sections, currentTheme);
+    if (sections.length) {
+        const shadowHeadlines = await copyHeadlines();
+        templateRenderer.subscribe(() => {
+            // Handle language change
+            shadowHeadlines.forEach((h) => {
+                const key = h.getAttribute("data-i18n");
+                if (key) {
+                    const value = templateRenderer.getNestedValue(key);
+                    if (value !== undefined) {
+                        h.textContent = String(value);
+                    }
+                }
+            });
+        });
+    }
     if (cardlinksWrapper.length)
         cardlinksWrapper.forEach((cardlinks) => hoverAnimation(cardlinks, 20));
     if (footerlinks.length)

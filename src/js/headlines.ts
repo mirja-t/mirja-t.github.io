@@ -1,58 +1,14 @@
-import {
-    getTranslations,
-    detectLanguage,
-    setLanguageRadio,
-    setupLanguageListener,
-} from "./languageUtils.ts";
-import { getNestedValue } from "./getNestedValue.ts";
-
 // Copy and style headlines with shadow DOM effects
-export const copyHeadlines = async (sections, theme) => {
-    // Get current language and translations
-    const currentLanguage = detectLanguage();
-    const translations = await getTranslations(currentLanguage);
-
-    if (!translations) {
-        console.error("Could not load translations, using original text");
-    }
-
-    // Set the correct radio button to match detected language
-    setLanguageRadio(currentLanguage);
-
-    // Set up language change listener with callback to re-render headlines
-    setupLanguageListener(async (_language) => {
-        // Clear existing shadow headlines before re-rendering
-        document
-            .querySelectorAll(".shadowHeadline")
-            .forEach((el) => el.remove());
-        // Re-run copyHeadlines with new language
-        await copyHeadlines(sections, theme);
-    });
-
-    sections.forEach((section, idx) => {
-        // set invers class
-        if (idx % 2 === 1) {
-            section
-                .querySelectorAll("h1, h2")
-                .forEach((h) => h.classList.add("invers"));
-        }
-    });
+export const copyHeadlines = async () => {
+    const shadowHeadlines = [];
 
     const headlines = document.querySelectorAll("h1, h2");
     headlines.forEach((h) => {
         let tagName = h.tagName.toLocaleLowerCase();
 
         // Get translated text
-        let text = h.innerHTML; // fallback to original
-
-        // Check if element has data-i18n attribute
-        const translationKey = h.getAttribute("data-i18n");
-        if (translationKey && translations) {
-            const translatedText = getNestedValue(translations, translationKey);
-            if (translatedText) {
-                text = translatedText;
-            }
-        }
+        let text = h.textContent; // fallback to original
+        let dataI18nKey = h.getAttribute("data-i18n");
 
         let style = document.createElement("style");
         style.textContent = `
@@ -74,25 +30,20 @@ export const copyHeadlines = async (sections, theme) => {
                 }
             }`;
 
-        if (theme === "alternate") {
-            style.textContent += `
-                h1.invers,
-                h2.invers {
-                    color: white;
-                }`;
-        }
-
         let parent = h.parentNode;
         let container = document.createElement("div");
         container.setAttribute("class", "shadowHeadline");
 
         let shadowHl = document.createElement(tagName);
         h.className === "invers" && shadowHl.classList.add("invers");
-        shadowHl.innerHTML = text;
+        shadowHl.setAttribute("data-i18n", dataI18nKey);
+        shadowHl.textContent = text;
 
         let shadowRoot = container.attachShadow({ mode: "open" });
         shadowRoot.appendChild(style);
         shadowRoot.appendChild(shadowHl);
         parent.prepend(container);
+        shadowHeadlines.push(shadowHl);
     });
+    return shadowHeadlines;
 };

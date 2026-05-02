@@ -1,4 +1,7 @@
-import type { TranslationData } from "./languageUtils";
+export type SupportedLanguage = "en" | "de";
+export interface TranslationData {
+    [key: string]: TranslationData | string;
+}
 /**
  * Client-side Template Renderer for i18n
  * Handles language detection and template rendering in the browser
@@ -8,7 +11,7 @@ export class ClientTemplateRenderer {
     private translationCache: Map<string, TranslationData> = new Map();
     private supportedLanguages = ["en", "de"];
     private defaultLanguage = "de"; // Changed to German default
-
+    private onChange?: (language: SupportedLanguage) => void;
     /**
      * Initialize client-side rendering
      */
@@ -21,18 +24,38 @@ export class ClientTemplateRenderer {
     /**
      * Detect language with localStorage persistence
      */
-    private detectLanguage(): string {
+    private detectLanguage(): SupportedLanguage {
+        const supportedLanguages: SupportedLanguage[] = ["en", "de"];
+        const defaultLanguage: SupportedLanguage = "de";
+
         // First, check localStorage for saved preference
-        const savedLanguage = localStorage.getItem("selectedLanguage");
-        if (savedLanguage && this.supportedLanguages.includes(savedLanguage)) {
+        const savedLanguage = localStorage.getItem(
+            "selectedLanguage",
+        ) as SupportedLanguage;
+        if (savedLanguage && supportedLanguages.includes(savedLanguage)) {
             return savedLanguage;
         }
 
-        // Check browser language preference
-        const browserLang = navigator.language.split("-")[0];
-        return this.supportedLanguages.includes(browserLang)
+        // Then, check if there's a selected radio button
+        const selectedRadio = document.querySelector(
+            'input[name="language"]:checked',
+        ) as HTMLInputElement;
+        if (
+            selectedRadio &&
+            supportedLanguages.includes(
+                selectedRadio.value as SupportedLanguage,
+            )
+        ) {
+            return selectedRadio.value as SupportedLanguage;
+        }
+
+        // Fall back to browser language detection
+        const browserLang = navigator.language.split(
+            "-",
+        )[0] as SupportedLanguage;
+        return supportedLanguages.includes(browserLang)
             ? browserLang
-            : this.defaultLanguage;
+            : defaultLanguage;
     }
 
     /**
@@ -40,9 +63,8 @@ export class ClientTemplateRenderer {
      */
     async renderPage(language: string): Promise<void> {
         try {
-            const translations = await this.loadTranslations(language);
-            this.updatePageContent(translations);
-            this.updateDocumentMeta(translations);
+            await this.loadTranslations(language);
+            this.updatePageContent();
             this.updateRadioButton(language);
         } catch (error) {
             console.error("Failed to render page:", error);
@@ -89,12 +111,12 @@ export class ClientTemplateRenderer {
     /**
      * Update page content with translations
      */
-    private updatePageContent(translations: TranslationData): void {
+    private updatePageContent(): void {
         // Update all elements with data-i18n attributes
         document.querySelectorAll("[data-i18n]").forEach((element) => {
             const key = element.getAttribute("data-i18n");
             if (key) {
-                const value = this.getNestedValue(translations, key);
+                const value = this.getNestedValue(key);
                 if (value !== undefined) {
                     element.textContent = String(value);
                 }
@@ -103,15 +125,13 @@ export class ClientTemplateRenderer {
 
         // Update attributes with data-i18n-attr
         document.querySelectorAll("[data-i18n-attr]").forEach((element) => {
+            const lang = this.detectLanguage();
             const attrConfig = element.getAttribute("data-i18n-attr");
             if (attrConfig) {
                 try {
                     const config = JSON.parse(attrConfig);
                     Object.entries(config).forEach(([attr, key]) => {
-                        const value = this.getNestedValue(
-                            translations,
-                            key as string,
-                        );
+                        const value = this.getNestedValue(key as string);
                         if (value !== undefined) {
                             element.setAttribute(attr, String(value));
                         }
@@ -120,87 +140,8 @@ export class ClientTemplateRenderer {
                     console.error("Invalid data-i18n-attr format:", attrConfig);
                 }
             }
+            this.onChange?.(lang);
         });
-    }
-
-    /**
-     * Derive the current page key from the URL pathname (e.g. "imprint" for /imprint.html).
-     * Returns undefined for the root/index page.
-     */
-    private getCurrentPageKey(): string | undefined {
-        const page = window.location.pathname
-            .replace(/^\/|\/$/g, "")
-            .replace(/\.html$/, "");
-        return page && page !== "index" ? page : undefined;
-    }
-
-    /**
-     * Update document meta information.
-     * Uses page-specific meta (translations[pageKey].meta) when available,
-     * falling back to root translations.meta for title/description/keywords.
-     * Always applies lang from root meta (language-specific, not page-specific).
-     */
-    private updateDocumentMeta(translations: TranslationData): void {
-        const rootMeta = translations.meta;
-
-        // Resolve page-specific meta from the current route (e.g. translations.imprint.meta)
-        const pageKey = this.getCurrentPageKey();
-        const pageData = pageKey ? translations[pageKey] : undefined;
-        const pageMeta =
-            pageData &&
-            typeof pageData === "object" &&
-            "meta" in pageData &&
-            pageData.meta &&
-            typeof pageData.meta === "object"
-                ? (pageData.meta as TranslationData)
-                : undefined;
-
-        const meta = pageMeta ?? rootMeta;
-
-        if (meta && typeof meta === "object") {
-            // Update title
-            if ("title" in meta && typeof meta.title === "string") {
-                document.title = meta.title;
-            }
-
-            // Update meta description
-            const descriptionMeta = document.querySelector(
-                'meta[name="description"]',
-            );
-            if (
-                descriptionMeta &&
-                "description" in meta &&
-                typeof meta.description === "string"
-            ) {
-                descriptionMeta.setAttribute("content", meta.description);
-            }
-
-            // Update meta keywords
-            const keywordsMeta = document.querySelector(
-                'meta[name="keywords"]',
-            );
-            if (
-                keywordsMeta &&
-                "keywords" in meta &&
-                typeof meta.keywords === "string"
-            ) {
-                keywordsMeta.setAttribute("content", meta.keywords);
-            }
-        } else {
-            console.warn(
-                "Meta information is missing or invalid in translations",
-            );
-        }
-
-        // Always update lang from root meta (language code, not page-specific)
-        if (
-            rootMeta &&
-            typeof rootMeta === "object" &&
-            "lang" in rootMeta &&
-            typeof rootMeta.lang === "string"
-        ) {
-            document.documentElement.setAttribute("lang", rootMeta.lang);
-        }
     }
 
     /**
@@ -239,21 +180,26 @@ export class ClientTemplateRenderer {
     /**
      * Get nested object value by dot notation
      */
-    private getNestedValue(
-        obj: TranslationData,
-        key: string,
-    ): string | undefined {
+    getNestedValue(key: string): string | undefined {
+        const translations = this.translationCache.get(this.detectLanguage());
         const value = key.split(".").reduce((current, prop) => {
             if (!current || typeof current !== "object") {
                 console.warn(`Invalid translation path: ${key}`);
                 return undefined;
             }
             return prop in current ? current[prop] : undefined;
-        }, obj) as string | undefined;
+        }, translations);
         if (value === undefined) {
             console.warn(`Translation key not found: ${key}`);
             return undefined;
         }
+        if (typeof value !== "string") {
+            console.warn(`Invalid translation value for key: ${key}`);
+            return undefined;
+        }
         return value;
+    }
+    subscribe(callback: (language: SupportedLanguage) => void): void {
+        this.onChange = callback;
     }
 }
