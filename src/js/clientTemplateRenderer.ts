@@ -124,10 +124,39 @@ export class ClientTemplateRenderer {
     }
 
     /**
-     * Update document meta information
+     * Derive the current page key from the URL pathname (e.g. "imprint" for /imprint.html).
+     * Returns undefined for the root/index page.
+     */
+    private getCurrentPageKey(): string | undefined {
+        const page = window.location.pathname
+            .replace(/^\/|\/$/g, "")
+            .replace(/\.html$/, "");
+        return page && page !== "index" ? page : undefined;
+    }
+
+    /**
+     * Update document meta information.
+     * Uses page-specific meta (translations[pageKey].meta) when available,
+     * falling back to root translations.meta for title/description/keywords.
+     * Always applies lang from root meta (language-specific, not page-specific).
      */
     private updateDocumentMeta(translations: TranslationData): void {
-        const meta = translations.meta;
+        const rootMeta = translations.meta;
+
+        // Resolve page-specific meta from the current route (e.g. translations.imprint.meta)
+        const pageKey = this.getCurrentPageKey();
+        const pageData = pageKey ? translations[pageKey] : undefined;
+        const pageMeta =
+            pageData &&
+            typeof pageData === "object" &&
+            "meta" in pageData &&
+            pageData.meta &&
+            typeof pageData.meta === "object"
+                ? (pageData.meta as TranslationData)
+                : undefined;
+
+        const meta = pageMeta ?? rootMeta;
+
         if (meta && typeof meta === "object") {
             // Update title
             if ("title" in meta && typeof meta.title === "string") {
@@ -140,7 +169,6 @@ export class ClientTemplateRenderer {
             );
             if (
                 descriptionMeta &&
-                typeof meta === "object" &&
                 "description" in meta &&
                 typeof meta.description === "string"
             ) {
@@ -153,21 +181,25 @@ export class ClientTemplateRenderer {
             );
             if (
                 keywordsMeta &&
-                typeof meta === "object" &&
                 "keywords" in meta &&
                 typeof meta.keywords === "string"
             ) {
                 keywordsMeta.setAttribute("content", meta.keywords);
             }
-
-            // Update lang attribute
-            if ("lang" in meta && typeof meta.lang === "string") {
-                document.documentElement.setAttribute("lang", meta.lang);
-            }
         } else {
             console.warn(
                 "Meta information is missing or invalid in translations",
             );
+        }
+
+        // Always update lang from root meta (language code, not page-specific)
+        if (
+            rootMeta &&
+            typeof rootMeta === "object" &&
+            "lang" in rootMeta &&
+            typeof rootMeta.lang === "string"
+        ) {
+            document.documentElement.setAttribute("lang", rootMeta.lang);
         }
     }
 
