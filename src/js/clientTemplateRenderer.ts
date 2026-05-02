@@ -1,15 +1,17 @@
+export type SupportedLanguage = "en" | "de";
+export interface TranslationData {
+    [key: string]: TranslationData | string;
+}
 /**
  * Client-side Template Renderer for i18n
  * Handles language detection and template rendering in the browser
  */
 
-type TranslationData = Record<string, any>;
-
 export class ClientTemplateRenderer {
     private translationCache: Map<string, TranslationData> = new Map();
     private supportedLanguages = ["en", "de"];
     private defaultLanguage = "de"; // Changed to German default
-
+    private onChange?: (language: SupportedLanguage) => void;
     /**
      * Initialize client-side rendering
      */
@@ -20,14 +22,40 @@ export class ClientTemplateRenderer {
     }
 
     /**
-     * Detect language from browser settings
+     * Detect language with localStorage persistence
      */
-    private detectLanguage(): string {
-        // Check browser language preference
-        const browserLang = navigator.language.split("-")[0];
-        return this.supportedLanguages.includes(browserLang)
+    private detectLanguage(): SupportedLanguage {
+        const supportedLanguages: SupportedLanguage[] = ["en", "de"];
+        const defaultLanguage: SupportedLanguage = "de";
+
+        // First, check localStorage for saved preference
+        const savedLanguage = localStorage.getItem(
+            "selectedLanguage",
+        ) as SupportedLanguage;
+        if (savedLanguage && supportedLanguages.includes(savedLanguage)) {
+            return savedLanguage;
+        }
+
+        // Then, check if there's a selected radio button
+        const selectedRadio = document.querySelector(
+            'input[name="language"]:checked',
+        ) as HTMLInputElement;
+        if (
+            selectedRadio &&
+            supportedLanguages.includes(
+                selectedRadio.value as SupportedLanguage,
+            )
+        ) {
+            return selectedRadio.value as SupportedLanguage;
+        }
+
+        // Fall back to browser language detection
+        const browserLang = navigator.language.split(
+            "-",
+        )[0] as SupportedLanguage;
+        return supportedLanguages.includes(browserLang)
             ? browserLang
-            : this.defaultLanguage;
+            : defaultLanguage;
     }
 
     /**
@@ -35,9 +63,8 @@ export class ClientTemplateRenderer {
      */
     async renderPage(language: string): Promise<void> {
         try {
-            const translations = await this.loadTranslations(language);
-            this.updatePageContent(translations);
-            this.updateDocumentMeta(translations);
+            await this.loadTranslations(language);
+            this.updatePageContent();
             this.updateRadioButton(language);
         } catch (error) {
             console.error("Failed to render page:", error);
@@ -84,12 +111,12 @@ export class ClientTemplateRenderer {
     /**
      * Update page content with translations
      */
-    private updatePageContent(translations: TranslationData): void {
+    private updatePageContent(): void {
         // Update all elements with data-i18n attributes
         document.querySelectorAll("[data-i18n]").forEach((element) => {
             const key = element.getAttribute("data-i18n");
             if (key) {
-                const value = this.getNestedValue(translations, key);
+                const value = this.getNestedValue(key);
                 if (value !== undefined) {
                     element.textContent = String(value);
                 }
@@ -98,15 +125,13 @@ export class ClientTemplateRenderer {
 
         // Update attributes with data-i18n-attr
         document.querySelectorAll("[data-i18n-attr]").forEach((element) => {
+            const lang = this.detectLanguage();
             const attrConfig = element.getAttribute("data-i18n-attr");
             if (attrConfig) {
                 try {
                     const config = JSON.parse(attrConfig);
                     Object.entries(config).forEach(([attr, key]) => {
-                        const value = this.getNestedValue(
-                            translations,
-                            key as string,
-                        );
+                        const value = this.getNestedValue(key as string);
                         if (value !== undefined) {
                             element.setAttribute(attr, String(value));
                         }
@@ -115,41 +140,8 @@ export class ClientTemplateRenderer {
                     console.error("Invalid data-i18n-attr format:", attrConfig);
                 }
             }
+            this.onChange?.(lang);
         });
-    }
-
-    /**
-     * Update document meta information
-     */
-    private updateDocumentMeta(translations: TranslationData): void {
-        const meta = translations.meta;
-        if (meta) {
-            // Update title
-            if (meta.title) {
-                document.title = meta.title;
-            }
-
-            // Update meta description
-            const descriptionMeta = document.querySelector(
-                'meta[name="description"]',
-            );
-            if (descriptionMeta && meta.description) {
-                descriptionMeta.setAttribute("content", meta.description);
-            }
-
-            // Update meta keywords
-            const keywordsMeta = document.querySelector(
-                'meta[name="keywords"]',
-            );
-            if (keywordsMeta && meta.keywords) {
-                keywordsMeta.setAttribute("content", meta.keywords);
-            }
-
-            // Update lang attribute
-            if (meta.lang) {
-                document.documentElement.setAttribute("lang", meta.lang);
-            }
-        }
     }
 
     /**
@@ -164,6 +156,8 @@ export class ClientTemplateRenderer {
                 if (target.type === "radio" && target.name === "language") {
                     const language = target.value;
                     if (this.supportedLanguages.includes(language)) {
+                        // Store the selected language in localStorage
+                        localStorage.setItem("selectedLanguage", language);
                         this.renderPage(language);
                     }
                 }
@@ -186,11 +180,26 @@ export class ClientTemplateRenderer {
     /**
      * Get nested object value by dot notation
      */
-    private getNestedValue(obj: any, key: string): any {
-        return key.split(".").reduce((current, prop) => {
-            return current && current[prop] !== undefined
-                ? current[prop]
-                : undefined;
-        }, obj);
+    getNestedValue(key: string): string | undefined {
+        const translations = this.translationCache.get(this.detectLanguage());
+        const value = key.split(".").reduce((current, prop) => {
+            if (!current || typeof current !== "object") {
+                console.warn(`Invalid translation path: ${key}`);
+                return undefined;
+            }
+            return prop in current ? current[prop] : undefined;
+        }, translations);
+        if (value === undefined) {
+            console.warn(`Translation key not found: ${key}`);
+            return undefined;
+        }
+        if (typeof value !== "string") {
+            console.warn(`Invalid translation value for key: ${key}`);
+            return undefined;
+        }
+        return value;
+    }
+    subscribe(callback: (language: SupportedLanguage) => void): void {
+        this.onChange = callback;
     }
 }
