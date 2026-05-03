@@ -15,4 +15,10 @@ export default defineConfig(({ command }) => ({
             "@": path.resolve(__dirname, "./src"),
         },
     },
+    rollupOptions: {
+        input: {
+            main: path.resolve(__dirname, "index.html"),
+            imprint: path.resolve(__dirname, "imprint.html"),
+        },
+    },
 }));
