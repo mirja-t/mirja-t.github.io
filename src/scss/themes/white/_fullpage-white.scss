@@ -13,7 +13,7 @@ body.theme-white {
     .section-bg {
         display: none;
     }
-    .fullpage {
+    &.screen-large .page-transition {
         // section
         section.section {
             &:before,
@@ -22,7 +22,8 @@ body.theme-white {
                 position: absolute;
                 display: table;
                 left: 0;
-                transition: all $section-before-transition ease
+                transition:
+                    all $section-before-transition ease
                         $section-transition-delay,
                     background-color $section-color-transition ease
                         $section-color-transition-delay,
