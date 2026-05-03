@@ -10,20 +10,20 @@ import { generateButton } from "./generateButton";
 import { stickyElement } from "./stickyElement";
 import LinkMousefollow from "./webcomponents/LinkMousefollow";
 import { ClientTemplateRenderer } from "./clientTemplateRenderer";
+import { debounce } from "./utils";
 
-import { parallax } from "./parallax";
-
-// Initialize client-side template renderer
-const templateRenderer = new ClientTemplateRenderer();
-
-// Theme
-let currentTheme = "white"; // alternate | white
-const body = document.querySelector("body");
-body.classList = "";
-body.classList.add(`theme-${currentTheme}`);
+const FP_BREAKPOINT = 991;
 
 async function init() {
+    // Theme
+    let currentTheme = "white"; // alternate | white
+    const body = document.querySelector("body");
+    body.classList = "";
+    body.classList.add(`theme-${currentTheme}`);
+
     // Initialize i18n rendering first
+    // Initialize client-side template renderer
+    const templateRenderer = new ClientTemplateRenderer();
     await templateRenderer.init();
     const svgChart = document.getElementById("svgchart");
     // const chartDetails = document.getElementById("chart-details");
@@ -31,10 +31,25 @@ async function init() {
     const footerlinks = document.querySelectorAll("footer li.icon");
     const scrollElements = document.querySelectorAll(".scrollspy");
     const contactbuttonwrapper = document.getElementById("contactbutton");
-    const sections = document.querySelectorAll("#fullpage .section");
+    const sections = document.querySelectorAll("section.section");
     const stickyContainer = document.querySelectorAll(".sticky-container");
     const logo = document.getElementById("logowrapper");
     // const canvas = document.querySelector("canvas");
+
+    function addScreenSizeClass() {
+        if (window.matchMedia(`(min-width: ${FP_BREAKPOINT}px)`).matches) {
+            body.classList.add("screen-large");
+        } else {
+            body.classList.remove("screen-large");
+        }
+    }
+    window.addEventListener(
+        "resize",
+        debounce(() => {
+            addScreenSizeClass();
+        }, 30),
+    );
+    addScreenSizeClass();
 
     if (svgChart) interactiveChart(svgChart);
     if (sections.length) {
@@ -77,6 +92,7 @@ async function init() {
     if (logo) {
         hoverAnimation(logo, 10);
     }
+    if (document.getElementById("fullpagewrapper")) initFullpage();
 }
 
 // Initialize the app
@@ -89,7 +105,7 @@ function initFullpage() {
     const nav = document.querySelector("nav#nav ul");
 
     const config = {
-        breakpoint: 991,
+        breakpoint: FP_BREAKPOINT,
         onSectionChange: [resetChart],
     };
     const fullpage = new Fullpage(fpwrapper, fp, nav, config);
@@ -101,8 +117,6 @@ function initFullpage() {
     return fullpage;
 }
 
-if (document.getElementById("fullpagewrapper")) initFullpage();
-
 function resetChart(sectionNumber: number) {
     if (sectionNumber === 1) {
         document
@@ -110,29 +124,5 @@ function resetChart(sectionNumber: number) {
             .forEach((el) => el.remove());
     }
 }
-
-document.addEventListener("swup:contentReplaced", () => {
-    init();
-    window.scrollTo(0, 0);
-    const fpwrapper = document.getElementById("fullpagewrapper");
-    if (fpwrapper) {
-        const targetSection = location.href.match(/#section-[0-9]+/g);
-        let sectionNumber =
-            targetSection?.length &&
-            targetSection[0] &&
-            targetSection[0].match(/[0-9]+/)
-                ? [0]
-                : null;
-        const fullpage = initFullpage();
-        if (sectionNumber) fullpage.navigate(sectionNumber);
-    }
-});
-
-document.addEventListener("swup:transitionEnd", () => {
-    const parallaxImages = document.querySelectorAll(".js-parallax");
-    if (parallaxImages.length) {
-        parallaxImages.forEach((img, idx) => parallax(img, idx));
-    }
-});
 
 customElements.define("link-mousefollow", LinkMousefollow);
